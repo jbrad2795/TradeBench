@@ -1,0 +1,15 @@
+{
+  "name": "tradebench-play-room",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env --watch server.js",
+    "start": "node --env-file=.env server.js",
+    "test": "node --test test/**/*.test.js",
+    "run-batch": "node --env-file=.env run.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
