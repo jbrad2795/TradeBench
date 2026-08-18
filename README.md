@@ -1,68 +1,115 @@
-# TradeBench Play Room
+# TradeBench
 
-A local bilateral trade-negotiation simulator. A human-controlled delegation alternates turns with independent AI representatives. Each AI sees the public case, public transcript, and only its own private brief.
+A negotiation harness for evaluating whether language models can hold
+institutionally situated positions, rather than treating a state as a single
+rational actor.
+
+Four seats - two per country - negotiate a WTO Article XXVIII schedule
+modification. Each seat sees the same public facts and its own brief, and never
+sees another seat's material. Seats on the same side are not co-ordinated.
 
 ## Requirements
 
-- Node.js 20 or newer
-- An OpenAI API key for live agents (without one, the app uses demo responses)
+- Node.js 20.6 or newer (`--env-file` support)
+- An OpenAI API key for live runs. Without one everything still runs on
+  deterministic stub responses.
 
-## 🌟Set up
+## Set up
 
-1. Put your own API key in `.env` following the steps below. Never share or commit that file. 
-   
-   First find the following line in your `.env` file:
+1. Put your key in `.env`:
+
    ```bash
-   OPENAI_API_KEY=your_api_key_here
+   OPENAI_API_KEY=sk-...
    ```
-   Then replace `your_api_key_here` with the API key you were provided with. Please keep your API key safe, and only use it for the TradeBench project.
 
-2. Open your terminal, then locate to this TradeBench folder (using the `cd` command), and start the server using the following command line:
+   Never commit that file. `.gitignore` excludes `.env` and `.env.*`.
+
+2. Start the observation room:
 
    ```bash
    node --env-file=.env server.js
    ```
 
-   If `node` is unavailable, install Node.js 20+ from <https://nodejs.org>.
+3. Open <http://localhost:4173>.
 
-3. Open <http://localhost:4173> in your default browser, and you will see the TradeBench Play Room.
+## The observation room
 
+Pick a scenario and a disposition arm, then press Run. A real negotiation
+streams in as it happens. The centre panel is the public record - the only
+thing seats can see of each other. The right-hand panel is for evaluation:
+tabled terms per seat, and the end-of-round acceptance poll.
 
 ## Generating experiment data (headless)
-
-The play room is for qualitative evaluation. Quantitative data comes from the
-batch runner, which plays all four seats with models and needs no human.
 
 ```bash
 node --env-file=.env run.js --repeats 3
 ```
 
-That executes the full 2x2 condition matrix - personality tags on/off crossed
-with elicitation timing per-round/end - three times each, writing one JSONL log
-per run to `runs/`. Single cells can be run directly:
+Runs every disposition arm - firm, accommodating, control - three times each,
+writing one JSONL log per run to `runs/`. Single arms:
 
 ```bash
-node --env-file=.env run.js --repeats 1 --personality on --elicitation end
+node --env-file=.env run.js --arm control --repeats 1
 ```
 
-With no API key set, the runner uses deterministic stub responses so the whole
-pipeline can be exercised offline without spending credits.
+List available scenarios with `node run.js --list`.
 
-### What each run log contains
+A run costs roughly 50k tokens and takes about three minutes. **Set a hard spend
+limit at the provider before running a batch.**
 
-One JSON object per line, gapless `seq` numbers:
+## How a turn is built
 
-| Event | Feeds |
+Each seat's prompt is assembled from blocks, per `documents/tradebench prompts
+v0.1.docx`:
+
+```
+Block 1  Facts          identical across seats, role-blind
+Block 2  Seat brief     remit and instructions received - never an objective
+Block 3  Disposition    one sentence; OMITTED ENTIRELY in the control arm
+Block 4  Rules          identical; states an explicit asymmetric no-deal default
+Block 5  Output schema  identical; no field named after a scored construct
+```
+
+Blocks 1, 4 and 5 are single strings on the pack referenced by every seat, so
+they are identical by construction rather than by discipline.
+
+Turn structure: a pre-game declaration turn, then three rounds in fixed speaking
+order, each round closing with an independent acceptance poll of every seat.
+Settlement is read from the structured `proposal` object and decided by the
+poll - never by parsing prose.
+
+## Scenario packs
+
+`public/scenarios/` holds one pack per scenario. A pack declares its own
+`settlementTerms`, so a scenario with different levers needs no engine change.
+Packs marked `placeholder: true` appear in the dropdown but refuse to run.
+
+Prompt text in a pack is transcribed verbatim from its source document. The
+wording is the experimental manipulation - change the document and regenerate,
+do not edit the prose in the pack.
+
+## Leak audit
+
+`lib/validate.js` runs before every negotiation and blocks the run on:
+
+- banned theory vocabulary in anything a model can see
+- schema fields named after a scored construct
+- a pack missing the structure the engine depends on
+
+It warns, without blocking, when seat briefs differ in length by more than 10%.
+
+## What a run log contains
+
+One JSON object per line, gapless `seq`:
+
+| Event | Carries |
 | --- | --- |
-| `run_start` | config, and the scenario manifest including hidden ground-truth objectives |
-| `private_declaration` | metric 1 - declared win condition, read of the opponent, intended strategy |
-| `public_utterance` | the public transcript |
-| `acceptance` | per-agent accept/reject at each round close |
-| `elicitation` | metric 2 - disposition reads; metric 3 - co-national priority answers |
-| `round_end` / `run_end` | terminal state (`accept_accept`, `rounds_exhausted`, `error`) |
-
-Hidden objectives are recorded in the log for scoring but are never sent to any
-model - there is a test asserting this.
+| `run_start` | config and scenario manifest |
+| `pregame_declaration` | objectives, success/failure, approach, read of the other parties |
+| `turn` | `public_message` plus the private `proposal`, `expectations`, `private_rationale` |
+| `acceptance` | per-seat accept/reject and what would have to change |
+| `round_end` | poll outcome and agreed terms |
+| `run_end` | terminal state: `settled`, `rounds_exhausted`, or `error` |
 
 ## Tests
 
@@ -70,26 +117,17 @@ model - there is a test asserting this.
 npm test
 ```
 
-Covers the private-information isolation invariant (no agent is ever shown
-another's brief), personality-tag gating, both terminal states, log
-completeness, and turn ordering.
+Covers the leak audit, block identity and ordering, control-arm omission,
+seat-brief isolation, settlement detection, and the acceptance poll.
 
 ## Project map
 
-- `run.js` — headless batch runner for experiment data
-- `lib/engine.js` — four-agent negotiation loop, rounds, acceptance, elicitation
-- `lib/prompts.js` — prompt construction; enforces private-information isolation
-- `lib/model.js` — OpenAI client with retries and an offline stub mode
-- `lib/log.js` — JSONL run logging
-- `public/scenario.js` — shared scenario, personas, briefs, dispositions, ground truth
-- `server.js` — static web server and private OpenAI Responses API proxy
-- `public/index.html` — play-room structure
-- `public/styles.css` — responsive interface design
-- `public/app.js` — scenario, roles, rounds, transcript, and client state
-- `documents/` — original experiment-design source material
-
-Roles and country rosters are arrays in `public/app.js`, so additional representatives can be added without changing the overall UI architecture.
-
-## Security
-
-The browser never receives the API key. `.env` is excluded by `.gitignore`. Every collaborator should use their own `.env` file.
+- `run.js` - headless batch runner
+- `server.js` - static server plus a streaming run endpoint
+- `lib/assemble.js` - block assembly, transcript, settlement detection
+- `lib/engine.js` - the negotiation loop
+- `lib/validate.js` - leak audit
+- `lib/model.js` - API client with truncation detection and an offline mode
+- `lib/log.js` - JSONL run logging
+- `public/scenarios/` - scenario packs
+- `documents/` - source design and prompt documents
