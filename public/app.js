@@ -1,97 +1,189 @@
-const scenario = {
-  title: "Steel Safeguards Consultation",
-  maxRounds: 3,
-  maxUtterancesPerCountry: 3,
-  publicCase: "The European Union has proposed new safeguards on steel imports. The UK and EU are meeting to seek a joint package across tariff levels, sectoral compensation, review timing, and enforcement. Any outcome requires explicit acceptance by both countries.",
-  countries: [
-    { id: "uk", name: "United Kingdom", human: true, roles: [
-      { id: "uk-amb", name: "Alex Morgan", title: "UK Ambassador to the EU", initials: "AM", privateBrief: "Protect the wider UK–EU relationship. Secure a credible tariff reduction, avoid escalation, and preserve room for a politically defensible compromise." },
-      { id: "uk-steel", name: "Priya Shah", title: "Deputy Director for Steel", initials: "PS", privateBrief: "Limit immediate harm to UK steel exporters. Prioritise a low tariff, prompt relief, and enforceable safeguards against sudden quota restrictions." }
-    ]},
-    { id: "eu", name: "European Union", human: false, roles: [
-      { id: "eu-trade", name: "Elena Varga", title: "Trade Commissioner", initials: "EV", country: "European Union", privateBrief: "Defend the legitimacy of EU safeguards. You may trade a phased tariff reduction for UK commitments on monitoring, origin verification, and restraint from retaliation." },
-      { id: "eu-industry", name: "Marc Dubois", title: "Director for Steel Industries", initials: "MD", country: "European Union", privateBrief: "Protect EU producers from import surges. Resist fast tariff removal; favour a review clause, quotas, and compensation that does not weaken industrial safeguards." }
-    ]}
-  ]
-};
+// Observation room. Streams a headless negotiation over server-sent events and
+// renders the public record, with the private material in a researcher panel.
 
-const state = { round: 1, turn: "uk", dialogue: [], counts: { uk: 0, eu: 0 }, accepted: { uk: false, eu: false }, busy: false, demo: true, lastAi: 1 };
 const $ = (id) => document.getElementById(id);
-const human = scenario.countries.find((c) => c.human);
-const ai = scenario.countries.find((c) => !c.human);
+const state = { scenarios: [], current: null, running: false, source: null, seats: {}, terms: {} };
 
-function initials(name) { return name.split(/\s+/).map((x) => x[0]).join("").slice(0, 2).toUpperCase(); }
-function renderRosters() {
-  $("rosters").innerHTML = scenario.countries.map((country) => `<section class="team"><div class="team-head"><span class="team-name">${country.name}</span><span class="side-tag">${country.human ? "Your side" : "AI side"}</span></div>${country.roles.map((r) => `<div class="person ${r.id === $("speakerSelect")?.value ? "active" : ""}"><div class="avatar">${r.initials || initials(r.name)}</div><div><strong>${r.name}</strong><small>${r.title}</small></div></div>`).join("")}</section>`).join("");
+const initials = (label) =>
+  label.replace(/[^A-Za-z ]/g, " ").split(/\s+/).filter(Boolean).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+
+function showToast(text) {
+  const t = $("toast");
+  t.textContent = text;
+  t.hidden = false;
+  setTimeout(() => (t.hidden = true), 4000);
 }
-function renderDialogue() {
-  const box = $("dialogue"); box.innerHTML = "";
-  if (!state.dialogue.length) box.innerHTML = `<div class="system-message">Round 1 opened · The United Kingdom has the floor</div>`;
-  for (const m of state.dialogue) {
-    const node = $("messageTemplate").content.cloneNode(true); const article = node.querySelector("article");
-    if (m.countryId === ai.id) article.classList.add("ai");
-    node.querySelector(".avatar").textContent = m.initials;
-    node.querySelector("strong").textContent = m.name;
-    node.querySelector(".message-meta span").textContent = m.role;
-    node.querySelector("time").textContent = `R${m.round} · ${m.time}`;
-    node.querySelector("p").textContent = m.text; box.append(node);
-  }
+
+function renderScenarioMeta() {
+  const s = state.current;
+  if (!s) return;
+  $("scenarioTitle").textContent = s.label;
+  $("scenarioStatus").textContent = s.status;
+  $("runButton").disabled = s.placeholder || state.running;
+  $("runButton").textContent = s.placeholder ? "Not yet written" : state.running ? "Running..." : "Run negotiation";
+
+  state.seats = Object.fromEntries((s.seatList || []).map((x) => [x.id, x]));
+  const byParty = {};
+  for (const seat of s.seatList || []) (byParty[seat.partyName] ||= []).push(seat);
+
+  const groups = Object.entries(byParty);
+  $("rosters").innerHTML = groups.length
+    ? groups.map(([party, list]) => {
+        const people = list.map((seat) =>
+          `<div class="person" id="seat-${seat.id}"><div class="avatar">${initials(seat.label)}</div>` +
+          `<div><strong>${seat.label}</strong><small>${seat.id}</small></div></div>`).join("");
+        return `<section class="team"><div class="team-head"><span class="team-name">${party}</span></div>${people}</section>`;
+      }).join("")
+    : "<p class=\"system-message\">This scenario has no seats yet.</p>";
+}
+
+function addMessage({ seat, round, publicMessage, proposal }) {
+  const box = $("dialogue");
+  if (box.querySelector(".system-message")) box.innerHTML = "";
+  const node = $("messageTemplate").content.cloneNode(true);
+  if (seat.party === "eu") node.querySelector("article").classList.add("ai");
+  node.querySelector(".avatar").textContent = initials(seat.label);
+  node.querySelector("strong").textContent = seat.label;
+  node.querySelector(".message-meta span").textContent = seat.partyName;
+  node.querySelector("time").textContent = `Round ${round}`;
+  node.querySelector("p").textContent = publicMessage;
+
+  const line = document.createElement("p");
+  line.className = "mono";
+  line.textContent = proposal
+    ? Object.entries(proposal).filter(([k]) => k !== "other_terms").map(([k, v]) => `${k}: ${v}`).join("   ")
+    : "no parseable proposal";
+  node.querySelector(".rationale div").append(line);
+
+  box.append(node);
   box.scrollTop = box.scrollHeight;
 }
-function renderState() {
-  $("roundNumber").textContent = state.round;
-  const yourTurn = state.turn === human.id && !state.busy;
-  $("turnIndicator").innerHTML = `<span>${yourTurn ? "Your turn" : "EU turn"}</span><small>${yourTurn ? human.name : ai.name}</small>`;
-  $("composer").hidden = !yourTurn; $("aiWait").hidden = state.turn !== ai.id || !state.busy;
-  $("utteranceCount").textContent = `${state.counts.uk} / ${scenario.maxUtterancesPerCountry} interventions`;
-  const total = state.counts.uk + state.counts.eu;
-  $("progressText").textContent = `${total} of ${scenario.maxUtterancesPerCountry * 2}`;
-  $("progressBar").style.width = `${Math.min(100, total / (scenario.maxUtterancesPerCountry * 2) * 100)}%`;
-  $("agreementStatus").textContent = state.accepted.uk && state.accepted.eu ? "Accepted" : state.accepted.uk ? "UK ready" : "Open";
-  $("acceptButton").textContent = state.accepted.uk ? "Acceptance declared ✓" : "Declare ready to accept";
-  $("acceptButton").classList.toggle("accepted", state.accepted.uk);
-  $("speakButton").disabled = !$("utteranceInput").value.trim() || state.busy;
-  renderRosters();
-}
-function addMessage(country, role, text) {
-  state.dialogue.push({ countryId: country.id, country: country.name, name: role.name, role: role.title, initials: role.initials || initials(role.name), text, round: state.round, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
-  renderDialogue();
-}
-function showToast(text) { const t = $("toast"); t.textContent = text; t.hidden = false; setTimeout(() => t.hidden = true, 2600); }
-async function humanTurn() {
-  const text = $("utteranceInput").value.trim(); if (!text || state.turn !== human.id || state.busy) return;
-  const role = human.roles.find((r) => r.id === $("speakerSelect").value); addMessage(human, role, text);
-  $("utteranceInput").value = ""; state.counts.uk++; state.turn = ai.id; state.busy = true; renderState();
-  try {
-    const agent = chooseAiSpeaker();
-    const response = await fetch("/api/agent-turn", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ agent, team: ai.roles, dialogue: state.dialogue, caseText: scenario.publicCase, round: state.round }) });
-    const result = await response.json(); if (!response.ok) throw new Error(result.error || "Agent request failed");
-    state.demo = result.demo; addMessage(ai, agent, result.text); state.counts.eu++;
-    if (state.counts.uk >= scenario.maxUtterancesPerCountry && state.counts.eu >= scenario.maxUtterancesPerCountry) advanceRound(); else state.turn = human.id;
-  } catch (error) { state.turn = human.id; showToast(error.message); }
-  finally { state.busy = false; renderState(); }
-}
-function chooseAiSpeaker() {
-  // Independent agents do not consult each other; selection rotates while each model call receives only its own brief.
-  state.lastAi = (state.lastAi + 1) % ai.roles.length; return ai.roles[state.lastAi];
-}
-function advanceRound() {
-  if (state.round >= scenario.maxRounds) { showToast("Final round complete — record acceptance decisions."); state.turn = human.id; return; }
-  state.round++; state.counts = { uk: 0, eu: 0 }; state.accepted = { uk: false, eu: false }; state.turn = human.id;
-  state.dialogue.push({ countryId: "system", country: "Room", name: "Round opened", role: "System", initials: "R" + state.round, text: `Round ${state.round} is now open. Previous public statements remain on the record.`, round: state.round, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }); renderDialogue();
-}
-function reset() { Object.assign(state, { round: 1, turn: "uk", dialogue: [], counts: { uk: 0, eu: 0 }, accepted: { uk: false, eu: false }, busy: false, lastAi: 1 }); $("utteranceInput").value = ""; renderDialogue(); renderState(); showToast("Simulation reset"); }
 
-$("caseText").textContent = scenario.publicCase;
-$("speakerSelect").innerHTML = human.roles.map((r) => `<option value="${r.id}">${r.name} · ${r.title}</option>`).join("");
-function updatePrivateBrief(){ const role=human.roles.find((r)=>r.id===$("speakerSelect").value); $("privateBrief").textContent=role.privateBrief; renderRosters(); }
-$("speakerSelect").addEventListener("change", updatePrivateBrief);
-$("utteranceInput").addEventListener("input", renderState);
-$("utteranceInput").addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") humanTurn(); });
-$("speakButton").addEventListener("click", humanTurn);
-$("briefToggle").addEventListener("click", () => { const open = $("caseBrief").hidden; $("caseBrief").hidden = !open; $("briefToggle").setAttribute("aria-expanded", open); });
-$("acceptButton").addEventListener("click", () => { state.accepted.uk = !state.accepted.uk; renderState(); showToast(state.accepted.uk ? "UK acceptance recorded" : "Acceptance withdrawn"); });
-$("endRoundButton").addEventListener("click", () => { if (state.busy) return; advanceRound(); renderState(); });
-$("resetButton").addEventListener("click", reset);
-fetch("/api/status").then((r) => r.json()).then((s) => { $("connectionLabel").textContent = s.live ? `Live · ${s.model}` : "Demo model"; }).catch(() => $("connectionLabel").textContent = "Offline");
-updatePrivateBrief(); renderDialogue(); renderState();
+function renderTerms() {
+  const rows = Object.entries(state.terms);
+  if (!rows.length) {
+    $("termsBoard").innerHTML = "<div><span>Tabled terms</span><strong>-</strong><small>Nothing tabled yet</small></div>";
+    return;
+  }
+  $("termsBoard").innerHTML = rows.map(([seatId, p]) => {
+    const seat = state.seats[seatId];
+    const label = seat ? seat.label : seatId;
+    if (!p) return `<div><span>${label}</span><strong>-</strong><small>no parseable proposal</small></div>`;
+    const vol = p.trq_volume_tonnes != null ? `${Math.round(p.trq_volume_tonnes / 1000).toLocaleString()}kt` : "-";
+    const rate = p.out_of_quota_rate_pct != null ? `${p.out_of_quota_rate_pct}%` : "-";
+    const dur = p.duration_years != null ? `${p.duration_years}yr` : "-";
+    const alloc = p.allocation != null ? p.allocation : "-";
+    const st = p.status != null ? p.status : "-";
+    return `<div><span>${label}</span><strong>${vol}</strong><small>${rate} - ${alloc} - ${dur} - ${st}</small></div>`;
+  }).join("");
+}
+
+function startRun() {
+  if (state.running || !state.current || state.current.placeholder) return;
+  state.running = true;
+  state.terms = {};
+  $("dialogue").innerHTML = `<div class="system-message">Running ${state.current.label}. Four seats, three rounds - this takes a few minutes.</div>`;
+  $("agreementStatus").textContent = "Running";
+  $("agreementDetail").textContent = "Settlement is decided by the end-of-round poll";
+  $("pollBoard").innerHTML = "";
+  $("runStatus").textContent = "pre-game declarations...";
+  renderScenarioMeta();
+  renderTerms();
+
+  const arm = $("armSelect").value;
+  const source = new EventSource(`/api/run?scenario=${encodeURIComponent(state.current.id)}&arm=${encodeURIComponent(arm)}`);
+  state.source = source;
+
+  const finish = () => {
+    source.close();
+    state.running = false;
+    state.source = null;
+    document.querySelectorAll(".person.active").forEach((n) => n.classList.remove("active"));
+    renderScenarioMeta();
+  };
+
+  source.addEventListener("pregame", (e) => {
+    const d = JSON.parse(e.data);
+    $("runStatus").textContent = `pre-game declaration: ${d.seat.label}`;
+  });
+
+  source.addEventListener("turn", (e) => {
+    const d = JSON.parse(e.data);
+    $("roundNumber").textContent = d.round;
+    $("turnIndicator").innerHTML = `<span>Round ${d.round}</span><small>${d.seat.label}</small>`;
+    $("runStatus").textContent = `round ${d.round}: ${d.seat.label}`;
+    document.querySelectorAll(".person.active").forEach((n) => n.classList.remove("active"));
+    const row = document.getElementById(`seat-${d.seat.id}`);
+    if (row) row.classList.add("active");
+    state.terms[d.seat.id] = d.proposal;
+    addMessage(d);
+    renderTerms();
+  });
+
+  source.addEventListener("round_end", (e) => {
+    const d = JSON.parse(e.data);
+    const total = (state.current.seatList || []).length;
+    const accepted = d.acceptCount != null ? d.acceptCount : 0;
+    const note = d.settled ? "Settled" : (d.reason || "");
+    $("pollBoard").innerHTML =
+      `<div class="round-progress"><div><span>Round ${d.round} poll</span><b>${accepted} of ${total} accepted</b></div>` +
+      `<p class="poll-reason">${note}</p></div>`;
+  });
+
+  source.addEventListener("done", (e) => {
+    const d = JSON.parse(e.data);
+    const t = d.summary.terminal;
+    $("agreementStatus").textContent = t === "settled" ? "Settled" : t.replace(/_/g, " ");
+    $("agreementDetail").textContent = d.summary.settlement
+      ? Object.entries(d.summary.settlement).map(([k, v]) => `${k}: ${v}`).join(" / ")
+      : "No settlement reached";
+    $("runStatus").textContent = `run log: ${d.runId}`;
+    $("turnIndicator").innerHTML = `<span>Complete</span><small>${d.summary.turns} turns</small>`;
+    finish();
+  });
+
+  source.addEventListener("failed", (e) => {
+    const d = JSON.parse(e.data);
+    showToast(d.message);
+    $("runStatus").textContent = `failed: ${d.message}`;
+    $("agreementStatus").textContent = "Failed";
+    finish();
+  });
+
+  source.onerror = () => {
+    if (state.running) {
+      showToast("Lost connection to the run");
+      finish();
+    }
+  };
+}
+
+async function init() {
+  try {
+    const status = await (await fetch("/api/status")).json();
+    $("connectionLabel").textContent = status.live ? `Live - ${status.model}` : "Offline - stub responses";
+  } catch {
+    $("connectionLabel").textContent = "Offline";
+  }
+
+  const listing = await (await fetch("/api/scenarios")).json();
+  state.scenarios = listing.scenarios;
+  $("scenarioSelect").innerHTML = state.scenarios.map((s) => `<option value="${s.id}">${s.label}</option>`).join("");
+  state.current = state.scenarios[0];
+  renderScenarioMeta();
+  renderTerms();
+
+  $("scenarioSelect").addEventListener("change", (e) => {
+    state.current = state.scenarios.find((s) => s.id === e.target.value);
+    $("dialogue").innerHTML = "<div class=\"system-message\">Choose a scenario and press Run negotiation.</div>";
+    $("pollBoard").innerHTML = "";
+    $("agreementStatus").textContent = "-";
+    state.terms = {};
+    renderScenarioMeta();
+    renderTerms();
+  });
+
+  $("runButton").addEventListener("click", startRun);
+}
+
+init();

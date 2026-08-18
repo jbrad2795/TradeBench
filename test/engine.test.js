@@ -139,3 +139,25 @@ test("turns follow the pack's fixed speaking order", async () => {
   const round1 = events.filter((e) => e.type === "turn" && e.round === 1).map((e) => e.seatId);
   assert.deepEqual(round1, pack.speakingOrder);
 });
+
+test("every round closes with an acceptance poll of all seats", async () => {
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
+  const polls = events.filter((e) => e.type === "acceptance");
+  assert.equal(polls.length, seats.length * pack.rounds, "one poll per seat per round");
+  for (const p of polls) {
+    assert.ok("accept" in p && "terms" in p && "if_not" in p, "poll event missing fields");
+  }
+  // The poll must run after every seat has spoken in that round.
+  const r1 = events.filter((e) => e.round === 1 && (e.type === "turn" || e.type === "acceptance"));
+  const lastTurn = r1.map((e) => e.type).lastIndexOf("turn");
+  const firstPoll = r1.map((e) => e.type).indexOf("acceptance");
+  assert.ok(firstPoll > lastTurn, "poll must follow all turns in the round");
+});
+
+test("the poll, not the tabled proposals, decides settlement", async () => {
+  const { result, events } = await runInTemp({ TB_STUB_ACCEPT: "always" });
+  assert.equal(result.summary.terminal, "settled");
+  const roundEnd = events.find((e) => e.type === "round_end");
+  assert.equal(roundEnd.acceptCount, seats.length, "all seats must have accepted in the poll");
+  assert.ok(roundEnd.terms, "settlement terms must be recorded");
+});

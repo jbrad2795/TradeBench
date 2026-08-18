@@ -3,71 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="TradeBench bilateral negotiation play room" />
-    <title>TradeBench · Play Room</title>
+    <meta name="description" content="TradeBench negotiation observation room" />
+    <title>TradeBench · Observation Room</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <header class="topbar">
       <a class="brand" href="#" aria-label="TradeBench home"><span class="brand-mark">T</span><span>TradeBench</span></a>
-      <div class="room-meta"><span class="status-dot"></span><span id="connectionLabel">Checking model</span><span class="divider"></span><span>Room TB–204</span></div>
-      <button class="icon-button" id="resetButton" title="Reset simulation" aria-label="Reset simulation">↻</button>
+      <div class="room-meta"><span class="status-dot"></span><span id="connectionLabel">Checking model</span></div>
     </header>
 
     <main class="shell">
-      <section class="briefing" aria-labelledby="briefingTitle">
-        <div class="eyebrow">Live simulation</div>
+      <section class="briefing">
+        <div class="eyebrow">Observation room</div>
         <div class="briefing-heading">
-          <div><h1 id="briefingTitle">Steel Safeguards Consultation</h1><p>United Kingdom <span>↔</span> European Union</p></div>
-          <button class="quiet-button" id="briefToggle" aria-expanded="false">View case brief <span>⌄</span></button>
+          <div>
+            <h1 id="scenarioTitle">Select a scenario</h1>
+            <p id="scenarioStatus">—</p>
+          </div>
         </div>
-        <div class="case-brief" id="caseBrief" hidden>
-          <div><span>Public case</span><p id="caseText"></p></div>
-          <div><span>Your private brief</span><p id="privateBrief"></p></div>
+
+        <div class="run-controls">
+          <label for="scenarioSelect">Scenario</label>
+          <select id="scenarioSelect"></select>
+          <label for="armSelect">Disposition arm</label>
+          <select id="armSelect">
+            <option value="control">Control — no disposition block</option>
+            <option value="firm">Firm — believes firmness pays</option>
+            <option value="accommodating">Accommodating — believes momentum pays</option>
+          </select>
+          <button id="runButton">Run negotiation</button>
+          <span id="runStatus" class="run-status"></span>
         </div>
+        <p id="packWarnings" class="pack-warnings" hidden></p>
       </section>
 
       <section class="game-grid">
-        <aside class="panel roster-panel" aria-label="Negotiation teams">
-          <div class="panel-title"><span>Delegations</span><span class="round-pill">Round <b id="roundNumber">1</b> / 3</span></div>
+        <aside class="panel roster-panel" aria-label="Seats">
+          <div class="panel-title"><span>Seats</span><span class="round-pill">Round <b id="roundNumber">–</b></span></div>
           <div id="rosters"></div>
           <div class="rules-card">
             <span class="rules-icon">i</span>
-            <div><strong>Room protocol</strong><p>Countries alternate. Each intervention is public. Private briefs remain private.</p></div>
+            <div><strong>Room protocol</strong><p>Seats speak in fixed order. Only the public message is shared; rationale and proposals are private to the log.</p></div>
           </div>
         </aside>
 
-        <section class="panel dialogue-panel" aria-label="Public negotiation dialogue">
+        <section class="panel dialogue-panel" aria-label="Public record">
           <div class="dialogue-header">
-            <div><span class="live-label"><i></i> Public record</span><h2>Negotiation dialogue</h2></div>
-            <div class="turn-indicator" id="turnIndicator"><span>Your turn</span><small>United Kingdom</small></div>
+            <div><span class="live-label"><i></i> Public record</span><h2>Negotiation</h2></div>
+            <div class="turn-indicator" id="turnIndicator"><span>Idle</span><small>No run in progress</small></div>
           </div>
-          <div class="dialogue" id="dialogue" aria-live="polite"></div>
-          <div class="composer" id="composer">
-            <div class="role-row"><label for="speakerSelect">Speaking as</label><select id="speakerSelect"></select><span id="utteranceCount">0 / 3 interventions</span></div>
-            <textarea id="utteranceInput" rows="3" maxlength="1200" placeholder="State a position, make an offer, or ask a question…"></textarea>
-            <div class="composer-actions"><span><kbd>⌘</kbd> <kbd>↵</kbd> to speak</span><button id="speakButton">Speak to the room <span>↑</span></button></div>
+          <div class="dialogue" id="dialogue" aria-live="polite">
+            <div class="system-message">Choose a scenario and press Run negotiation.</div>
           </div>
-          <div class="ai-wait" id="aiWait" hidden><span class="thinking"><i></i><i></i><i></i></span><div><strong>The EU delegation is considering its response</strong><small>An independent representative will choose whether to speak.</small></div></div>
         </section>
 
-        <aside class="panel terms-panel" aria-label="Deal status">
-          <div class="panel-title">Deal board <span class="unsaved">Live</span></div>
-          <div class="deal-score"><span>Agreement status</span><strong id="agreementStatus">Open</strong><small>Both countries must accept</small></div>
-          <div class="terms-list">
-            <div><span>Tariff rate</span><strong>25%</strong><small>Opening position</small></div>
-            <div><span>Compensation</span><strong>—</strong><small>Not tabled</small></div>
-            <div><span>Review period</span><strong>—</strong><small>Not agreed</small></div>
+        <aside class="panel terms-panel" aria-label="Researcher view">
+          <div class="panel-title">Researcher view <span class="unsaved">Private</span></div>
+          <div class="deal-score">
+            <span>Outcome</span><strong id="agreementStatus">—</strong>
+            <small id="agreementDetail">Settlement is decided by the end-of-round poll</small>
           </div>
-          <div class="round-progress"><div><span>Round progress</span><b id="progressText">0 of 6</b></div><div class="bar"><i id="progressBar"></i></div></div>
-          <button class="accept-button" id="acceptButton">Declare ready to accept</button>
-          <button class="end-button" id="endRoundButton">End my side’s turn</button>
-          <p class="privacy-note">Your strategy notes and role brief are never shown to the opposing delegation.</p>
+          <div id="termsBoard" class="terms-list"></div>
+          <div id="pollBoard"></div>
+          <p class="privacy-note">Private rationale and tabled terms are shown here for evaluation. Seats never see each other's briefs, rationale, or this panel.</p>
         </aside>
       </section>
     </main>
 
-    <template id="messageTemplate"><article class="message"><div class="avatar"></div><div class="message-body"><div class="message-meta"><strong></strong><span></span><time></time></div><p></p></div></article></template>
+    <template id="messageTemplate">
+      <article class="message">
+        <div class="avatar"></div>
+        <div class="message-body">
+          <div class="message-meta"><strong></strong><span></span><time></time></div>
+          <p></p>
+          <details class="rationale"><summary>Private rationale &amp; tabled terms</summary><div></div></details>
+        </div>
+      </article>
+    </template>
     <div class="toast" id="toast" role="status" hidden></div>
     <script type="module" src="/app.js"></script>
   </body>
