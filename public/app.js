@@ -91,7 +91,10 @@ function startRun() {
   renderTerms();
 
   const arm = $("armSelect").value;
-  const source = new EventSource(`/api/run?scenario=${encodeURIComponent(state.current.id)}&arm=${encodeURIComponent(arm)}`);
+  const model = $("modelSelect").value;
+  const source = new EventSource(
+    `/api/run?scenario=${encodeURIComponent(state.current.id)}&arm=${encodeURIComponent(arm)}&model=${encodeURIComponent(model)}`,
+  );
   state.source = source;
 
   const finish = () => {
@@ -165,6 +168,16 @@ async function init() {
   } catch {
     $("connectionLabel").textContent = "Offline";
   }
+
+  // Models the machine actually holds a key for come first and are selectable;
+  // the rest are shown but disabled, so a missing key is visible rather than a
+  // failed run three minutes later.
+  const models = (await (await fetch("/api/models")).json()).models;
+  $("modelSelect").innerHTML = models
+    .map((m) => `<option value="${m.spec}"${m.ready ? "" : " disabled"}>${m.label} - ${m.provider}${m.ready ? "" : " (no key)"}</option>`)
+    .join("");
+  const firstReady = models.find((m) => m.ready);
+  if (firstReady) $("modelSelect").value = firstReady.spec;
 
   const listing = await (await fetch("/api/scenarios")).json();
   state.scenarios = listing.scenarios;

@@ -161,3 +161,42 @@ test("the poll, not the tabled proposals, decides settlement", async () => {
   assert.equal(roundEnd.acceptCount, seats.length, "all seats must have accepted in the poll");
   assert.ok(roundEnd.terms, "settlement terms must be recorded");
 });
+
+test("a second run cannot start while one holds the lock", async () => {
+  const { acquireRunLock } = await import("../lib/lock.js");
+  const dir = mkdtempSync(join(tmpdir(), "tb-lock-"));
+  const saved = process.env.TB_RUNS_DIR;
+  process.env.TB_RUNS_DIR = dir;
+  try {
+    const release = acquireRunLock({ model: "test:model", scenario: "s1" });
+    assert.throws(
+      () => acquireRunLock({ model: "other:model", scenario: "s1" }),
+      /already in progress/,
+      "second acquire must be refused while the first is held",
+    );
+    release();
+    // Once released, the next run may proceed.
+    const again = acquireRunLock({ model: "test:model", scenario: "s1" });
+    again();
+  } finally {
+    if (saved === undefined) delete process.env.TB_RUNS_DIR;
+    else process.env.TB_RUNS_DIR = saved;
+  }
+});
+
+test("a lock left by a dead process is taken over, not honoured", async () => {
+  const { acquireRunLock } = await import("../lib/lock.js");
+  const { writeFileSync } = await import("node:fs");
+  const dir = mkdtempSync(join(tmpdir(), "tb-lock-"));
+  const saved = process.env.TB_RUNS_DIR;
+  process.env.TB_RUNS_DIR = dir;
+  try {
+    // pid 0x7FFFFFFF will not exist; simulates a crashed run.
+    writeFileSync(join(dir, ".run-lock"), JSON.stringify({ pid: 2147483647, model: "dead" }), "utf8");
+    const release = acquireRunLock({ model: "test:model", scenario: "s1" });
+    release();
+  } finally {
+    if (saved === undefined) delete process.env.TB_RUNS_DIR;
+    else process.env.TB_RUNS_DIR = saved;
+  }
+});

@@ -8,12 +8,13 @@
 
 import { runNegotiation } from "./lib/engine.js";
 import { packIndex, defaultPackId } from "./public/scenarios/index.js";
+import { listModels } from "./lib/models.js";
 import { isLive, modelName } from "./lib/model.js";
 
 const ARMS = ["firm", "accommodating", "control"];
 
 function parseArgs(argv) {
-  const out = { repeats: 1, arm: "all", scenario: defaultPackId, list: false };
+  const out = { repeats: 1, arm: "all", scenario: defaultPackId, list: false, models: false, model: undefined, rounds: undefined };
   for (let i = 2; i < argv.length; i++) {
     const [k, inline] = argv[i].replace(/^--/, "").split("=");
     const next = argv[i + 1];
@@ -22,6 +23,9 @@ function parseArgs(argv) {
     else if (k === "arm") out.arm = v;
     else if (k === "scenario") out.scenario = v;
     else if (k === "list") out.list = true;
+    else if (k === "list-models") out.models = true;
+    else if (k === "model") out.model = v;
+    else if (k === "rounds") out.rounds = Number(v) || undefined;
   }
   return out;
 }
@@ -35,6 +39,16 @@ if (opts.list) {
     console.log(`      ${p.label} - ${p.seats} seats, ${p.rounds} rounds`);
     console.log(`      ${p.status}`);
   }
+  process.exit(0);
+}
+
+if (opts.models) {
+  console.log("Available models ([key] = API key present in .env):");
+  for (const m of listModels()) {
+    console.log(`  ${m.ready ? "[key]" : "[   ]"} ${m.spec.padEnd(34)} ${m.label.padEnd(24)} ${m.envKey}`);
+  }
+  console.log("");
+  console.log("Any provider:model-id works, not just this list.");
   process.exit(0);
 }
 
@@ -67,6 +81,8 @@ for (const arm of arms) {
         packId: opts.scenario,
         condition: { dispositionArm: arm },
         repeat,
+        model: opts.model,
+        rounds: opts.rounds,
       });
       const secs = ((Date.now() - started) / 1000).toFixed(1);
       const outcome = r.summary.terminal === "settled"
@@ -88,6 +104,6 @@ for (const arm of arms) {
 }
 
 console.log("");
-console.log(`Wrote ${results.length}/${total} run logs to runs/`);
+console.log(`Wrote ${results.length}/${total} runs to runs/ (.jsonl log + .md transcript each)`);
 const settled = results.filter((r) => r.summary.terminal === "settled").length;
 console.log(`settled in ${settled}/${results.length} runs`);

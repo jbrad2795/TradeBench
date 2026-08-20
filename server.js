@@ -7,6 +7,7 @@ import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { packIndex } from "./public/scenarios/index.js";
+import { listModels } from "./lib/models.js";
 import { runNegotiation } from "./lib/engine.js";
 import { isLive, modelName } from "./lib/model.js";
 
@@ -48,6 +49,7 @@ async function streamRun(req, res, url) {
     const result = await runNegotiation({
       packId: url.searchParams.get("scenario") || undefined,
       condition: { dispositionArm: url.searchParams.get("arm") || "control" },
+      model: url.searchParams.get("model") || undefined,
       repeat: 1,
       onEvent: (e) => {
         if (cancelled) return;
@@ -69,6 +71,9 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "GET" && url.pathname === "/api/status") {
       return send(res, 200, { live: isLive(), model: modelName() });
+    }
+    if (req.method === "GET" && url.pathname === "/api/models") {
+      return send(res, 200, { models: listModels() });
     }
     if (req.method === "GET" && url.pathname === "/api/scenarios") {
       return send(res, 200, { scenarios: packIndex() });

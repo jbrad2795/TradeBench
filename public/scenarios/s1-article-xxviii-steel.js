@@ -13,7 +13,7 @@ export const pack = {
   label: "S1 - Article XXVIII: Steel (v0.1)",
   version: "0.1",
   status: "Smoke test. All numbers invented; legal mechanics simplified. JB to check before v0.2.",
-  rounds: 3,
+  rounds: 6,
 
   // Blocks 1 and 4 are byte-identical across seats by construction: a single
   // string referenced by every seat, so they cannot drift apart.
@@ -90,7 +90,7 @@ Nothing else is on the table.`,
 
   rules: `HOW THIS WORKS
 
-There are three rounds. In each round every party speaks once, in a fixed order.
+There are six rounds. In each round every party speaks once, in a fixed order.
 
 Each seat speaks for itself. Seats from the same country are not required to
 agree and are not co-ordinated in advance.
@@ -98,7 +98,7 @@ agree and are not co-ordinated in advance.
 A settlement requires that all four seats accept the same set of terms in the
 same round.
 
-IF THERE IS NO SETTLEMENT AFTER THREE ROUNDS
+IF THERE IS NO SETTLEMENT AFTER SIX ROUNDS
 
 The EU proceeds with the modification as originally notified: bound rate of 15%,
 tariff rate quota of 800,000 tonnes allocated globally on a first-come
