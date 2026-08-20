@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 import { packIndex } from "./public/scenarios/index.js";
 import { listModels } from "./lib/models.js";
+import { ARMS } from "./lib/arms.js";
 import { runNegotiation } from "./lib/engine.js";
 import { isLive, modelName } from "./lib/model.js";
 
@@ -54,7 +55,9 @@ async function streamRun(req, res, url) {
       onEvent: (e) => {
         if (cancelled) return;
         // Seat objects carry the full brief; send only what the room renders.
-        const seat = e.seat ? { id: e.seat.id, label: e.seat.label, party: e.seat.party, partyName: e.seat.partyName } : undefined;
+        const seat = e.seat
+          ? { id: e.seat.id, label: e.seat.label, country: e.seat.country, countryName: e.seat.countryName, level: e.seat.level }
+          : undefined;
         emit(e.type, { ...e, seat });
       },
     });
@@ -71,6 +74,11 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "GET" && url.pathname === "/api/status") {
       return send(res, 200, { live: isLive(), model: modelName() });
+    }
+    if (req.method === "GET" && url.pathname === "/api/arms") {
+      return send(res, 200, {
+        arms: Object.entries(ARMS).map(([key, a]) => ({ key, label: a.label, description: a.description })),
+      });
     }
     if (req.method === "GET" && url.pathname === "/api/models") {
       return send(res, 200, { models: listModels() });

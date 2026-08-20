@@ -29,11 +29,7 @@
           <label for="modelSelect">Model</label>
           <select id="modelSelect"></select>
           <label for="armSelect">Disposition arm</label>
-          <select id="armSelect">
-            <option value="control">Control — no disposition block</option>
-            <option value="firm">Firm — believes firmness pays</option>
-            <option value="accommodating">Accommodating — believes momentum pays</option>
-          </select>
+          <select id="armSelect"></select>
           <button id="runButton">Run negotiation</button>
           <span id="runStatus" class="run-status"></span>
         </div>
@@ -55,8 +51,23 @@
             <div><span class="live-label"><i></i> Public record</span><h2>Negotiation</h2></div>
             <div class="turn-indicator" id="turnIndicator"><span>Idle</span><small>No run in progress</small></div>
           </div>
-          <div class="dialogue" id="dialogue" aria-live="polite">
-            <div class="system-message">Choose a scenario and press Run negotiation.</div>
+          <div class="channels">
+            <section class="channel channel-table">
+              <h3><span class="ch-badge ch-table">Table</span> Visible to both delegations</h3>
+              <div class="dialogue" id="dialogue" aria-live="polite">
+                <div class="system-message">Choose a scenario and press Run negotiation.</div>
+              </div>
+            </section>
+            <div class="rooms">
+              <section class="channel channel-consult">
+                <h3><span class="ch-badge ch-eu">EU room</span> Not seen by the UK</h3>
+                <div class="dialogue small" id="consultEu"><div class="system-message">—</div></div>
+              </section>
+              <section class="channel channel-consult">
+                <h3><span class="ch-badge ch-uk">UK room</span> Not seen by the EU</h3>
+                <div class="dialogue small" id="consultUk"><div class="system-message">—</div></div>
+              </section>
+            </div>
           </div>
         </section>
 
@@ -68,6 +79,8 @@
           </div>
           <div id="termsBoard" class="terms-list"></div>
           <div id="pollBoard"></div>
+          <div class="panel-title divergence-title">Divergence</div>
+          <div id="divergenceBoard" class="divergence-list"><p class="system-message">None yet</p></div>
           <p class="privacy-note">Private rationale and tabled terms are shown here for evaluation. Seats never see each other's briefs, rationale, or this panel.</p>
         </aside>
       </section>

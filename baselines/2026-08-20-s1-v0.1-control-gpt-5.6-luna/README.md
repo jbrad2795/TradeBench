@@ -1,5 +1,13 @@
 # Baseline: S1 control arm, gpt-5.6-luna, 20 August 2026
 
+> **v0.1 single-table environment. These runs do not pool with v0.2 two-room
+> runs.** The environment changed underneath them: post and capital seats now
+> have different functions, settlement is decided by capital seats after a
+> consultation phase, and the table has two speakers rather than four. Treat
+> everything here as pilot data and say so in the write-up. Used as the informal
+> one-room contrast described in the v0.2 spec section 11.1 - not a controlled
+> comparison, because prompts and rules differ too.
+
 Reference run set. Kept so later changes to prompts, rules or harness can be
 compared against a known point rather than against memory.
 

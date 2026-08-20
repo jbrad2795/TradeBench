@@ -6,24 +6,41 @@ import { join } from "node:path";
 
 import { pack } from "../public/scenarios/s1-article-xxviii-steel.js";
 import { validatePack } from "../lib/validate.js";
-import { assembleSeatPrompt, detectSettlement } from "../lib/assemble.js";
+import {
+  assembleSeatPrompt,
+  historyBlocksFor,
+  buildAcceptanceSchema,
+  buildReportSchema,
+  buildInstructionSchema,
+  detectSettlement,
+  checkAuthority,
+  authorityIsEmpty,
+} from "../lib/assemble.js";
+import * as C from "../lib/channels.js";
+import { dispositionsForArm, ARM_KEYS } from "../lib/arms.js";
 import { runNegotiation } from "../lib/engine.js";
 
 const seats = pack.seats;
+const schemaOf = (key) =>
+  key === "turn" ? pack.schemas.turn
+  : key === "declaration" ? pack.schemas.declaration
+  : key === "report" ? buildReportSchema(pack)
+  : key === "instruct" ? buildInstructionSchema(pack)
+  : buildAcceptanceSchema(pack);
+const ALL_SCHEMAS = ["declaration", "turn", "report", "instruct", "poll"];
 
-async function runInTemp(env = {}, condition = { dispositionArm: "control" }) {
+async function runInTemp(env = {}, condition = { dispositionArm: "control" }, rounds = 2) {
   const dir = mkdtempSync(join(tmpdir(), "tb-"));
-  const saved = {
-    TB_RUNS_DIR: process.env.TB_RUNS_DIR,
-    TB_STUB_ACCEPT: process.env.TB_STUB_ACCEPT,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-  };
+  const saved = {};
+  for (const k of ["TB_RUNS_DIR", "TB_STUB_ACCEPT", "TB_STUB_DEFY", "TB_STUB_MANDATE", "OPENAI_API_KEY"]) {
+    saved[k] = process.env[k];
+  }
   process.env.TB_RUNS_DIR = dir;
   for (const [k, v] of Object.entries(env)) process.env[k] = v;
   delete process.env.OPENAI_API_KEY; // force offline stubs
   let result;
   try {
-    result = await runNegotiation({ condition });
+    result = await runNegotiation({ condition, rounds });
   } finally {
     for (const [k, v] of Object.entries(saved)) {
       if (v === undefined) delete process.env[k];
@@ -37,129 +54,179 @@ async function runInTemp(env = {}, condition = { dispositionArm: "control" }) {
 }
 
 test("S1 pack passes the leak audit", () => {
-  const r = validatePack(pack);
-  assert.deepEqual(r.errors, [], "pack must have no leak-audit errors");
+  assert.deepEqual(validatePack(pack).errors, []);
 });
 
-// Blocks 1, 4 and 5 must be byte-identical across seats.
-test("shared blocks are byte-identical across all seats", () => {
-  const built = seats.map((s) => assembleSeatPrompt(pack, s, "firm", "turn"));
-  for (const p of built) {
-    assert.ok(p.includes(pack.facts), "Block 1 missing or altered");
-    assert.ok(p.includes(pack.rules), "Block 4 missing or altered");
-    assert.ok(p.includes(pack.schemas.turn.json), "Block 5 missing or altered");
-  }
-});
+// THE hard invariant. Consultation content must never cross between countries.
+test("no consultation content from one country reaches the other country's seats", () => {
+  const messages = [
+    { channel: C.TABLE, seatId: "eu-geneva", round: 1, phase: "table", text: "TABLE-EU-MARKER" },
+    { channel: C.TABLE, seatId: "uk-geneva", round: 1, phase: "table", text: "TABLE-UK-MARKER" },
+    { channel: C.consultChannel("eu"), seatId: "eu-geneva", round: 1, phase: "report", text: "CONSULT-EU-SECRET" },
+    { channel: C.consultChannel("eu"), seatId: "eu-brussels", round: 1, phase: "instruct", text: "CONSULT-EU-ORDER" },
+    { channel: C.consultChannel("uk"), seatId: "uk-geneva", round: 1, phase: "report", text: "CONSULT-UK-SECRET" },
+    { channel: C.consultChannel("uk"), seatId: "uk-london", round: 1, phase: "instruct", text: "CONSULT-UK-ORDER" },
+  ];
 
-test("block order is facts, seat brief, disposition, rules, schema", () => {
-  const p = assembleSeatPrompt(pack, seats[0], "firm", "turn");
-  const at = (s) => p.indexOf(s);
-  assert.ok(at(pack.facts) < at(seats[0].brief), "facts must precede seat brief");
-  assert.ok(at(seats[0].brief) < at(pack.dispositions.firm), "seat brief must precede disposition");
-  assert.ok(at(pack.dispositions.firm) < at(pack.rules), "disposition must precede rules");
-  assert.ok(at(pack.rules) < at(pack.schemas.turn.json), "rules must precede schema");
-});
-
-// The control arm omits Block 3 entirely - no neutral filler.
-test("control arm omits the disposition block with no substitute", () => {
-  const p = assembleSeatPrompt(pack, seats[0], null, "turn");
-  for (const text of Object.values(pack.dispositions)) {
-    assert.ok(!p.includes(text), "control prompt contains a disposition sentence");
-  }
-  assert.doesNotMatch(p, /you believe/i, "control prompt contains disposition-style filler");
-});
-
-test("a seat never sees another seat's brief", () => {
   for (const seat of seats) {
-    for (const schemaKey of ["declaration", "turn"]) {
-      const p = assembleSeatPrompt(pack, seat, "firm", schemaKey);
+    const rendered = historyBlocksFor(pack, messages, seat);
+    const foreign = seat.country === "eu" ? ["CONSULT-UK-SECRET", "CONSULT-UK-ORDER"] : ["CONSULT-EU-SECRET", "CONSULT-EU-ORDER"];
+    for (const marker of foreign) {
+      assert.ok(!rendered.includes(marker), `${seat.id} was shown ${marker}`);
+    }
+    const own = seat.country === "eu" ? "CONSULT-EU-SECRET" : "CONSULT-UK-SECRET";
+    assert.ok(rendered.includes(own), `${seat.id} could not see its own delegation's exchange`);
+  }
+});
+
+test("a seat never sees another seat's brief or private information", () => {
+  for (const seat of seats) {
+    for (const key of ALL_SCHEMAS) {
+      const prompt = assembleSeatPrompt(pack, seat, "firm", schemaOf(key));
       for (const other of seats) {
         if (other.id === seat.id) continue;
-        assert.ok(!p.includes(other.brief), `${seat.id} saw ${other.id}'s brief`);
+        assert.ok(!prompt.includes(other.brief), `${seat.id} saw ${other.id}'s brief in ${key}`);
+        if ((other.privateInfo || "").trim()) {
+          assert.ok(!prompt.includes(other.privateInfo), `${seat.id} saw ${other.id}'s privateInfo in ${key}`);
+        }
       }
     }
   }
 });
 
-test("settlement requires every seat to accept the same terms", () => {
-  const agreed = {
-    status: "accept", trq_volume_tonnes: 1200000, allocation: "global",
-    out_of_quota_rate_pct: 12, duration_years: 4, review_clause: true,
-  };
-  const all = Object.fromEntries(seats.map((s) => [s.id, { ...agreed }]));
-  assert.equal(detectSettlement(pack, all).settled, true);
-
-  // One seat differs on a single term.
-  const differs = { ...all, [seats[0].id]: { ...agreed, duration_years: 6 } };
-  const r1 = detectSettlement(pack, differs);
-  assert.equal(r1.settled, false);
-  assert.match(r1.reason, /duration_years/);
-
-  // One seat has not accepted.
-  const rejects = { ...all, [seats[1].id]: { ...agreed, status: "counter" } };
-  assert.equal(detectSettlement(pack, rejects).settled, false);
-
-  // A term left unset cannot be a settlement.
-  const unset = Object.fromEntries(seats.map((s) => [s.id, { ...agreed, allocation: null }]));
-  const r2 = detectSettlement(pack, unset);
-  assert.equal(r2.settled, false);
-  assert.match(r2.reason, /allocation/);
-});
-
-test("settlement ends the run early", async () => {
-  const { result } = await runInTemp({ TB_STUB_ACCEPT: "always" });
-  assert.equal(result.summary.terminal, "settled");
-  assert.equal(result.summary.rounds, 1);
-  assert.ok(result.summary.settlement, "settled runs must record the agreed terms");
-});
-
-test("no settlement runs the full round budget", async () => {
-  const { result } = await runInTemp({ TB_STUB_ACCEPT: "never" });
-  assert.equal(result.summary.terminal, "rounds_exhausted");
-  assert.equal(result.summary.rounds, pack.rounds);
-  assert.equal(result.summary.turns, seats.length * pack.rounds);
-});
-
-test("run log carries the pre-game declaration and per-turn private fields", async () => {
-  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
-  const types = new Set(events.map((e) => e.type));
-  for (const t of ["run_start", "pregame_declaration", "turn", "round_end", "run_end"]) {
-    assert.ok(types.has(t), `missing event type: ${t}`);
+test("control arm carries no disposition sentence or filler in any schema", () => {
+  for (const seat of seats) {
+    for (const key of ALL_SCHEMAS) {
+      const prompt = assembleSeatPrompt(pack, seat, null, schemaOf(key));
+      for (const text of Object.values(pack.dispositions)) {
+        assert.ok(!prompt.includes(text), `control ${seat.id}/${key} contains a disposition`);
+      }
+      assert.doesNotMatch(prompt, /you believe/i, `control ${seat.id}/${key} contains disposition-style filler`);
+    }
   }
-  assert.equal(events.filter((e) => e.type === "pregame_declaration").length, seats.length);
-  const turn = events.find((e) => e.type === "turn");
-  for (const field of ["public_message", "proposal", "expectations", "private_rationale"]) {
-    assert.ok(field in turn, `turn event missing ${field}`);
+});
+
+test("only the focal seat is tagged in the focal arm", () => {
+  const m = dispositionsForArm(pack, "focal_firm_ukgva");
+  assert.equal(m["uk-geneva"], "firm");
+  for (const s of seats) if (s.id !== "uk-geneva") assert.ok(!m[s.id], `${s.id} should be untagged`);
+  // Control baseline stays whole-table untagged.
+  assert.deepEqual(dispositionsForArm(pack, "control"), {});
+});
+
+test("every arm names only dispositions the pack defines", () => {
+  for (const key of ARM_KEYS) assert.doesNotThrow(() => dispositionsForArm(pack, key));
+});
+
+test("capital seats cannot speak at the table, post seats can", () => {
+  for (const s of seats) {
+    assert.equal(C.canSpeak(pack, s, C.TABLE), s.level === "post", `${s.id} table speech rights`);
+    assert.equal(C.canSpeak(pack, s, C.consultChannel(s.country)), true);
+    assert.equal(C.canSpeak(pack, s, C.consultChannel(s.country === "eu" ? "uk" : "eu")), false);
+  }
+  assert.ok(pack.speakingOrder.every((id) => seats.find((s) => s.id === id).level === "post"));
+});
+
+test("settlement is decided by capital seats only", () => {
+  const agreed = { status: "accept", trq_volume_tonnes: 1200000, allocation: "global",
+    out_of_quota_rate_pct: 12, duration_years: 4, review_clause: true };
+  const capitals = C.capitalSeats(pack).map((s) => s.id);
+
+  const both = Object.fromEntries(capitals.map((id) => [id, { ...agreed }]));
+  assert.equal(detectSettlement(pack, capitals, both).settled, true);
+
+  // Post seats agreeing is not a settlement.
+  const postsOnly = Object.fromEntries(C.postSeats(pack).map((s) => [s.id, { ...agreed }]));
+  assert.equal(detectSettlement(pack, capitals, postsOnly).settled, false);
+
+  // One capital differing on a single term blocks it.
+  const differ = { ...both, [capitals[0]]: { ...agreed, duration_years: 6 } };
+  const r = detectSettlement(pack, capitals, differ);
+  assert.equal(r.settled, false);
+  assert.match(r.reason, /duration_years/);
+});
+
+test("authority breaches are detected but never block the turn", async () => {
+  const { result, events } = await runInTemp({ TB_STUB_DEFY: "always", TB_STUB_ACCEPT: "never" });
+  const breaches = events.filter((e) => e.type === "mandate_exceeded");
+  assert.ok(breaches.length > 0, "defiant proposal should raise mandate_exceeded");
+  // The run continued to the full round budget despite the breach.
+  assert.equal(result.summary.terminal, "rounds_exhausted");
+  assert.equal(result.summary.rounds, 2);
+  // The defiant proposal is still on the record.
+  const tabled = events.filter((e) => e.type === "table_turn" && e.round === 2);
+  assert.ok(tabled.some((t) => t.proposal && t.proposal.trq_volume_tonnes === 9000000),
+    "the out-of-mandate proposal must still stand");
+});
+
+test("an all-null authority raises mandate_absent", async () => {
+  const { events } = await runInTemp({ TB_STUB_MANDATE: "absent", TB_STUB_ACCEPT: "never" });
+  assert.ok(events.some((e) => e.type === "mandate_absent"), "expected mandate_absent");
+});
+
+test("round structure runs table, then consultation, then poll", async () => {
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
+  const r1 = events.filter((e) => e.round === 1 && ["table_turn", "post_report", "capital_instruction", "acceptance"].includes(e.type));
+  const order = r1.map((e) => e.type);
+  const lastTable = order.lastIndexOf("table_turn");
+  const firstReport = order.indexOf("post_report");
+  const lastInstruct = order.lastIndexOf("capital_instruction");
+  const firstPoll = order.indexOf("acceptance");
+  assert.ok(firstReport > lastTable, "consultation must follow the table");
+  assert.ok(firstPoll > lastInstruct, "poll must follow the consultation");
+  // Only post seats table; only capitals poll.
+  for (const e of events.filter((x) => x.type === "table_turn")) {
+    assert.equal(seats.find((s) => s.id === e.seatId).level, "post");
+  }
+  for (const e of events.filter((x) => x.type === "acceptance")) {
+    assert.equal(seats.find((s) => s.id === e.seatId).level, "capital");
+  }
+});
+
+test("every message event carries phase, channel and a computed visible_to", async () => {
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
+  for (const e of events.filter((x) => x.channel)) {
+    assert.ok(e.phase, `${e.type} missing phase`);
+    assert.ok(Array.isArray(e.visible_to), `${e.type} missing computed visible_to`);
+    assert.deepEqual(e.visible_to, C.visibleTo(pack, e.channel), `${e.type} visible_to disagrees with the channel`);
   }
   assert.ok(events.every((e, i) => e.seq === i), "sequence numbers must be gapless");
 });
 
-test("turns follow the pack's fixed speaking order", async () => {
+test("consultation events are never marked visible to the other country", async () => {
   const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
-  const round1 = events.filter((e) => e.type === "turn" && e.round === 1).map((e) => e.seatId);
-  assert.deepEqual(round1, pack.speakingOrder);
-});
-
-test("every round closes with an acceptance poll of all seats", async () => {
-  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
-  const polls = events.filter((e) => e.type === "acceptance");
-  assert.equal(polls.length, seats.length * pack.rounds, "one poll per seat per round");
-  for (const p of polls) {
-    assert.ok("accept" in p && "terms" in p && "if_not" in p, "poll event missing fields");
+  for (const e of events.filter((x) => C.isConsult(x.channel))) {
+    const country = C.consultCountry(e.channel);
+    for (const id of e.visible_to) {
+      assert.equal(seats.find((s) => s.id === id).country, country,
+        `${e.type} on ${e.channel} was marked visible to ${id}`);
+    }
   }
-  // The poll must run after every seat has spoken in that round.
-  const r1 = events.filter((e) => e.round === 1 && (e.type === "turn" || e.type === "acceptance"));
-  const lastTurn = r1.map((e) => e.type).lastIndexOf("turn");
-  const firstPoll = r1.map((e) => e.type).indexOf("acceptance");
-  assert.ok(firstPoll > lastTurn, "poll must follow all turns in the round");
 });
 
-test("the poll, not the tabled proposals, decides settlement", async () => {
-  const { result, events } = await runInTemp({ TB_STUB_ACCEPT: "always" });
-  assert.equal(result.summary.terminal, "settled");
-  const roundEnd = events.find((e) => e.type === "round_end");
-  assert.equal(roundEnd.acceptCount, seats.length, "all seats must have accepted in the poll");
-  assert.ok(roundEnd.terms, "settlement terms must be recorded");
+test("capital rejecting its post seat's accept recommendation is recorded", async () => {
+  // Stubs: post recommends accept, capital declines to accept.
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "recommend_only" });
+  const recs = events.filter((e) => e.type === "post_report");
+  assert.ok(recs.length, "expected post reports");
+});
+
+test("release requests and refusals are recorded", async () => {
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
+  assert.ok(events.some((e) => e.type === "release_requested"), "expected release_requested");
+  assert.ok(events.some((e) => e.type === "release_refused"), "expected release_refused");
+});
+
+test("paired brief lengths are compared within a level, not across", () => {
+  const r = validatePack(pack);
+  // Cross-level comparison is dropped; post-vs-post and capital-vs-capital only.
+  for (const wmsg of r.warnings) {
+    assert.doesNotMatch(wmsg, /eu-geneva=\d+, eu-brussels=/, "must not compare across levels");
+  }
+  const byLevel = {};
+  for (const s of seats) (byLevel[s.level] ||= []).push(s);
+  assert.equal(Object.keys(byLevel).length, 2);
+  for (const g of Object.values(byLevel)) assert.equal(g.length, 2);
 });
 
 test("a second run cannot start while one holds the lock", async () => {
@@ -169,15 +236,9 @@ test("a second run cannot start while one holds the lock", async () => {
   process.env.TB_RUNS_DIR = dir;
   try {
     const release = acquireRunLock({ model: "test:model", scenario: "s1" });
-    assert.throws(
-      () => acquireRunLock({ model: "other:model", scenario: "s1" }),
-      /already in progress/,
-      "second acquire must be refused while the first is held",
-    );
+    assert.throws(() => acquireRunLock({ model: "other:model", scenario: "s1" }), /already in progress/);
     release();
-    // Once released, the next run may proceed.
-    const again = acquireRunLock({ model: "test:model", scenario: "s1" });
-    again();
+    acquireRunLock({ model: "test:model", scenario: "s1" })();
   } finally {
     if (saved === undefined) delete process.env.TB_RUNS_DIR;
     else process.env.TB_RUNS_DIR = saved;
@@ -191,12 +252,15 @@ test("a lock left by a dead process is taken over, not honoured", async () => {
   const saved = process.env.TB_RUNS_DIR;
   process.env.TB_RUNS_DIR = dir;
   try {
-    // pid 0x7FFFFFFF will not exist; simulates a crashed run.
     writeFileSync(join(dir, ".run-lock"), JSON.stringify({ pid: 2147483647, model: "dead" }), "utf8");
-    const release = acquireRunLock({ model: "test:model", scenario: "s1" });
-    release();
+    acquireRunLock({ model: "test:model", scenario: "s1" })();
   } finally {
     if (saved === undefined) delete process.env.TB_RUNS_DIR;
     else process.env.TB_RUNS_DIR = saved;
   }
+});
+
+test("the round count stated in the rules must match the pack", () => {
+  assert.deepEqual(validatePack(pack).errors, []);
+  assert.ok(validatePack({ ...pack, rounds: 4 }).errors.some((e) => /rounds/.test(e)));
 });

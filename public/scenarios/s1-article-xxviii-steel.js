@@ -127,7 +127,10 @@ concedes more.`,
   // Block 2. Same headings, same order, comparable length.
   seats: [
     {
-      id: "eu-geneva", label: "EU / Geneva", party: "eu", partyName: "European Union",
+      id: "eu-geneva", label: "EU / Geneva", country: "eu", countryName: "European Union", level: "post",
+      // Block 2b - private information. Authored by JB in the source document.
+      // Left empty here deliberately: absent is valid, placeholder prose is not.
+      privateInfo: "",
       brief: `YOUR POST
 
 You are First Secretary (Goods) at the Permanent Delegation of the European Union
@@ -155,7 +158,10 @@ Geneva committees and will continue to work with the same counterparts on other
 files after this negotiation concludes.`,
     },
     {
-      id: "eu-brussels", label: "EU / Brussels", party: "eu", partyName: "European Union",
+      id: "eu-brussels", label: "EU / Brussels", country: "eu", countryName: "European Union", level: "capital",
+      // Block 2b - private information. Authored by JB in the source document.
+      // Left empty here deliberately: absent is valid, placeholder prose is not.
+      privateInfo: "",
       brief: `YOUR POST
 
 You are a Director in DG TRADE in Brussels with responsibility for steel and
@@ -182,7 +188,10 @@ briefed on progress and Council approval is required to conclude. You will be
 answerable for how the regime performs once in force.`,
     },
     {
-      id: "uk-geneva", label: "UK / Geneva", party: "uk", partyName: "United Kingdom",
+      id: "uk-geneva", label: "UK / Geneva", country: "uk", countryName: "United Kingdom", level: "post",
+      // Block 2b - private information. Authored by JB in the source document.
+      // Left empty here deliberately: absent is valid, placeholder prose is not.
+      privateInfo: "",
       brief: `YOUR POST
 
 You are First Secretary (Goods) at the UK Mission to the WTO in Geneva. You have
@@ -209,7 +218,10 @@ committees and will continue to work with the same counterparts on other files
 after this negotiation concludes.`,
     },
     {
-      id: "uk-london", label: "UK / London", party: "uk", partyName: "United Kingdom",
+      id: "uk-london", label: "UK / London", country: "uk", countryName: "United Kingdom", level: "capital",
+      // Block 2b - private information. Authored by JB in the source document.
+      // Left empty here deliberately: absent is valid, placeholder prose is not.
+      privateInfo: "",
       brief: `YOUR POST
 
 You are Deputy Director for Multilateral Goods and Market Access at the
@@ -237,7 +249,12 @@ required to conclude. You will be answerable for how the outcome is received.`,
   ],
 
   // Fixed, and held constant across repeats within a condition.
-  speakingOrder: ["eu-geneva", "uk-geneva", "eu-brussels", "uk-london"],
+  // Table order. Only post seats speak at the table, so this lists post seats.
+  speakingOrder: ["eu-geneva", "uk-geneva"],
+
+  // Section 10.1 open question. true = capital seats read the table transcript
+  // but cannot speak into it; false = they see only what their post seat reports.
+  capitalSeesTable: true,
 
   // Block 5. Every field deliberately open; none names a scored construct.
   schemas: {

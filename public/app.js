@@ -24,35 +24,37 @@ function renderScenarioMeta() {
 
   state.seats = Object.fromEntries((s.seatList || []).map((x) => [x.id, x]));
   const byParty = {};
-  for (const seat of s.seatList || []) (byParty[seat.partyName] ||= []).push(seat);
+  for (const seat of s.seatList || []) (byParty[seat.countryName] ||= []).push(seat);
 
   const groups = Object.entries(byParty);
   $("rosters").innerHTML = groups.length
     ? groups.map(([party, list]) => {
         const people = list.map((seat) =>
           `<div class="person" id="seat-${seat.id}"><div class="avatar">${initials(seat.label)}</div>` +
-          `<div><strong>${seat.label}</strong><small>${seat.id}</small></div></div>`).join("");
+          `<div><strong>${seat.label}</strong><small>${seat.level}</small></div></div>`).join("");
         return `<section class="team"><div class="team-head"><span class="team-name">${party}</span></div>${people}</section>`;
       }).join("")
     : "<p class=\"system-message\">This scenario has no seats yet.</p>";
 }
 
-function addMessage({ seat, round, publicMessage, proposal }) {
-  const box = $("dialogue");
+function addMessage({ seat, round, publicMessage, proposal, paneId = "dialogue", note }) {
+  const box = $(paneId);
   if (box.querySelector(".system-message")) box.innerHTML = "";
   const node = $("messageTemplate").content.cloneNode(true);
-  if (seat.party === "eu") node.querySelector("article").classList.add("ai");
+  if (seat.country === "eu") node.querySelector("article").classList.add("ai");
   node.querySelector(".avatar").textContent = initials(seat.label);
   node.querySelector("strong").textContent = seat.label;
-  node.querySelector(".message-meta span").textContent = seat.partyName;
+  node.querySelector(".message-meta span").textContent = seat.countryName || seat.country;
   node.querySelector("time").textContent = `Round ${round}`;
   node.querySelector("p").textContent = publicMessage;
 
   const line = document.createElement("p");
   line.className = "mono";
-  line.textContent = proposal
-    ? Object.entries(proposal).filter(([k]) => k !== "other_terms").map(([k, v]) => `${k}: ${v}`).join("   ")
-    : "no parseable proposal";
+  line.textContent = note
+    ? note
+    : proposal
+      ? Object.entries(proposal).filter(([k]) => k !== "other_terms").map(([k, v]) => `${k}: ${v}`).join("   ")
+      : "no parseable proposal";
   node.querySelector(".rationale div").append(line);
 
   box.append(node);
@@ -82,7 +84,11 @@ function startRun() {
   if (state.running || !state.current || state.current.placeholder) return;
   state.running = true;
   state.terms = {};
-  $("dialogue").innerHTML = `<div class="system-message">Running ${state.current.label}. Four seats, three rounds - this takes a few minutes.</div>`;
+  $("dialogue").innerHTML = `<div class="system-message">Running ${state.current.label}. This takes several minutes.</div>`;
+  $("consultEu").innerHTML = '<div class="system-message">—</div>';
+  $("consultUk").innerHTML = '<div class="system-message">—</div>';
+  $("divergenceBoard").innerHTML = '<p class="system-message">None yet</p>';
+  state.divergence = [];
   $("agreementStatus").textContent = "Running";
   $("agreementDetail").textContent = "Settlement is decided by the end-of-round poll";
   $("pollBoard").innerHTML = "";
@@ -121,6 +127,51 @@ function startRun() {
     state.terms[d.seat.id] = d.proposal;
     addMessage(d);
     renderTerms();
+  });
+
+  const paneFor = (country) => (country === "eu" ? "consultEu" : "consultUk");
+
+  const pushDivergence = (round, kind, detail) => {
+    state.divergence = state.divergence || [];
+    state.divergence.push({ round, kind, detail });
+    $("divergenceBoard").innerHTML = state.divergence
+      .map((d) => `<div class="ev"><code>${d.kind}</code> · round ${d.round}<small>${d.detail || ""}</small></div>`)
+      .join("");
+  };
+
+  source.addEventListener("report", (e) => {
+    const d = JSON.parse(e.data);
+    $("runStatus").textContent = `round ${d.round}: ${d.seat.label} reports`;
+    const rec = d.recommendation ? `recommends ${d.recommendation.action}` : "no parseable recommendation";
+    const asks = (d.requests || []).length ? `  |  ${d.requests.length} request(s)` : "";
+    addMessage({
+      seat: d.seat, round: d.round, publicMessage: d.text || "(no parseable report)",
+      paneId: paneFor(d.country), note: rec + asks,
+    });
+  });
+
+  source.addEventListener("instruct", (e) => {
+    const d = JSON.parse(e.data);
+    $("runStatus").textContent = `round ${d.round}: ${d.seat.label} instructs`;
+    const auth = d.authority || {};
+    const set = Object.entries(auth).filter(([k, v]) => k !== "notes" && v !== null && v !== undefined);
+    addMessage({
+      seat: d.seat, round: d.round, publicMessage: d.text || "(no parseable instruction)",
+      paneId: paneFor(d.country),
+      note: set.length ? "authority  " + set.map(([k, v]) => `${k}: ${v}`).join("   ") : "authority: none set",
+    });
+    if (!set.length) pushDivergence(d.round, "mandate_absent", `${d.country.toUpperCase()} set no authority`);
+  });
+
+  source.addEventListener("mandate_exceeded", (e) => {
+    const d = JSON.parse(e.data);
+    pushDivergence(d.round, "mandate_exceeded",
+      `${d.seat.label}: ` + (d.breaches || []).map((b) => `${b.term} authorised ${b.authorised}, tabled ${b.tabled}`).join("; "));
+  });
+
+  source.addEventListener("divergence", (e) => {
+    const d = JSON.parse(e.data);
+    pushDivergence(d.round, d.kind, (d.country || "").toUpperCase());
   });
 
   source.addEventListener("round_end", (e) => {
@@ -178,6 +229,10 @@ async function init() {
     .join("");
   const firstReady = models.find((m) => m.ready);
   if (firstReady) $("modelSelect").value = firstReady.spec;
+
+  const arms = (await (await fetch("/api/arms")).json()).arms;
+  $("armSelect").innerHTML = arms.map((a) => `<option value="${a.key}" title="${a.description}">${a.label}</option>`).join("");
+  $("armSelect").value = "control";
 
   const listing = await (await fetch("/api/scenarios")).json();
   state.scenarios = listing.scenarios;

@@ -9,12 +9,13 @@
 import { runNegotiation } from "./lib/engine.js";
 import { packIndex, defaultPackId } from "./public/scenarios/index.js";
 import { listModels } from "./lib/models.js";
+import { ARMS, ARM_KEYS } from "./lib/arms.js";
 import { isLive, modelName } from "./lib/model.js";
 
-const ARMS = ["firm", "accommodating", "control"];
+
 
 function parseArgs(argv) {
-  const out = { repeats: 1, arm: "all", scenario: defaultPackId, list: false, models: false, model: undefined, rounds: undefined };
+  const out = { repeats: 1, arm: "all", scenario: defaultPackId, list: false, models: false, arms: false, model: undefined, rounds: undefined };
   for (let i = 2; i < argv.length; i++) {
     const [k, inline] = argv[i].replace(/^--/, "").split("=");
     const next = argv[i + 1];
@@ -24,6 +25,7 @@ function parseArgs(argv) {
     else if (k === "scenario") out.scenario = v;
     else if (k === "list") out.list = true;
     else if (k === "list-models") out.models = true;
+    else if (k === "list-arms") out.arms = true;
     else if (k === "model") out.model = v;
     else if (k === "rounds") out.rounds = Number(v) || undefined;
   }
@@ -42,6 +44,15 @@ if (opts.list) {
   process.exit(0);
 }
 
+if (opts.arms) {
+  console.log("Disposition arms:");
+  for (const [k, a] of Object.entries(ARMS)) {
+    console.log(`  ${k.padEnd(20)} ${a.label}`);
+    console.log(`  ${"".padEnd(20)} ${a.description}`);
+  }
+  process.exit(0);
+}
+
 if (opts.models) {
   console.log("Available models ([key] = API key present in .env):");
   for (const m of listModels()) {
@@ -52,10 +63,10 @@ if (opts.models) {
   process.exit(0);
 }
 
-const arms = opts.arm === "all" ? ARMS : [opts.arm];
+const arms = opts.arm === "all" ? ARM_KEYS : [opts.arm];
 for (const a of arms) {
-  if (!ARMS.includes(a)) {
-    console.error(`Unknown arm "${a}". Expected one of: ${ARMS.join(", ")}`);
+  if (!ARM_KEYS.includes(a)) {
+    console.error(`Unknown arm "${a}". Expected one of: ${ARM_KEYS.join(", ")}`);
     process.exit(1);
   }
 }
@@ -88,7 +99,7 @@ for (const arm of arms) {
       const outcome = r.summary.terminal === "settled"
         ? `SETTLED (${JSON.stringify(r.summary.settlement)})`
         : r.summary.terminal;
-      console.log(`${outcome} - ${r.summary.turns} turns, ${secs}s`);
+      console.log(`${outcome} - ${r.summary.tableTurns} turns, ${secs}s`);
       results.push(r);
       if (!warned && r.summary.validationWarnings.length) {
         warned = true;
