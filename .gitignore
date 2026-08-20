@@ -5,3 +5,7 @@ node_modules/
 runs/
 tradebench repo summary.md
 to dos.txt
+
+# runs/ is scratch - every run lands there and most are throwaway.
+# Run sets worth keeping are copied into baselines/, which IS tracked.
+!baselines/
