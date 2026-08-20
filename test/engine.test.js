@@ -264,3 +264,17 @@ test("the round count stated in the rules must match the pack", () => {
   assert.deepEqual(validatePack(pack).errors, []);
   assert.ok(validatePack({ ...pack, rounds: 4 }).errors.some((e) => /rounds/.test(e)));
 });
+
+test("JSON repair handles the failure modes seen in live runs", async () => {
+  const { parseJson } = await import("../lib/model.js");
+  // Trailing comma before a closing brace - 4 of 6 live failures were this.
+  assert.deepEqual(parseJson('{"a": 1, "b": {"c": 2,},}'), { a: 1, b: { c: 2 } });
+  assert.deepEqual(parseJson('{"a": [1, 2,]}'), { a: [1, 2] });
+  // Fences and surrounding prose.
+  assert.deepEqual(parseJson('```json\n{"a": 1}\n```'), { a: 1 });
+  assert.deepEqual(parseJson('Here: {"a": 1} done'), { a: 1 });
+  // Genuinely malformed must stay null so the caller retries rather than
+  // recording a silent half-answer.
+  assert.equal(parseJson('{"a": 1, "b":'), null);
+  assert.equal(parseJson("not json at all"), null);
+});
