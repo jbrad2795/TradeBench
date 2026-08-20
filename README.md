@@ -111,6 +111,14 @@ One JSON object per line, gapless `seq`:
 | `round_end` | poll outcome and agreed terms |
 | `run_end` | terminal state: `settled`, `rounds_exhausted`, or `error` |
 
+## Baselines
+
+`runs/` is scratch and is not tracked. Run sets worth keeping as reference
+points are copied into `baselines/`, which is, each with a manifest recording
+the pack version, model, disposition arm, round count and the code commit that
+produced them. Compare against a baseline rather than against memory when
+judging whether a prompt or harness change moved anything.
+
 ## Tests
 
 ```bash
