@@ -46,16 +46,20 @@ node --env-file=.env run.js --repeats 3
 ```
 
 Runs every disposition arm - firm, accommodating, control, focal_firm_ukgva - three times each,
-writing one JSONL log per run to `runs/`. Single arms:
+writing a JSONL log plus a readable `.md` transcript per run to `runs/`. Single arms,
+models and scenario variants:
 
 ```bash
 node --env-file=.env run.js --arm control --repeats 1
+node --env-file=.env run.js --model anthropic:claude-sonnet-5 --arm control
+node --env-file=.env run.js --variant lenient --arm control --repeats 1
 ```
 
-List scenarios with `node run.js --list`, models with `--list-models`, arms with `--list-arms`.
+List what's available: `node run.js --list` (scenarios), `--list-models`,
+`--list-arms`, `--list-variants`.
 
-A run costs roughly 50k tokens and takes about three minutes. **Set a hard spend
-limit at the provider before running a batch.**
+A two-room run costs roughly 250k tokens and takes about seven minutes at 6
+rounds. **Set a hard spend limit at the provider before running a batch.**
 
 ## The two-room environment
 
@@ -113,29 +117,41 @@ Emitted by the engine, not inferred later, and requiring no judge:
 ## How a turn is built
 
 Each seat's prompt is assembled from blocks, per `documents/tradebench prompts
-v0.1.docx`:
+v0.2.md`:
 
 ```
-Block 1   Facts          identical across seats, role-blind
+Block 1   Facts          identical across seats within a variant, role-blind
 Block 2   Seat brief     remit and instructions received - never an objective
-Block 2b  Private info   seat-specific, optional
+Block 2b  Private info   seat-specific; grounds, not instructions
 Block 3   Disposition    one sentence; OMITTED ENTIRELY in the control arm
-Block 4   Rules          identical; states an explicit asymmetric no-deal default
+Block 4   Rules          identical within a variant; explicit asymmetric no-deal default
 Block 5   Output schema  per phase; no field named after a scored construct
 ```
 
-Schemas: **A** pre-game declaration, **B** table turn, **C** acceptance poll
-(capital seats only), **D** post report, **E** capital instruction. C, D and E
-are generated from the pack's `settlementTerms`, so a scenario with different
+Schemas: **A** pre-game declaration, **B** table turn, **C** the decision
+(capital seats only: `decision: accept | continue`, `terms_decided`,
+`reasoning`), **D** post report, **E** capital instruction. C, D and E are
+generated from the pack's `settlementTerms`, so a scenario with different
 levers needs no engine change.
 
 Blocks 1, 4 and 5 are single strings on the pack referenced by every seat, so
 they are identical by construction rather than by discipline.
 
-Turn structure: a pre-game declaration turn, then three rounds in fixed speaking
-order, each round closing with an independent acceptance poll of every seat.
-Settlement is read from the structured `proposal` object and decided by the
-poll - never by parsing prose.
+Turn structure: a pre-game declaration turn, then N rounds (6 for S1) in fixed
+speaking order, each round closing with an independent decision from every
+capital seat. Settlement is read from the structured `terms_decided` object and
+decided by that decision - never by parsing prose or by post seats, who never
+settle (`status: accept` on a table turn is not a settlement).
+
+## Scenario variants
+
+Independent of the disposition arm: a pack may declare `variants` (S1 has
+`harsh` and `lenient`) that parameterise figures in Blocks 1 and 4 via
+`{{PLACEHOLDER}}` tokens, resolved from the *same* values object for both
+blocks so they cannot structurally diverge. `harsh` is the real opening
+position; `lenient` exists to check the environment can produce a settlement at
+all, so a deadlock under `harsh` is a finding about the negotiation rather than
+an artefact of an unwinnable scenario.
 
 ## Scenario packs
 
@@ -144,18 +160,29 @@ poll - never by parsing prose.
 Packs marked `placeholder: true` appear in the dropdown but refuse to run.
 
 Prompt text in a pack is transcribed verbatim from its source document. The
-wording is the experimental manipulation - change the document and regenerate,
+wording is the experimental manipulation - change the document and regenerate;
 do not edit the prose in the pack.
 
 ## Leak audit
 
 `lib/validate.js` runs before every negotiation and blocks the run on:
 
-- banned theory vocabulary in anything a model can see
+- banned theory vocabulary in anything a model can see, including per-variant
+  resolved text
 - schema fields named after a scored construct
+- unresolved `{{PLACEHOLDER}}` tokens in any resolved variant
+- Block 1 and Block 4 figures resolving to different values within a variant
+- the engine flag name `capitalSeesTable` appearing literally in prompt text
 - a pack missing the structure the engine depends on
 
-It warns, without blocking, when seat briefs differ in length by more than 10%.
+It warns, without blocking, when paired seat briefs or private-info blocks
+(post-vs-post, capital-vs-capital) differ in length by more than 10%.
+
+**Known open finding:** the real S1 pack currently fails this audit - Block 1
+and Block 2-B use "mandate" in the ordinary EU-institutional sense ("a mandate
+from the Council"), which the banned-vocabulary list also bans as a construct
+name. `validatePack()` reports the exact three hits; nothing has been edited to
+route around it.
 
 ## What a run log contains
 
@@ -163,20 +190,29 @@ One JSON object per line, gapless `seq`:
 
 | Event | Carries |
 | --- | --- |
-| `run_start` | config and scenario manifest |
+| `run_start` | config (including `variant`) and scenario manifest |
 | `pregame_declaration` | objectives, success/failure, approach, read of the other parties |
-| `turn` | `public_message` plus the private `proposal`, `expectations`, `private_rationale` |
-| `acceptance` | per-seat accept/reject and what would have to change |
-| `round_end` | poll outcome and agreed terms |
+| `table_turn` | `public_message` plus the private `proposal`, `expectations`, `private_rationale` |
+| `post_report` | report, recommendation, requests to capital |
+| `capital_instruction` | instruction, `authority` envelope, responses to requests |
+| `acceptance` | `decision`, `terms_decided`, `reasoning` per capital seat |
+| `mandate_exceeded` / `mandate_absent` | authority breaches and empty mandates - detection only, never blocked |
+| `capital_rejected_recommendation` / `capital_accepted_against_recommendation` | post/capital divergence |
+| `release_requested` / `release_refused` | requests up the chain and their answers |
+| `round_end` | decision outcome and agreed terms |
 | `run_end` | terminal state: `settled`, `rounds_exhausted`, or `error` |
 
 ## Baselines
 
 `runs/` is scratch and is not tracked. Run sets worth keeping as reference
-points are copied into `baselines/`, which is, each with a manifest recording
-the pack version, model, disposition arm, round count and the code commit that
+points are copied into `baselines/`, each with a manifest recording the pack
+version, model, disposition arm, variant, round count and the code commit that
 produced them. Compare against a baseline rather than against memory when
 judging whether a prompt or harness change moved anything.
+
+**The `baselines/2026-08-20-*` set is v0.1 (single-table) and does not pool
+with v0.2 (two-room) runs** - the environment changed underneath it. Treat it
+as pilot data.
 
 ## Tests
 
@@ -184,17 +220,29 @@ judging whether a prompt or harness change moved anything.
 npm test
 ```
 
-Covers the leak audit, block identity and ordering, control-arm omission,
-seat-brief isolation, settlement detection, and the acceptance poll.
+30 tests. Covers the leak audit (including the known "mandate" finding above),
+block identity and ordering, control-arm omission, seat/consultation isolation
+across countries (the hard channel invariant), variant resolution and the
+Block 1/Block 4 consistency check, the Schema C decision shape, settlement
+detection, the authority envelope (detected, never blocked), the run lock, and
+round-phase ordering. Engine-mechanics tests run against a private in-memory
+clone of the real pack with "mandate" substituted, so they are not blocked by
+the pending content decision above; the real pack's own leak-audit result is
+still asserted directly, not hidden.
 
 ## Project map
 
-- `run.js` - headless batch runner
+- `run.js` - headless batch runner (`--arm`, `--model`, `--variant`, `--rounds`, `--list*`)
 - `server.js` - static server plus a streaming run endpoint
-- `lib/assemble.js` - block assembly, transcript, settlement detection
-- `lib/engine.js` - the negotiation loop
+- `lib/assemble.js` - block assembly, variant resolution, transcript, settlement detection, schemas C/D/E
+- `lib/engine.js` - the three-phase negotiation loop
+- `lib/channels.js` - message visibility; the single source of truth for what a seat can see
+- `lib/arms.js` - disposition arms, including the focal condition
 - `lib/validate.js` - leak audit
-- `lib/model.js` - API client with truncation detection and an offline mode
+- `lib/model.js` - API client with truncation/JSON-repair retries and an offline mode
+- `lib/models.js` - provider registry (OpenAI, Anthropic, DeepSeek, Kimi, GLM, Qwen)
+- `lib/lock.js` - one run at a time
+- `lib/report.js` - readable `.md` transcript per run, channel-separated
 - `lib/log.js` - JSONL run logging
 - `public/scenarios/` - scenario packs
 - `documents/` - source design and prompt documents

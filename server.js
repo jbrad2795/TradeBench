@@ -51,6 +51,7 @@ async function streamRun(req, res, url) {
       packId: url.searchParams.get("scenario") || undefined,
       condition: { dispositionArm: url.searchParams.get("arm") || "control" },
       model: url.searchParams.get("model") || undefined,
+      variant: url.searchParams.get("variant") || undefined,
       repeat: 1,
       onEvent: (e) => {
         if (cancelled) return;

@@ -23,6 +23,14 @@ function renderScenarioMeta() {
   $("runButton").textContent = s.placeholder ? "Not yet written" : state.running ? "Running..." : "Run negotiation";
 
   state.seats = Object.fromEntries((s.seatList || []).map((x) => [x.id, x]));
+
+  // Variants are per-pack. Repopulate whenever the scenario changes; a
+  // placeholder pack has none, so the select ends up empty and disabled by
+  // the runButton guard above.
+  const variants = s.variants || [];
+  $("variantSelect").innerHTML = variants.map((v) => `<option value="${v}">${v}${v === s.defaultVariant ? " (default)" : ""}</option>`).join("");
+  if (s.defaultVariant) $("variantSelect").value = s.defaultVariant;
+
   const byParty = {};
   for (const seat of s.seatList || []) (byParty[seat.countryName] ||= []).push(seat);
 
@@ -98,8 +106,10 @@ function startRun() {
 
   const arm = $("armSelect").value;
   const model = $("modelSelect").value;
+  const variant = $("variantSelect").value;
   const source = new EventSource(
-    `/api/run?scenario=${encodeURIComponent(state.current.id)}&arm=${encodeURIComponent(arm)}&model=${encodeURIComponent(model)}`,
+    `/api/run?scenario=${encodeURIComponent(state.current.id)}&arm=${encodeURIComponent(arm)}` +
+      `&model=${encodeURIComponent(model)}&variant=${encodeURIComponent(variant)}`,
   );
   state.source = source;
 

@@ -3,6 +3,8 @@
 // repeats, writing one JSONL log per run.
 //
 //   node --env-file=.env run.js --repeats 3
+//   node --env-file=.env run.js --variant lenient --arm control --repeats 1
+//   node run.js --list-variants
 //   node --env-file=.env run.js --arm firm --repeats 1
 //   node --env-file=.env run.js --scenario s1-article-xxviii-steel --arm control
 
@@ -15,7 +17,7 @@ import { isLive, modelName } from "./lib/model.js";
 
 
 function parseArgs(argv) {
-  const out = { repeats: 1, arm: "all", scenario: defaultPackId, list: false, models: false, arms: false, model: undefined, rounds: undefined };
+  const out = { repeats: 1, arm: "all", scenario: defaultPackId, variant: undefined, list: false, models: false, arms: false, variants: false, model: undefined, rounds: undefined };
   for (let i = 2; i < argv.length; i++) {
     const [k, inline] = argv[i].replace(/^--/, "").split("=");
     const next = argv[i + 1];
@@ -28,6 +30,8 @@ function parseArgs(argv) {
     else if (k === "list-arms") out.arms = true;
     else if (k === "model") out.model = v;
     else if (k === "rounds") out.rounds = Number(v) || undefined;
+    else if (k === "variant") out.variant = v;
+    else if (k === "list-variants") out.variants = true;
   }
   return out;
 }
@@ -53,6 +57,20 @@ if (opts.arms) {
   process.exit(0);
 }
 
+if (opts.variants) {
+  const { getPack } = await import("./public/scenarios/index.js");
+  const pack = getPack(opts.scenario);
+  if (!pack || !pack.variants) {
+    console.log(`No variants declared for scenario "${opts.scenario}".`);
+  } else {
+    console.log(`Scenario variants for ${opts.scenario} (default: ${pack.defaultVariant}):`);
+    for (const key of Object.keys(pack.variants)) {
+      console.log(`  ${key}${key === pack.defaultVariant ? "  (default)" : ""}`);
+    }
+  }
+  process.exit(0);
+}
+
 if (opts.models) {
   console.log("Available models ([key] = API key present in .env):");
   for (const m of listModels()) {
@@ -74,6 +92,7 @@ for (const a of arms) {
 const total = arms.length * opts.repeats;
 console.log("TradeBench batch runner");
 console.log(`  scenario : ${opts.scenario}`);
+console.log(`  variant  : ${opts.variant || "(pack default)"}`);
 console.log(`  mode     : ${isLive() ? `LIVE (${modelName()})` : "OFFLINE (stub responses, no API calls)"}`);
 console.log(`  matrix   : ${arms.length} arm(s) x ${opts.repeats} repeat(s) = ${total} run(s)`);
 console.log("");
@@ -94,6 +113,7 @@ for (const arm of arms) {
         repeat,
         model: opts.model,
         rounds: opts.rounds,
+        variant: opts.variant,
       });
       const secs = ((Date.now() - started) / 1000).toFixed(1);
       const outcome = r.summary.terminal === "settled"

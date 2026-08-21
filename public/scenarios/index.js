@@ -21,4 +21,6 @@ export const packIndex = () =>
     // Labels only - never any brief text.
     seatList: p.seats.map((s) => ({ id: s.id, label: s.label, country: s.country, countryName: s.countryName, level: s.level })),
     dispositions: Object.keys(p.dispositions || {}),
+    variants: Object.keys(p.variants || {}),
+    defaultVariant: p.defaultVariant || null,
   }));
