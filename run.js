@@ -93,7 +93,7 @@ const total = arms.length * opts.repeats;
 console.log("TradeBench batch runner");
 console.log(`  scenario : ${opts.scenario}`);
 console.log(`  variant  : ${opts.variant || "(pack default)"}`);
-console.log(`  mode     : ${isLive() ? `LIVE (${modelName()})` : "OFFLINE (stub responses, no API calls)"}`);
+console.log(`  mode     : ${isLive(opts.model) ? `LIVE (${modelName(opts.model)})` : "OFFLINE (stub responses, no API calls)"}`);
 console.log(`  matrix   : ${arms.length} arm(s) x ${opts.repeats} repeat(s) = ${total} run(s)`);
 console.log("");
 
