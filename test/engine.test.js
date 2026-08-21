@@ -449,7 +449,7 @@ test("anthropicMessages: system prompt is always cache_control-tagged", async ()
   const { anthropicMessages } = await import("../lib/model.js");
   const resolved = { modelId: "claude-sonnet-5", apiKey: "test", provider: { baseUrl: "https://api.anthropic.com/v1" } };
   const req = anthropicMessages(resolved, { instructions: "system text", input: "user text", maxTokens: 100 });
-  assert.deepEqual(req.body.system, [{ type: "text", text: "system text", cache_control: { type: "ephemeral" } }]);
+  assert.deepEqual(req.body.system, [{ type: "text", text: "system text", cache_control: { type: "ephemeral", ttl: "1h" } }]);
 });
 
 test("anthropicMessages: no cachedPrefix leaves the user turn as a plain string", async () => {
@@ -468,7 +468,7 @@ test("anthropicMessages: a genuine cachedPrefix splits the user turn into two bl
   const blocks = req.body.messages[0].content;
   assert.equal(blocks.length, 2);
   assert.equal(blocks[0].text, cachedPrefix);
-  assert.deepEqual(blocks[0].cache_control, { type: "ephemeral" });
+  assert.deepEqual(blocks[0].cache_control, { type: "ephemeral", ttl: "1h" });
   assert.equal(blocks[1].cache_control, undefined, "the fresh tail must not itself be marked cacheable");
   assert.equal(blocks[0].text + blocks[1].text, input, "the two blocks must reconstruct the exact original input");
 });
