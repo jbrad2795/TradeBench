@@ -33,9 +33,11 @@ export const pack = {
       BOUND_RATE_PCT: "15",
       TRQ_VOLUME_TONNES: "8,000,000",
       TRQ_ALLOCATION: "Allocated to the UK specifically",
-      // Doc table gives the SAME text for both variants (not empty) - flagged to
-      // JB rather than silently emptied; see the leak-audit report.
-      FTA_DISAPPLICATION: `The EU is also proposing legal text that will disapply FTA tariff reductions on steel originating from the UK, reducing access further. This applies to all FTA partners other than EEA members.`,
+      // v0.3: JB emptied this for lenient (was previously the same non-empty
+      // text as harsh, flagged as inconsistent with the doc's own conditional
+      // note). Confirmed the surrounding Block 1 paragraph still reads cleanly
+      // when this resolves to nothing.
+      FTA_DISAPPLICATION: "",
     },
   },
 
@@ -255,7 +257,10 @@ INSTRUCTIONS RECEIVED
 London has instructed you to open negotiations with the EU and to report back on
 the EU's position. You have been told to establish what the EU is prepared to
 offer. It has been made clear to you that the EUs opening offer is very far away from the UK's preferred landing zone, and will lead to the destruction of the UK's steel industry. You know the EU are working to a tight timeline with the June Council vote, but you also know that no-deal could cripple the UK's steel industry. You have not been given a settlement figure.
+
+
 ACCOUNTABILITY
+
 
 You report to London. You are also the UK's standing representative in the Geneva
 committees and will continue to work with the same counterparts on other files
