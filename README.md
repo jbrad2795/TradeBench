@@ -178,12 +178,6 @@ do not edit the prose in the pack.
 It warns, without blocking, when paired seat briefs or private-info blocks
 (post-vs-post, capital-vs-capital) differ in length by more than 10%.
 
-**Known open finding:** the real S1 pack currently fails this audit - Block 1
-and Block 2-B use "mandate" in the ordinary EU-institutional sense ("a mandate
-from the Council"), which the banned-vocabulary list also bans as a construct
-name. `validatePack()` reports the exact three hits; nothing has been edited to
-route around it.
-
 ## What a run log contains
 
 One JSON object per line, gapless `seq`:
@@ -220,15 +214,11 @@ as pilot data.
 npm test
 ```
 
-30 tests. Covers the leak audit (including the known "mandate" finding above),
-block identity and ordering, control-arm omission, seat/consultation isolation
-across countries (the hard channel invariant), variant resolution and the
-Block 1/Block 4 consistency check, the Schema C decision shape, settlement
-detection, the authority envelope (detected, never blocked), the run lock, and
-round-phase ordering. Engine-mechanics tests run against a private in-memory
-clone of the real pack with "mandate" substituted, so they are not blocked by
-the pending content decision above; the real pack's own leak-audit result is
-still asserted directly, not hidden.
+29 tests. Covers the leak audit, block identity and ordering, control-arm
+omission, seat/consultation isolation across countries (the hard channel
+invariant), variant resolution and the Block 1/Block 4 consistency check,
+the Schema C decision shape, settlement detection, the authority envelope
+(detected, never blocked), the run lock, and round-phase ordering.
 
 ## Project map
 

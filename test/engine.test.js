@@ -5,7 +5,6 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { pack } from "../public/scenarios/s1-article-xxviii-steel.js";
-import { packs } from "../public/scenarios/index.js";
 import { validatePack } from "../lib/validate.js";
 import {
   assembleSeatPrompt,
@@ -33,37 +32,6 @@ const schemaOf = (key) =>
   : buildAcceptanceSchema(pack);
 const ALL_SCHEMAS = ["declaration", "turn", "report", "instruct", "poll"];
 
-// Known content finding (see lib/validate.js banned vocab, and the report):
-// JB's own Block 1/2-B text uses "mandate" in the ordinary EU-institutional
-// sense ("a mandate from the Council"), which the v0.2 leak audit also bans as
-// a construct name. The real pack currently fails validatePack() for exactly
-// this reason - see the dedicated test below, which documents the finding
-// rather than hiding it.
-//
-// Engine-mechanics tests (settlement, phases, the lock, divergence events)
-// exist to prove the ENGINE is correct for any valid pack, not to re-litigate
-// this specific, pending content decision. They run against a private clone
-// with "mandate" substituted, registered under its own id, never written to
-// disk and never touching public/scenarios/s1-article-xxviii-steel.js.
-function buildFixturePack() {
-  const clone = JSON.parse(JSON.stringify(pack));
-  clone.id = "s1-test-fixture";
-  clone.placeholder = false;
-  const desub = (t) =>
-    String(t || "")
-      .replace(/\bMandate\b/g, "Remit")
-      .replace(/\bmandate\b/g, "remit");
-  clone.facts = desub(clone.facts);
-  clone.rules = desub(clone.rules);
-  for (const seat of clone.seats) {
-    seat.brief = desub(seat.brief);
-    seat.privateInfo = desub(seat.privateInfo);
-  }
-  return clone;
-}
-const fixturePack = buildFixturePack();
-if (!packs.find((p) => p.id === fixturePack.id)) packs.push(fixturePack);
-
 async function runInTemp(env = {}, condition = { dispositionArm: "control" }, rounds = 2, extra = {}) {
   const dir = mkdtempSync(join(tmpdir(), "tb-"));
   const saved = {};
@@ -75,7 +43,7 @@ async function runInTemp(env = {}, condition = { dispositionArm: "control" }, ro
   delete process.env.OPENAI_API_KEY; // force offline stubs
   let result;
   try {
-    result = await runNegotiation({ packId: fixturePack.id, condition, rounds, ...extra });
+    result = await runNegotiation({ condition, rounds, ...extra });
   } finally {
     for (const [k, v] of Object.entries(saved)) {
       if (v === undefined) delete process.env[k];
@@ -88,15 +56,11 @@ async function runInTemp(env = {}, condition = { dispositionArm: "control" }, ro
   return { result, events };
 }
 
-test("known finding: the real pack currently fails the leak audit on 'mandate'", () => {
-  const r = validatePack(pack);
-  assert.equal(r.ok, false, "if this now passes, JB has resolved the mandate collision - update this test to assert ok:true and delete this comment");
-  const flagged = r.errors.filter((e) => /banned vocabulary "mandate"/.test(e));
-  assert.equal(flagged.length, 3, "expected exactly the known 3 hits: facts x2 (harsh+lenient) and seat.eu-brussels.brief");
-});
-
-test("the test fixture pack (mandate substituted) passes the leak audit", () => {
-  assert.deepEqual(validatePack(fixturePack).errors, []);
+test("S1 pack passes the leak audit", () => {
+  // "mandate" was in the banned-vocab list briefly (21 Aug) and collided with
+  // Block 1/2-B's ordinary EU-institutional usage; removed same day. If this
+  // starts failing again, check what changed in lib/validate.js first.
+  assert.deepEqual(validatePack(pack).errors, []);
 });
 
 // THE hard invariant. Consultation content must never cross between countries.
@@ -276,10 +240,10 @@ test("round structure runs table, then consultation, then poll", async () => {
   assert.ok(firstReport > lastTable, "consultation must follow the table");
   assert.ok(firstPoll > lastInstruct, "poll must follow the consultation");
   for (const e of events.filter((x) => x.type === "table_turn")) {
-    assert.equal(fixturePack.seats.find((s) => s.id === e.seatId).level, "post");
+    assert.equal(pack.seats.find((s) => s.id === e.seatId).level, "post");
   }
   for (const e of events.filter((x) => x.type === "acceptance")) {
-    assert.equal(fixturePack.seats.find((s) => s.id === e.seatId).level, "capital");
+    assert.equal(pack.seats.find((s) => s.id === e.seatId).level, "capital");
   }
 });
 
@@ -301,7 +265,7 @@ test("every message event carries phase, channel and a computed visible_to", asy
   for (const e of events.filter((x) => x.channel)) {
     assert.ok(e.phase, `${e.type} missing phase`);
     assert.ok(Array.isArray(e.visible_to), `${e.type} missing computed visible_to`);
-    assert.deepEqual(e.visible_to, C.visibleTo(fixturePack, e.channel), `${e.type} visible_to disagrees with the channel`);
+    assert.deepEqual(e.visible_to, C.visibleTo(pack, e.channel), `${e.type} visible_to disagrees with the channel`);
   }
   assert.ok(events.every((e, i) => e.seq === i), "sequence numbers must be gapless");
 });
@@ -311,7 +275,7 @@ test("consultation events are never marked visible to the other country", async 
   for (const e of events.filter((x) => C.isConsult(x.channel))) {
     const country = C.consultCountry(e.channel);
     for (const id of e.visible_to) {
-      assert.equal(fixturePack.seats.find((s) => s.id === id).country, country,
+      assert.equal(pack.seats.find((s) => s.id === id).country, country,
         `${e.type} on ${e.channel} was marked visible to ${id}`);
     }
   }
@@ -337,12 +301,12 @@ test("run manifest records which variant was used", async () => {
 });
 
 test("paired brief/private-info lengths are compared within a level, not across", () => {
-  const r = validatePack(fixturePack);
+  const r = validatePack(pack);
   for (const wmsg of r.warnings) {
     assert.doesNotMatch(wmsg, /eu-geneva=\d+, eu-brussels=/, "must not compare across levels");
   }
   const byLevel = {};
-  for (const s of fixturePack.seats) (byLevel[s.level] ||= []).push(s);
+  for (const s of pack.seats) (byLevel[s.level] ||= []).push(s);
   assert.equal(Object.keys(byLevel).length, 2);
   for (const g of Object.values(byLevel)) assert.equal(g.length, 2);
 });

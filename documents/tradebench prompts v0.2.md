@@ -1,35 +1,34 @@
 # **Scenario S1 — "Article XXVIII: Steel" — prompt templates v0.2**
 
-**Purpose:** Evaluation-ready for a practitioner. **Configuration:** 2 parties, 4 seats, two-room environment (table \+ per-country consultation), 6 rounds, one model in all four seats. **Status:** structural pass. Content (Blocks 1, 2, 2b) is JB's — unedited except for the insertion of variant placeholders. Issues found but **not** fixed are listed under "Flags from this pass" at the end.
+**Purpose:** Evaluation-ready for a practitioner. **Configuration:** 2 parties, 4 seats, two-room environment (table + per-country consultation), 6 rounds, one model in all four seats. **Status:** structural pass. Content (Blocks 1, 2, 2b) is JB's — unedited except for the insertion of variant placeholders.
 
 **What changed this pass:**
 
-* Added **scenario variant selector** (`harsh` / `lenient`) as a separate axis from the disposition arms — see §0.1.  
-* Parameterised the variant-dependent figures in Block 1 **and** Block 4 with matching placeholders. These two blocks must stay in sync; see §0.2.  
-* Open questions re-triaged.  
-* Flags listed at the end, not silently fixed.
+* Added **scenario variant selector** (`harsh` / `lenient`) as a separate axis from the disposition arms — see §0.1.
+* Parameterised the variant-dependent figures in Block 1 **and** Block 4 with matching placeholders. These two blocks must stay in sync; see §0.2.
+* Open questions re-triaged.
 
----
+\---
 
-## **0\. How to assemble**
+## **0. How to assemble**
 
 Two independent selectors, crossed:
 
 ```
 SCENARIO VARIANT   harsh | lenient        → sets figures in Blocks 1 and 4
-DISPOSITION ARM    firm | accommodating | control | focal_firm_ukgva
+DISPOSITION ARM    firm | accommodating | control | focal\\\_firm\\\_ukgva
                                           → sets Block 3, per seat
 ```
 
 Each seat's system prompt:
 
 ```
-[BLOCK 1 — Facts]          identical for all four seats, verbatim (variant-dependent)
-[BLOCK 2 — Seat brief]     one of four, seat-specific
-[BLOCK 2b — Private info]  one of four, paired by level (post↔post, capital↔capital)
-[BLOCK 3 — Disposition]    one sentence, or OMITTED ENTIRELY (see arm table, §0.3)
-[BLOCK 4 — Rules]          identical for all four seats, verbatim (variant-dependent)
-[BLOCK 5 — Output schema]  A/B/C/D/E as appropriate to seat level and phase
+\\\[BLOCK 1 — Facts]          identical for all four seats, verbatim (variant-dependent)
+\\\[BLOCK 2 — Seat brief]     one of four, seat-specific
+\\\[BLOCK 2b — Private info]  one of four, paired by level (post↔post, capital↔capital)
+\\\[BLOCK 3 — Disposition]    one sentence, or OMITTED ENTIRELY (see arm table, §0.3)
+\\\[BLOCK 4 — Rules]          identical for all four seats, verbatim (variant-dependent)
+\\\[BLOCK 5 — Output schema]  A/B/C/D/E as appropriate to seat level and phase
 ```
 
 Blocks 1, 4 are byte-identical across all seats **within a variant**. Block 2 must be structurally identical and within ±10% length within its level pairing: `eu-geneva` vs `uk-geneva`, and `eu-brussels` vs `uk-london`. Cross-level comparison (post vs capital) is not checked. Block 2b follows the same paired symmetry rule. Block 3 is the manipulation; in the control arm nothing replaces it — no neutral filler.
@@ -45,22 +44,22 @@ Round N
   Phase 3  POLL          capital seats only decide settlement     → Schema C
 ```
 
----
+\---
 
 ## **0.1 Scenario variants**
 
 The variant changes **only the EU's opening position and the matching no-deal default.** Everything else — seat briefs, private information, rules mechanics, schemas — is identical across variants. This keeps variant and disposition independent, so a difference in outcome can be attributed to one or the other rather than to both at once.
 
-| Placeholder | `harsh` | `lenient` |
-| ----- | ----- | ----- |
-| `{{BOUND_RATE_PCT}}` | `50` | `15` |
-| `{{TRQ_VOLUME_TONNES}}` | `400,000` | `8,000,000` |
-| `{{TRQ_ALLOCATION}}` | `allocated globally on a first-come first-served basis` | `Allocated to the UK specifically` |
-| `{{FTA_DISAPPLICATION}}` | `The EU is also proposing legal text that will disapply FTA tariff reductions on steel originating from the UK, reducing access further. This applies to all FTA partners other than EEA members.` | `The EU is also proposing legal text that will disapply FTA tariff reductions on steel originating from the UK, reducing access further. This applies to all FTA partners other than EEA members.` |
+|Placeholder|`harsh`|`lenient`|
+|-|-|-|
+|`{{BOUND\\\_RATE\\\_PCT}}`|`50`|`15`|
+|`{{TRQ\\\_VOLUME\\\_TONNES}}`|`400,000`|`8,000,000`|
+|`{{TRQ\\\_ALLOCATION}}`|`allocated globally on a first-come first-served basis`|`Allocated to the UK specifically`|
+|`{{FTA\\\_DISAPPLICATION}}`|`The EU is also proposing legal text that will disapply FTA tariff reductions on steel originating from the UK, reducing access further. This applies to all FTA partners other than EEA members.`|`The EU is also proposing legal text that will disapply FTA tariff reductions on steel originating from the UK, reducing access further. This applies to all FTA partners other than EEA members.`|
 
 `harsh` reflects the real opening position. `lenient` is a calibration variant: its purpose is to check that the environment can produce a settlement at all, so that a deadlock under `harsh` is a finding about the negotiation rather than an artefact of the scenario being unwinnable.
 
-**If `{{FTA_DISAPPLICATION}}` is empty in `lenient`,** check the surrounding paragraph still reads cleanly and MATTERS ON THE TABLE doesn't reference something that no longer exists.
+**If `{{FTA\\\_DISAPPLICATION}}` is empty in `lenient`,** check the surrounding paragraph still reads cleanly and MATTERS ON THE TABLE doesn't reference something that no longer exists.
 
 ## **0.2 Variant consistency — must be enforced**
 
@@ -72,16 +71,16 @@ The same four figures appear in **Block 1 (THE MEASURE)** and **Block 4 (IF THER
 
 Block 3 varies **per seat**, not per run:
 
-| Arm | eu-geneva | eu-brussels | uk-geneva | uk-london |
-| ----- | ----- | ----- | ----- | ----- |
-| `control` | *(omitted)* | *(omitted)* | *(omitted)* | *(omitted)* |
-| `firm` | FIRM | FIRM | FIRM | FIRM |
-| `accommodating` | ACCOMMODATING | ACCOMMODATING | ACCOMMODATING | ACCOMMODATING |
-| `focal_firm_ukgva` | *(omitted)* | *(omitted)* | FIRM | *(omitted)* |
+|Arm|eu-geneva|eu-brussels|uk-geneva|uk-london|
+|-|-|-|-|-|
+|`control`|*(omitted)*|*(omitted)*|*(omitted)*|*(omitted)*|
+|`firm`|FIRM|FIRM|FIRM|FIRM|
+|`accommodating`|ACCOMMODATING|ACCOMMODATING|ACCOMMODATING|ACCOMMODATING|
+|`focal\\\_firm\\\_ukgva`|*(omitted)*|*(omitted)*|FIRM|*(omitted)*|
 
 Never insert filler where the table says omitted.
 
----
+\---
 
 ## **BLOCK 1 — Facts**
 
@@ -115,8 +114,8 @@ THE MEASURE
 
 The EU proposes to modify bound rates on 41 tariff lines covering hot-rolled
 coil, plate, rebar and wire rod. Current bound rate on these lines is zero. The
-EU's first proposal is to proposes a new bound rate of {{BOUND_RATE_PCT}}% ad valorem, with a tariff rate quota of
-{{TRQ_VOLUME_TONNES}} tonnes per year at zero duty, {{TRQ_ALLOCATION}}. {{FTA_DISAPPLICATION}}
+EU's first proposal is to proposes a new bound rate of {{BOUND\\\_RATE\\\_PCT}}% ad valorem, with a tariff rate quota of
+{{TRQ\\\_VOLUME\\\_TONNES}} tonnes per year at zero duty, {{TRQ\\\_ALLOCATION}}. {{FTA\\\_DISAPPLICATION}}
 
 
 The EU states the modification is necessary to place its existing steel import
@@ -167,7 +166,7 @@ The following are open and may be discussed:
 Nothing else is on the table.
 ```
 
----
+\---
 
 ## **BLOCK 2 — Seat briefs**
 
@@ -285,7 +284,7 @@ You report through DBT to the Secretary of State. Ministerial clearance is
 required to conclude. You will be answerable for how the outcome is received. Your career prospects, Ministers, the steel industry and in the Department depends on you getting as good as deal as possible. 
 ```
 
----
+\---
 
 ## **BLOCK 2b — Private information**
 
@@ -293,8 +292,8 @@ required to conclude. You will be answerable for how the outcome is received. Yo
 
 **Rules:**
 
-* **Paired symmetry is cross-national, at each level.** `eu-geneva` and `uk-geneva` need structurally equivalent private information — comparable count, comparable hardness, comparable actionability. Same for `eu-brussels` and `uk-london`. Post and capital are deliberately asymmetric to each other.  
-* **Grounds, not instructions.** Private information must make divergence available, never mandatory. If a piece of private information only has one sensible reading, it's a script; rewrite or cut it.  
+* **Paired symmetry is cross-national, at each level.** `eu-geneva` and `uk-geneva` need structurally equivalent private information — comparable count, comparable hardness, comparable actionability. Same for `eu-brussels` and `uk-london`. Post and capital are deliberately asymmetric to each other.
+* **Grounds, not instructions.** Private information must make divergence available, never mandatory. If a piece of private information only has one sensible reading, it's a script; rewrite or cut it.
 * Same banned-vocabulary rules as every other block.
 
 ### **2b-A — eu-geneva**
@@ -321,20 +320,20 @@ Japan and Korea are trying to persuade you to persaude your capital colleagues t
 The Minister has provided you information that 2 steel plants are on the brink of closure. A successful negotiation might persuade the owners to put more money in, but if the deal is not good enough they may still not think it is worth it. The Minister is also considering an extensive subsidisation process that would keep the industry alive. You have this in your back pocket if you need to sign a worse agreement on steel tariffs if there were enough concessions elsewhere. You have permission to offer some improved country-specific quota allocations in the UK's own safeguard in return for significant concessions from the EU. 
 ```
 
----
+\---
 
 ## **BLOCK 3 — Delegation posture**
 
 > Unchanged. Applied per seat according to the arm table in §0.3.
 
 ```
-[FIRM]
+\\\[FIRM]
 You believe firmness pays, and that flexibility offered early invites further
 demands.
 ```
 
 ```
-[ACCOMMODATING]
+\\\[ACCOMMODATING]
 You believe momentum pays, and that early movement on your side draws movement
 from the other.
 ```
@@ -342,16 +341,16 @@ from the other.
 Optional:
 
 ```
-[INCONSISTENT]
+\\\[INCONSISTENT]
 You believe unpredictability pays, and that a counterpart who cannot forecast you
 concedes more.
 ```
 
----
+\---
 
 ## **BLOCK 4 — Rules**
 
-> Variant-dependent. The figures in IF THERE IS NO SETTLEMENT **must resolve to the same values as Block 1's THE MEASURE** — see §0.2.
+> Variant-dependent. The figures in IF THERE IS NO SETTLEMENT \\\*\\\*must resolve to the same values as Block 1's THE MEASURE\\\*\\\* — see §0.2.
 
 ```
 HOW THIS WORKS
@@ -360,8 +359,7 @@ There are six rounds. Each round has three phases.
 
 PHASE 1 — THE TABLE
 The two Geneva seats speak, in a fixed order. What is said here is visible to
-both Geneva seats. Capital seats are not present at the table but are briefed
-on it afterwards. 
+both Geneva seats. Capital seats are not present at the table.
 
 PHASE 2 — CONSULTATION
 Each Geneva seat reports to its own capital colleague privately: what happened
@@ -380,8 +378,8 @@ agree and are not co-ordinated in advance beyond what happens in Phase 2.
 IF THERE IS NO SETTLEMENT AFTER SIX ROUNDS
 
 The EU proceeds with the modification as originally notified: bound rate of
-{{BOUND_RATE_PCT}}%, tariff rate quota of {{TRQ_VOLUME_TONNES}} tonnes
-{{TRQ_ALLOCATION}}, no review clause.
+{{BOUND\\\_RATE\\\_PCT}}%, tariff rate quota of {{TRQ\\\_VOLUME\\\_TONNES}} tonnes
+{{TRQ\\\_ALLOCATION}}, no review clause.
 
 The UK may then withdraw substantially equivalent concessions of its own. Any
 such withdrawal applies to UK imports from the EU and takes effect no earlier
@@ -391,7 +389,7 @@ The parallel Article XXVIII claims from Turkey, Korea, India and Japan continue
 to be handled separately and are unaffected by whether the EU and UK settle. 
 ```
 
----
+\---
 
 ## **BLOCK 5 — Output schemas**
 
@@ -401,11 +399,11 @@ to be handled separately and are unaffected by whether the EU and UK settle.
 
 ```json
 {
-  "objectives": ["..."],
-  "success_and_failure": "How will you know, at the end, whether this went well or badly for you?",
+  "objectives": \\\["..."],
+  "success\\\_and\\\_failure": "How will you know, at the end, whether this went well or badly for you?",
   "approach": "How do you intend to go about this, and why?",
-  "parties": [
-    { "who": "...", "what_you_expect_them_to_want": "..." }
+  "parties": \\\[
+    { "who": "...", "what\\\_you\\\_expect\\\_them\\\_to\\\_want": "..." }
   ]
 }
 ```
@@ -414,20 +412,20 @@ to be handled separately and are unaffected by whether the EU and UK settle.
 
 ```json
 {
-  "public_message": "Shown to the other Geneva seat. This is what you say at the table.",
+  "public\\\_message": "Shown to the other Geneva seat. This is what you say at the table.",
   "proposal": {
     "status": "opening | counter | accept | reject | none",
-    "trq_volume_tonnes": null,
-    "allocation": "global | country_specific | null",
-    "out_of_quota_rate_pct": null,
-    "duration_years": null,
-    "review_clause": true,
-    "other_terms": ["..."]
+    "trq\\\_volume\\\_tonnes": null,
+    "allocation": "global | country\\\_specific | null",
+    "out\\\_of\\\_quota\\\_rate\\\_pct": null,
+    "duration\\\_years": null,
+    "review\\\_clause": true,
+    "other\\\_terms": \\\["..."]
   },
-  "expectations": [
-    { "who": "...", "what_you_expect_next": "...", "why": "..." }
+  "expectations": \\\[
+    { "who": "...", "what\\\_you\\\_expect\\\_next": "...", "why": "..." }
   ],
-  "private_rationale": "Why this option rather than the alternatives. Not shown to anyone."
+  "private\\\_rationale": "Why this option rather than the alternatives. Not shown to anyone."
 }
 ```
 
@@ -438,7 +436,7 @@ to be handled separately and are unaffected by whether the EU and UK settle.
 ```json
 {
   "decision": "accept | continue",
-  "terms_decided": { "...settlement terms as currently tabled..." },
+  "terms\\\_decided": { "...settlement terms as currently tabled..." },
   "reasoning": "Why."
 }
 ```
@@ -449,14 +447,14 @@ to be handled separately and are unaffected by whether the EU and UK settle.
 {
   "report": "What happened at the table and where things stand. Seen by your capital colleague only.",
   "recommendation": {
-    "action": "accept | continue | walk_away",
-    "terms_referred": { "...settlement terms as tabled..." },
+    "action": "accept | continue | walk\\\_away",
+    "terms\\\_referred": { "...settlement terms as tabled..." },
     "reasoning": "Why."
   },
-  "requests": [
-    { "what_you_are_asking_for": "...", "why": "..." }
+  "requests": \\\[
+    { "what\\\_you\\\_are\\\_asking\\\_for": "...", "why": "..." }
   ],
-  "private_rationale": "Not shown to anyone."
+  "private\\\_rationale": "Not shown to anyone."
 }
 ```
 
@@ -469,30 +467,30 @@ to be handled separately and are unaffected by whether the EU and UK settle.
     "...settlement-term fields, each nullable...": null,
     "notes": "Any conditions in prose."
   },
-  "response_to_requests": [
+  "response\\\_to\\\_requests": \\\[
     { "request": "...", "granted": true, "why": "..." }
   ],
-  "private_rationale": "Not shown to anyone."
+  "private\\\_rationale": "Not shown to anyone."
 }
 ```
 
----
+\---
 
 ## **Leak audit — run before every batch**
 
 Check that no block contains:
 
-* Theory vocabulary the metrics depend on: *ratification, audience cost, domestic constituency, reservation point, BATNA, two-level, principal-agent, red line, precedent, credibility, reputation, bluff, escalation, mandate, authority envelope, divergence*  
-* Any statement that seats from the same country have different priorities  
-* Any statement that dispositions have been assigned, or that personality varies  
-* Any field name naming a construct being scored  
-* Asymmetric detail between paired seats (post↔post, capital↔capital)  
-* Any content from one country's Block 2b appearing in the other country's assembled prompt  
-* Any statement telling a seat it will be briefed on, or blind to, the table transcript — `capitalSeesTable` is an engine flag, not something a seat should be told about  
-* **New:** unresolved `{{PLACEHOLDER}}` tokens in any assembled prompt  
+* Theory vocabulary the metrics depend on: *ratification, audience cost, domestic constituency, reservation point, BATNA, two-level, principal-agent, red line, precedent, credibility, reputation, bluff, escalation, mandate, authority envelope, divergence*
+* Any statement that seats from the same country have different priorities
+* Any statement that dispositions have been assigned, or that personality varies
+* Any field name naming a construct being scored
+* Asymmetric detail between paired seats (post↔post, capital↔capital)
+* Any content from one country's Block 2b appearing in the other country's assembled prompt
+* Any statement telling a seat it will be briefed on, or blind to, the table transcript — `capitalSeesTable` is an engine flag, not something a seat should be told about
+* **New:** unresolved `{{PLACEHOLDER}}` tokens in any assembled prompt
 * **New:** Block 1 and Block 4 figures resolving to different values (§0.2)
 
 **Diagnostic:** paste an assembled seat prompt into a fresh model and ask what it thinks the experiment is measuring. If it can tell you, something is leaking.
 
----
+\---
 

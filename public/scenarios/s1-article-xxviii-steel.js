@@ -126,8 +126,7 @@ There are six rounds. Each round has three phases.
 
 PHASE 1 — THE TABLE
 The two Geneva seats speak, in a fixed order. What is said here is visible to
-both Geneva seats. Capital seats are not present at the table but are briefed
-on it afterwards. 
+both Geneva seats. Capital seats are not present at the table.
 
 PHASE 2 — CONSULTATION
 Each Geneva seat reports to its own capital colleague privately: what happened
