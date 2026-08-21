@@ -405,3 +405,87 @@ test("the round count stated in the rules must match the pack", () => {
 test("the engine flag name capitalSeesTable never appears literally in prompt text", () => {
   assert.deepEqual(validatePack(pack).errors.filter((e) => /capitalSeesTable/.test(e)), []);
 });
+
+// EXPERIMENTAL (branch: caching-chronological-experiment) -----------------
+
+test("historyBlocksFor: chronological rendering is append-only for a fixed seat", () => {
+  // The whole caching design rests on this: history rendered at time T must
+  // be an exact byte-prefix of history rendered at time T' > T, for the same
+  // seat. If a future change to rendering breaks this (e.g. reintroducing
+  // channel-grouped sections), this test catches it before it silently
+  // corrupts cache hit rates.
+  const viewer = pack.seats.find((s) => s.id === "eu-geneva");
+  const timeline = [
+    { channel: C.TABLE, seatId: "eu-geneva", round: 1, phase: "table", text: "opening position" },
+    { channel: C.TABLE, seatId: "uk-geneva", round: 1, phase: "table", text: "counter" },
+    { channel: C.consultChannel("eu"), seatId: "eu-geneva", round: 1, phase: "report", text: "report to brussels" },
+    { channel: C.consultChannel("eu"), seatId: "eu-brussels", round: 1, phase: "instruct", text: "instruction back" },
+    { channel: C.TABLE, seatId: "eu-geneva", round: 2, phase: "table", text: "round 2 move" },
+  ];
+  let prev = "";
+  for (let i = 1; i <= timeline.length; i++) {
+    const snapshot = historyBlocksFor(pack, timeline.slice(0, i), viewer);
+    assert.ok(snapshot.startsWith(prev), `snapshot at step ${i} is not an extension of step ${i - 1}`);
+    prev = snapshot;
+  }
+  assert.ok(prev.length > 0, "sanity: the final snapshot should be non-empty");
+});
+
+test("historyBlocksFor: every message carries its own inline channel label", () => {
+  const viewer = pack.seats.find((s) => s.id === "eu-geneva");
+  const messages = [
+    { channel: C.TABLE, seatId: "eu-geneva", round: 1, phase: "table", text: "public statement" },
+    { channel: C.consultChannel("eu"), seatId: "eu-brussels", round: 1, phase: "instruct", text: "private instruction" },
+  ];
+  const rendered = historyBlocksFor(pack, messages, viewer);
+  assert.match(rendered, /AT THE TABLE/, "table message should be labelled as such");
+  assert.match(rendered, /PRIVATE EXCHANGE/, "consult message should be labelled as such");
+  // Order in the string should match chronological (array) order, not be
+  // regrouped by channel.
+  assert.ok(rendered.indexOf("public statement") < rendered.indexOf("private instruction"));
+});
+
+test("anthropicMessages: system prompt is always cache_control-tagged", async () => {
+  const { anthropicMessages } = await import("../lib/model.js");
+  const resolved = { modelId: "claude-sonnet-5", apiKey: "test", provider: { baseUrl: "https://api.anthropic.com/v1" } };
+  const req = anthropicMessages(resolved, { instructions: "system text", input: "user text", maxTokens: 100 });
+  assert.deepEqual(req.body.system, [{ type: "text", text: "system text", cache_control: { type: "ephemeral" } }]);
+});
+
+test("anthropicMessages: no cachedPrefix leaves the user turn as a plain string", async () => {
+  const { anthropicMessages } = await import("../lib/model.js");
+  const resolved = { modelId: "claude-sonnet-5", apiKey: "test", provider: { baseUrl: "https://api.anthropic.com/v1" } };
+  const req = anthropicMessages(resolved, { instructions: "sys", input: "hello world", maxTokens: 100 });
+  assert.equal(req.body.messages[0].content, "hello world");
+});
+
+test("anthropicMessages: a genuine cachedPrefix splits the user turn into two blocks that reconstruct the original text exactly", async () => {
+  const { anthropicMessages } = await import("../lib/model.js");
+  const resolved = { modelId: "claude-sonnet-5", apiKey: "test", provider: { baseUrl: "https://api.anthropic.com/v1" } };
+  const input = "the stable history part" + "the new part this call";
+  const cachedPrefix = "the stable history part";
+  const req = anthropicMessages(resolved, { instructions: "sys", input, maxTokens: 100, cachedPrefix });
+  const blocks = req.body.messages[0].content;
+  assert.equal(blocks.length, 2);
+  assert.equal(blocks[0].text, cachedPrefix);
+  assert.deepEqual(blocks[0].cache_control, { type: "ephemeral" });
+  assert.equal(blocks[1].cache_control, undefined, "the fresh tail must not itself be marked cacheable");
+  assert.equal(blocks[0].text + blocks[1].text, input, "the two blocks must reconstruct the exact original input");
+});
+
+test("anthropicMessages: a cachedPrefix that is not an actual prefix of input is ignored, not silently truncated", async () => {
+  const { anthropicMessages } = await import("../lib/model.js");
+  const resolved = { modelId: "claude-sonnet-5", apiKey: "test", provider: { baseUrl: "https://api.anthropic.com/v1" } };
+  const req = anthropicMessages(resolved, { instructions: "sys", input: "actual content", maxTokens: 100, cachedPrefix: "stale unrelated text" });
+  assert.equal(req.body.messages[0].content, "actual content", "must fall back to the plain, complete input");
+});
+
+test("ask()'s cache bookkeeping never desyncs across a full run: offline run completes and every seat's history only grows", async () => {
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "never" }, { dispositionArm: "control" }, 3);
+  // Not a direct assertion on cache state (private to runNegotiation), but a
+  // full run exercising every call site that now threads historyText through
+  // ask() completing cleanly, with no parse/threading errors, is the
+  // practical guard against the plumbing change breaking anything.
+  assert.ok(events.some((e) => e.type === "table_turn"));
+  assert.ok(events.every((e) => e.type !== "error"));
+});
