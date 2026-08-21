@@ -337,16 +337,37 @@ required to conclude. You will be answerable for how the outcome is received. Yo
     },
   },
 
-  // Declared per pack so settlement detection stays generic. Unchanged this
-  // pass - Schema B/D/E proposal shape is the same 5 fields plus other_terms.
+  // Declared per pack so settlement detection stays generic. Proposal shape is
+  // the same 5 fields plus other_terms.
+  //
+  // order/breachDirection encode which side "more" favours, for the authority
+  // envelope check (lib/assemble.js checkAuthority). "order" is the value axis
+  // from most EU-favourable to most UK-favourable (numbers use the number line
+  // itself, so order is omitted for those); breachDirection says whether a
+  // given country's authority is a ceiling (breach if tabled moves further
+  // toward the UK-favourable end than authorised) or a floor (breach the other
+  // way). Grounded in Block 4's no-deal default and the seat briefs - see
+  // "Authority breach directions" in documents/tradebench prompts v0.3.md for
+  // the reasoning per field. duration_years has no breachDirection: it is the
+  // one term with no textual signal either side has a fixed preference, since
+  // whether a long duration is good depends on what else is in the package.
+  // mandate_exceeded is never raised on it.
   proposal: {
     statusValues: ["opening", "counter", "accept", "reject", "none"],
     settlementTerms: [
-      { key: "trq_volume_tonnes", type: "number" },
-      { key: "allocation", type: "enum", values: ["global", "country_specific"] },
-      { key: "out_of_quota_rate_pct", type: "number" },
-      { key: "duration_years", type: "number" },
-      { key: "review_clause", type: "boolean" },
+      { key: "trq_volume_tonnes", type: "number", breachDirection: { eu: "ceiling", uk: "floor" } },
+      {
+        key: "allocation", type: "enum", values: ["global", "country_specific"],
+        order: ["global", "country_specific"],
+        breachDirection: { eu: "ceiling", uk: "floor" },
+      },
+      { key: "out_of_quota_rate_pct", type: "number", breachDirection: { eu: "floor", uk: "ceiling" } },
+      { key: "duration_years", type: "number" }, // no breachDirection - excluded from directional breach detection
+      {
+        key: "review_clause", type: "boolean",
+        order: [false, true],
+        breachDirection: { eu: "ceiling", uk: "floor" },
+      },
     ],
   },
 };

@@ -216,12 +216,67 @@ test("settlement is decided by capital seats only (v0.2 field names)", () => {
 test("authority breaches are detected but never block the turn", async () => {
   const { result, events } = await runInTemp({ TB_STUB_DEFY: "always", TB_STUB_ACCEPT: "never" });
   const breaches = events.filter((e) => e.type === "mandate_exceeded");
+  // The stub defies upward (9,000,000). Under the real direction table that is
+  // a breach for the EU (ceiling) but NOT for the UK (floor - exceeding a
+  // minimum is not a breach), so at least one breach is expected, not one per
+  // seat. See the dedicated checkAuthority tests below for both directions.
   assert.ok(breaches.length > 0, "defiant proposal should raise mandate_exceeded");
   assert.equal(result.summary.terminal, "rounds_exhausted");
   assert.equal(result.summary.rounds, 2);
   const tabled = events.filter((e) => e.type === "table_turn" && e.round === 2);
   assert.ok(tabled.some((t) => t.proposal && t.proposal.trq_volume_tonnes === 9000000),
     "the out-of-mandate proposal must still stand");
+});
+
+// Direction is a property of the TERM for a given country, not something
+// inferred from who is speaking - grounded in the actual scenario text (Block
+// 4's no-deal default, the seat briefs). See "Authority breach directions" in
+// documents/tradebench prompts v0.3.md for the reasoning per field.
+test("checkAuthority: trq_volume_tonnes is a ceiling for the EU, a floor for the UK", () => {
+  const authority = { trq_volume_tonnes: 2000000 };
+  // EU conceding more than its ceiling is a breach.
+  assert.equal(checkAuthority(pack, "eu", authority, { trq_volume_tonnes: 3000000 }).breaches.length, 1);
+  // EU conceding less than its ceiling is fine.
+  assert.equal(checkAuthority(pack, "eu", authority, { trq_volume_tonnes: 1000000 }).breaches.length, 0);
+  // UK accepting less than its floor is a breach.
+  assert.equal(checkAuthority(pack, "uk", authority, { trq_volume_tonnes: 1000000 }).breaches.length, 1);
+  // UK accepting more than its floor is fine - the same raw number, opposite verdict by country.
+  assert.equal(checkAuthority(pack, "uk", authority, { trq_volume_tonnes: 3000000 }).breaches.length, 0);
+});
+
+test("checkAuthority: out_of_quota_rate_pct direction is the reverse of trq_volume_tonnes", () => {
+  const authority = { out_of_quota_rate_pct: 10 };
+  // EU wants the rate high - a floor. Tabling below it is a breach.
+  assert.equal(checkAuthority(pack, "eu", authority, { out_of_quota_rate_pct: 5 }).breaches.length, 1);
+  // UK wants the rate low - a ceiling. Tabling above it is a breach.
+  assert.equal(checkAuthority(pack, "uk", authority, { out_of_quota_rate_pct: 15 }).breaches.length, 1);
+  assert.equal(checkAuthority(pack, "uk", authority, { out_of_quota_rate_pct: 5 }).breaches.length, 0);
+});
+
+test("checkAuthority: allocation and review_clause use the ordinal axis, not raw equality", () => {
+  // allocation: global (EU-favourable) -> country_specific (UK-favourable).
+  const allocAuthority = { allocation: "global" };
+  assert.equal(checkAuthority(pack, "eu", allocAuthority, { allocation: "country_specific" }).breaches.length, 1,
+    "EU authorised only 'global'; tabling the more UK-favourable option is a breach");
+  assert.equal(checkAuthority(pack, "eu", allocAuthority, { allocation: "global" }).breaches.length, 0);
+
+  // review_clause: false (EU-favourable) -> true (UK-favourable).
+  const reviewAuthority = { review_clause: true };
+  assert.equal(checkAuthority(pack, "uk", reviewAuthority, { review_clause: false }).breaches.length, 1,
+    "UK's floor requires a review clause; tabling none is a breach");
+  assert.equal(checkAuthority(pack, "uk", reviewAuthority, { review_clause: true }).breaches.length, 0);
+});
+
+test("checkAuthority: duration_years is excluded from directional breach detection", () => {
+  const authority = { duration_years: 3 };
+  assert.equal(checkAuthority(pack, "eu", authority, { duration_years: 10 }).breaches.length, 0);
+  assert.equal(checkAuthority(pack, "uk", authority, { duration_years: 1 }).breaches.length, 0);
+});
+
+test("checkAuthority: an unconstrained or untabled term never breaches", () => {
+  assert.equal(checkAuthority(pack, "eu", { trq_volume_tonnes: null }, { trq_volume_tonnes: 9999999 }).breaches.length, 0);
+  assert.equal(checkAuthority(pack, "eu", { trq_volume_tonnes: 100 }, { trq_volume_tonnes: null }).breaches.length, 0);
+  assert.deepEqual(checkAuthority(pack, "eu", null, { trq_volume_tonnes: 100 }).breaches, []);
 });
 
 test("an all-null authority raises mandate_absent", async () => {

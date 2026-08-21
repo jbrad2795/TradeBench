@@ -476,7 +476,34 @@ to be handled separately and are unaffected by whether the EU and UK settle.
 }
 ```
 
-\---
+---
+
+## **Authority breach directions**
+
+> Engineering documentation, not seat-facing prompt content — added by Claude
+> Code, 21 August 2026, at JB's request. Governs `lib/assemble.js`
+> `checkAuthority()`, which decides whether a table turn breaches the standing
+> `authority` envelope from Schema E. Update this table (and the matching
+> `breachDirection`/`order` fields on the pack's `settlementTerms`) together if
+> either changes — they must not drift apart, the same discipline as Block
+> 1/Block 4 in §0.2.
+
+Each settlement term sits on an axis from most EU-favourable to most
+UK-favourable. A country's authority is either a **ceiling** (breach if the
+tabled value moves further toward the UK-favourable end than authorised) or a
+**floor** (breach the other way). Direction is a property of what the term
+means to that country — fixed on the pack, never inferred at runtime from who
+is speaking.
+
+| Term | EU | UK | Grounds |
+| ----- | ----- | ----- | ----- |
+| `trq_volume_tonnes` | ceiling | floor | UK's brief: the EU's opening offer "will lead to the destruction of the UK's steel industry" — UK wants more volume, EU concedes less. |
+| `out_of_quota_rate_pct` | floor | ceiling | The no-deal default sets a high rate (50% under `harsh`) as the EU's punitive fallback — high rate protects EU producers, hurts UK exporters. Reverse of the volume direction. |
+| `allocation` | ceiling (`global`) | floor (`country_specific`) | The no-deal default's fallback is `global` allocation. Country-specific access is what protects the UK's own share against faster-moving competitors (Turkey, Korea ship more volume) — explicitly a UK-favourable concession. |
+| `review_clause` | ceiling (`false`) | floor (`true`) | The no-deal default explicitly states "no review clause" as part of the EU's unilateral fallback — a review clause is a concession toward the UK, not a neutral mechanic. |
+| `duration_years` | — | — | **No direction declared.** The only settlement term never mentioned in the no-deal default or either seat's brief. Whether a long duration favours a side plausibly depends on what else is in the package (locking in *good* terms long is great for the UK; locking in *bad* terms long is not) — there is no textual basis for a fixed preference either way. Excluded from directional breach detection entirely; `mandate_exceeded` never fires on it. |
+
+---
 
 ## **Leak audit — run before every batch**
 
