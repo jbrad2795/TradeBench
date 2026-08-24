@@ -135,6 +135,7 @@ for (const arm of arms) {
 }
 
 console.log("");
-console.log(`Wrote ${results.length}/${total} runs to runs/ (.jsonl log + .md transcript each)`);
+const runsDirLabel = process.env.TB_RUNS_DIR || "runs/";
+console.log(`Wrote ${results.length}/${total} runs to ${runsDirLabel} (.jsonl log + .md transcript each)`);
 const settled = results.filter((r) => r.summary.terminal === "settled").length;
 console.log(`settled in ${settled}/${results.length} runs`);
