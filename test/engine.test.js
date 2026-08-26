@@ -467,7 +467,42 @@ test("a lock left by a dead process is taken over, not honoured", async () => {
 
 test("the round count stated in the rules must match the pack", () => {
   assert.ok(validatePack(pack).errors.every((e) => !/rounds/.test(e)), "no round-count error on the real pack");
-  assert.ok(validatePack({ ...pack, rounds: 4 }).errors.some((e) => /rounds/.test(e)));
+
+  // The pack now declares roundsVariants (six/four); validatePack checks
+  // each variant's RESOLVED rules text against its own declared round count,
+  // not a single top-level pack.rounds - so the mismatch has to be introduced
+  // inside a roundsVariant entry to exercise that path at all. Mutating
+  // pack.rounds directly (the old pre-roundsVariants shape of this test) is a
+  // no-op once roundsVariants is present, which is itself the bug the 20
+  // August rounds/prose-drift incident was about: a stale check that no
+  // longer looks at the thing that changed.
+  const broken = {
+    ...pack,
+    roundsVariants: { ...pack.roundsVariants, four: { ...pack.roundsVariants.four, rounds: 5 } },
+  };
+  assert.ok(
+    validatePack(broken).errors.some((e) => /roundsVariant "four"/.test(e) && /rounds/.test(e)),
+    "a roundsVariant whose declared rounds no longer matches its own resolved prose must be caught",
+  );
+});
+
+test("validate.js's leak audit covers every roundsVariant, not just the default", () => {
+  // Sweep finding: resolvedByVariant used to be built with resolveVariant(pack,
+  // key) - no roundsVariantKey argument - so it always resolved against
+  // pack.defaultRoundsVariant ("six"). Every check that iterates it (the
+  // BANNED_VOCAB/capitalSeesTable leak audit, the unresolved-placeholder
+  // check, the Block1/Block4 figure-consistency check) never once looked at
+  // the "four" roundsVariant's actual resolved text. A banned term planted
+  // only in a roundsVariant-specific placeholder would have passed silently.
+  const broken = JSON.parse(JSON.stringify(pack));
+  broken.roundsVariants.four = { ...broken.roundsVariants.four, ROUNDS_WORD: "BATNA" };
+  const r = validatePack(broken);
+  assert.ok(
+    r.errors.some((e) => /banned vocabulary "BATNA"/.test(e) && /four/.test(e)),
+    "a leak introduced only via a non-default roundsVariant must still be caught",
+  );
+  // The default roundsVariant's own text must be unaffected and stay clean.
+  assert.ok(!validatePack(pack).errors.some((e) => /banned vocabulary/.test(e)));
 });
 
 test("the engine flag name capitalSeesTable never appears literally in prompt text", () => {
