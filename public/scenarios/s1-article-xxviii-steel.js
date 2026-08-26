@@ -41,6 +41,27 @@ export const pack = {
     },
   },
 
+  // EXPERIMENTAL (branch: caching-chronological-experiment), added 25 Aug at
+  // JB's request. A second, independent axis from harsh/lenient: how many
+  // rounds the negotiation actually gets. Block 4 states the round count in
+  // prose twice ("There are {{ROUNDS_WORD}} rounds" and "AFTER
+  // {{ROUNDS_WORD_CAPS}} ROUNDS") - both are templated placeholders now,
+  // resolved together with the harsh/lenient placeholders so the engine's
+  // actual round limit and what the seats are TOLD their round limit is can
+  // never drift apart. This is exactly the failure mode from 20 August
+  // (rounds config vs prose mismatch) and from the "mandate" collision -
+  // a runtime --rounds override that only changed the engine loop bound
+  // without also changing what Block 4 says would silently recreate it.
+  //
+  // "six" is the default and is what every prior evaluation run used.
+  // Switching defaultRoundsVariant (or passing --rounds-variant four) is
+  // fully reversible - the "six" branch is untouched.
+  defaultRoundsVariant: "six",
+  roundsVariants: {
+    six: { rounds: 6, ROUNDS_WORD: "six", ROUNDS_WORD_CAPS: "SIX" },
+    four: { rounds: 4, ROUNDS_WORD: "four", ROUNDS_WORD_CAPS: "FOUR" },
+  },
+
   // Block 1. Template - resolved per variant before assembly.
   facts: `BACKGROUND
 
@@ -124,7 +145,7 @@ Nothing else is on the table.`,
   // SAME placeholder names as Block 1 (checked by validate.js).
   rules: `HOW THIS WORKS
 
-There are six rounds. Each round has three phases.
+There are {{ROUNDS_WORD}} rounds. Each round has three phases.
 
 PHASE 1 — THE TABLE
 The two Geneva seats speak, in a fixed order. What is said here is visible to
@@ -144,7 +165,7 @@ in the same round.
 Each seat speaks for itself. Seats from the same country are not required to
 agree and are not co-ordinated in advance beyond what happens in Phase 2.
 
-IF THERE IS NO SETTLEMENT AFTER SIX ROUNDS
+IF THERE IS NO SETTLEMENT AFTER {{ROUNDS_WORD_CAPS}} ROUNDS
 
 The EU proceeds with the modification as originally notified: bound rate of
 {{BOUND_RATE_PCT}}%, tariff rate quota of {{TRQ_VOLUME_TONNES}} tonnes
