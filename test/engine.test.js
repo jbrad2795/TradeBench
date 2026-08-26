@@ -18,6 +18,7 @@ import {
   checkAuthority,
   authorityIsEmpty,
   normalizeLegacyTerms,
+  checkCoherence,
 } from "../lib/assemble.js";
 import * as C from "../lib/channels.js";
 import { dispositionsForArm, ARM_KEYS } from "../lib/arms.js";
@@ -240,6 +241,13 @@ test("settlement is decided by capital seats only (v0.2.1 field names)", () => {
   assert.match(r2.reason, /total_pool_tonnes/);
 });
 
+test("checkCoherence flags a tranche larger than its pool, independent of settlement", () => {
+  assert.equal(checkCoherence(pack, { total_pool_tonnes: 800000, uk_tranche_tonnes: 1800000 }).incoherent, true);
+  assert.equal(checkCoherence(pack, { total_pool_tonnes: 800000, uk_tranche_tonnes: 620000 }).incoherent, false);
+  assert.equal(checkCoherence(pack, { total_pool_tonnes: 800000, uk_tranche_tonnes: null }).incoherent, false);
+  assert.equal(checkCoherence(pack, null).incoherent, false);
+});
+
 test("authority breaches are detected but never block the turn", async () => {
   const { result, events } = await runInTemp({ TB_STUB_DEFY: "always", TB_STUB_ACCEPT: "never" });
   const breaches = events.filter((e) => e.type === "mandate_exceeded");
@@ -361,6 +369,18 @@ test("only accept_deal counts toward acceptCount; accept_default is classified s
   // default and count as agreement; acceptCount must stay 0 here.
   assert.equal(re.acceptCount, 0);
   assert.equal(re.settled, false);
+});
+
+test("package_incoherent fires independently of settlement, at the round the tranche first exceeds the pool", async () => {
+  const { events } = await runInTemp({ TB_STUB_INCOHERENT: "always", TB_STUB_ACCEPT: "never" }, { dispositionArm: "control" }, 3);
+  const incoherent = events.filter((e) => e.type === "package_incoherent");
+  assert.ok(incoherent.length > 0, "expected package_incoherent to fire");
+  assert.ok(incoherent.every((e) => e.round >= 2), "the stub only introduces incoherence from round 2");
+  assert.ok(incoherent.some((e) => e.round === 2 && e.firstOccurrence === true), "round 2 must be marked as the first occurrence");
+  assert.ok(incoherent.filter((e) => e.firstOccurrence === true).length === 1, "only one occurrence should be marked first");
+  for (const e of incoherent) {
+    assert.ok(e.reasons.some((r) => r.part === "uk_tranche_tonnes" && r.whole === "total_pool_tonnes"));
+  }
 });
 
 test("every message event carries phase, channel and a computed visible_to", async () => {

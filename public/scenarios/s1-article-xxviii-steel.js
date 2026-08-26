@@ -406,6 +406,14 @@ required to conclude. You will be answerable for how the outcome is received. Yo
         breachDirection: { eu: "ceiling", uk: "floor" },
       },
     ],
+    // Relationships between settlement terms that must hold for a package to
+    // make sense, checked by checkCoherence() independently of whether
+    // anyone has accepted anything. "subset" means `part` may not exceed
+    // `whole`; both sides null is not a violation (nothing tabled on either
+    // yet), only a tabled part exceeding a tabled whole is.
+    coherenceRules: [
+      { type: "subset", part: "uk_tranche_tonnes", whole: "total_pool_tonnes" },
+    ],
   },
 };
 
