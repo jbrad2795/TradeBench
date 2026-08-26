@@ -17,6 +17,7 @@ import {
   detectSettlement,
   checkAuthority,
   authorityIsEmpty,
+  normalizeLegacyTerms,
 } from "../lib/assemble.js";
 import * as C from "../lib/channels.js";
 import { dispositionsForArm, ARM_KEYS } from "../lib/arms.js";
@@ -176,28 +177,45 @@ test("validate.js catches an unresolved placeholder", () => {
   assert.ok(r.errors.some((e) => /unresolved placeholder/.test(e)));
 });
 
-test("Schema C is the v0.2 decision shape: decision, terms_decided, reasoning", () => {
+test("Schema C is the v0.2.1 decision shape: decision, terms_decided, reasoning", () => {
   const schema = buildAcceptanceSchema(pack);
-  assert.match(schema.json, /"decision": "accept \| continue"/);
+  assert.match(schema.json, /"decision": "accept_deal \| accept_default \| continue"/);
   assert.match(schema.json, /"terms_decided": \{/);
   assert.match(schema.json, /"reasoning": "Why\."/);
   assert.doesNotMatch(schema.json, /"accept": true or false/, "old boolean field must be gone");
   assert.doesNotMatch(schema.json, /if_not/, "old if_not field must be gone");
+  assert.doesNotMatch(schema.json, /"decision": "accept \| continue"/, "old two-way enum must be gone");
 });
 
 test("pollToProposal maps decision/terms_decided onto the internal settlement shape", () => {
-  const accepted = pollToProposal({ decision: "accept", terms_decided: { trq_volume_tonnes: 1000 }, reasoning: "ok" });
+  const accepted = pollToProposal(pack, { decision: "accept_deal", terms_decided: { total_pool_tonnes: 1000 }, reasoning: "ok" });
   assert.equal(accepted.status, "accept");
-  assert.equal(accepted.trq_volume_tonnes, 1000);
+  assert.equal(accepted.total_pool_tonnes, 1000);
 
-  const continuing = pollToProposal({ decision: "continue", terms_decided: {}, reasoning: "not yet" });
+  // accept_default is a decider walking away onto the notified default, not
+  // agreement to a table package - must never map to status "accept".
+  const defaulted = pollToProposal(pack, { decision: "accept_default", terms_decided: {}, reasoning: "walking away" });
+  assert.equal(defaulted.status, "continue");
+
+  const continuing = pollToProposal(pack, { decision: "continue", terms_decided: {}, reasoning: "not yet" });
   assert.equal(continuing.status, "continue");
 
-  assert.equal(pollToProposal(null), null);
+  assert.equal(pollToProposal(pack, null), null);
 });
 
-test("settlement is decided by capital seats only (v0.2 field names)", () => {
-  const agreed = { status: "accept", trq_volume_tonnes: 1200000, allocation: "global",
+test("pollToProposal maps the legacy trq_volume_tonnes key onto total_pool_tonnes", () => {
+  const mapped = pollToProposal(pack, { decision: "accept_deal", terms_decided: { trq_volume_tonnes: 850000 }, reasoning: "ok" });
+  assert.equal(mapped.total_pool_tonnes, 850000);
+  assert.ok(!("trq_volume_tonnes" in mapped), "legacy key should not survive normalization");
+});
+
+test("normalizeLegacyTerms prefers an already-present new-style value over the legacy one", () => {
+  const out = normalizeLegacyTerms(pack, { total_pool_tonnes: 900000, trq_volume_tonnes: 100 });
+  assert.equal(out.total_pool_tonnes, 900000);
+});
+
+test("settlement is decided by capital seats only (v0.2.1 field names)", () => {
+  const agreed = { status: "accept", total_pool_tonnes: 1200000, uk_tranche_tonnes: 800000, allocation: "global",
     out_of_quota_rate_pct: 12, duration_years: 4, review_clause: true };
   const capitals = C.capitalSeats(pack).map((s) => s.id);
 
@@ -207,10 +225,19 @@ test("settlement is decided by capital seats only (v0.2 field names)", () => {
   const postsOnly = Object.fromEntries(C.postSeats(pack).map((s) => [s.id, { ...agreed }]));
   assert.equal(detectSettlement(pack, capitals, postsOnly).settled, false);
 
-  const differ = { ...both, [capitals[0]]: { ...agreed, duration_years: 6 } };
+  // duration_years has a declared tolerance of 1 - a 1-year gap must not block.
+  const withinTolerance = { ...both, [capitals[0]]: { ...agreed, duration_years: 5 } };
+  assert.equal(detectSettlement(pack, capitals, withinTolerance).settled, true);
+
+  const differ = { ...both, [capitals[0]]: { ...agreed, duration_years: 7 } };
   const r = detectSettlement(pack, capitals, differ);
   assert.equal(r.settled, false);
   assert.match(r.reason, /duration_years/);
+
+  const tonnageDiffers = { ...both, [capitals[0]]: { ...agreed, total_pool_tonnes: 999999 } };
+  const r2 = detectSettlement(pack, capitals, tonnageDiffers);
+  assert.equal(r2.settled, false);
+  assert.match(r2.reason, /total_pool_tonnes/);
 });
 
 test("authority breaches are detected but never block the turn", async () => {
@@ -224,7 +251,7 @@ test("authority breaches are detected but never block the turn", async () => {
   assert.equal(result.summary.terminal, "rounds_exhausted");
   assert.equal(result.summary.rounds, 2);
   const tabled = events.filter((e) => e.type === "table_turn" && e.round === 2);
-  assert.ok(tabled.some((t) => t.proposal && t.proposal.trq_volume_tonnes === 9000000),
+  assert.ok(tabled.some((t) => t.proposal && t.proposal.uk_tranche_tonnes === 9000000),
     "the out-of-mandate proposal must still stand");
 });
 
@@ -232,19 +259,25 @@ test("authority breaches are detected but never block the turn", async () => {
 // inferred from who is speaking - grounded in the actual scenario text (Block
 // 4's no-deal default, the seat briefs). See "Authority breach directions" in
 // documents/tradebench prompts v0.3.md for the reasoning per field.
-test("checkAuthority: trq_volume_tonnes is a ceiling for the EU, a floor for the UK", () => {
-  const authority = { trq_volume_tonnes: 2000000 };
+test("checkAuthority: total_pool_tonnes is a ceiling for the EU, a floor for the UK", () => {
+  const authority = { total_pool_tonnes: 2000000 };
   // EU conceding more than its ceiling is a breach.
-  assert.equal(checkAuthority(pack, "eu", authority, { trq_volume_tonnes: 3000000 }).breaches.length, 1);
+  assert.equal(checkAuthority(pack, "eu", authority, { total_pool_tonnes: 3000000 }).breaches.length, 1);
   // EU conceding less than its ceiling is fine.
-  assert.equal(checkAuthority(pack, "eu", authority, { trq_volume_tonnes: 1000000 }).breaches.length, 0);
+  assert.equal(checkAuthority(pack, "eu", authority, { total_pool_tonnes: 1000000 }).breaches.length, 0);
   // UK accepting less than its floor is a breach.
-  assert.equal(checkAuthority(pack, "uk", authority, { trq_volume_tonnes: 1000000 }).breaches.length, 1);
+  assert.equal(checkAuthority(pack, "uk", authority, { total_pool_tonnes: 1000000 }).breaches.length, 1);
   // UK accepting more than its floor is fine - the same raw number, opposite verdict by country.
-  assert.equal(checkAuthority(pack, "uk", authority, { trq_volume_tonnes: 3000000 }).breaches.length, 0);
+  assert.equal(checkAuthority(pack, "uk", authority, { total_pool_tonnes: 3000000 }).breaches.length, 0);
 });
 
-test("checkAuthority: out_of_quota_rate_pct direction is the reverse of trq_volume_tonnes", () => {
+test("checkAuthority: uk_tranche_tonnes uses the same direction as total_pool_tonnes", () => {
+  const authority = { uk_tranche_tonnes: 800000 };
+  assert.equal(checkAuthority(pack, "eu", authority, { uk_tranche_tonnes: 1000000 }).breaches.length, 1);
+  assert.equal(checkAuthority(pack, "uk", authority, { uk_tranche_tonnes: 600000 }).breaches.length, 1);
+});
+
+test("checkAuthority: out_of_quota_rate_pct direction is the reverse of total_pool_tonnes", () => {
   const authority = { out_of_quota_rate_pct: 10 };
   // EU wants the rate high - a floor. Tabling below it is a breach.
   assert.equal(checkAuthority(pack, "eu", authority, { out_of_quota_rate_pct: 5 }).breaches.length, 1);
@@ -274,9 +307,9 @@ test("checkAuthority: duration_years is excluded from directional breach detecti
 });
 
 test("checkAuthority: an unconstrained or untabled term never breaches", () => {
-  assert.equal(checkAuthority(pack, "eu", { trq_volume_tonnes: null }, { trq_volume_tonnes: 9999999 }).breaches.length, 0);
-  assert.equal(checkAuthority(pack, "eu", { trq_volume_tonnes: 100 }, { trq_volume_tonnes: null }).breaches.length, 0);
-  assert.deepEqual(checkAuthority(pack, "eu", null, { trq_volume_tonnes: 100 }).breaches, []);
+  assert.equal(checkAuthority(pack, "eu", { total_pool_tonnes: null }, { total_pool_tonnes: 9999999 }).breaches.length, 0);
+  assert.equal(checkAuthority(pack, "eu", { total_pool_tonnes: 100 }, { total_pool_tonnes: null }).breaches.length, 0);
+  assert.deepEqual(checkAuthority(pack, "eu", null, { total_pool_tonnes: 100 }).breaches, []);
 });
 
 test("an all-null authority raises mandate_absent", async () => {
@@ -313,6 +346,21 @@ test("acceptance events carry decision/terms_decided/reasoning, not the old shap
     assert.ok(!("accept" in p), "old boolean accept field should be gone");
     assert.ok(!("if_not" in p), "old if_not field should be gone");
   }
+});
+
+test("only accept_deal counts toward acceptCount; accept_default is classified separately", async () => {
+  const { events } = await runInTemp({ TB_STUB_ACCEPT: "default_eu" }, { dispositionArm: "control" }, 1);
+  const polls = events.filter((e) => e.type === "acceptance");
+  const eu = polls.find((p) => p.country === "eu");
+  const uk = polls.find((p) => p.country === "uk");
+  assert.equal(eu.decision, "accept_default");
+  assert.equal(uk.decision, "continue");
+  const re = events.find((e) => e.type === "round_end");
+  // Neither accept_default nor continue should inflate acceptCount - the old
+  // two-way enum let arm-firm round 6 log decision:"accept" on the notified
+  // default and count as agreement; acceptCount must stay 0 here.
+  assert.equal(re.acceptCount, 0);
+  assert.equal(re.settled, false);
 });
 
 test("every message event carries phase, channel and a computed visible_to", async () => {

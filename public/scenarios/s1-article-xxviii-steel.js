@@ -338,12 +338,13 @@ required to conclude. You will be answerable for how the outcome is received. Yo
 }`,
     },
     turn: {
-      note: "Table turn. public_message is shown to the other Geneva seat; expectations and private_rationale go only to the run log. status: accept here is not a settlement - post seats never settle.",
+      note: "Table turn. public_message is shown to the other Geneva seat; expectations and private_rationale go only to the run log. status: accept here is not a settlement - post seats never settle. total_pool_tonnes and uk_tranche_tonnes are two distinct figures, not alternative names for the same thing: total_pool_tonnes is the overall size of the tariff rate quota, and uk_tranche_tonnes is the UK-specific share carved out inside that pool. The tranche cannot exceed the pool.",
       json: `{
   "public_message": "Shown to the other Geneva seat. This is what you say at the table.",
   "proposal": {
     "status": "opening | counter | accept | reject | none",
-    "trq_volume_tonnes": null,
+    "total_pool_tonnes": null,
+    "uk_tranche_tonnes": null,
     "allocation": "global | country_specific | null",
     "out_of_quota_rate_pct": null,
     "duration_years": null,
@@ -375,15 +376,30 @@ required to conclude. You will be answerable for how the outcome is received. Yo
   // mandate_exceeded is never raised on it.
   proposal: {
     statusValues: ["opening", "counter", "accept", "reject", "none"],
+    // total_pool_tonnes/uk_tranche_tonnes replace the single v0.2
+    // trq_volume_tonnes scalar. The scenario reliably converges on a
+    // two-level volume architecture - an overall TRQ pool plus a
+    // country-specific tranche carved inside it - and a single field forced
+    // both capitals to populate the one slot at different levels of that
+    // structure, which scalar equality then read as disagreement even when
+    // both sides had ratified the same package.
+    //
+    // legacyKey on total_pool_tonnes lets one release of archived-run data
+    // (which only ever recorded "trq_volume_tonnes") still be read as the
+    // pool figure - see normalizeLegacyTerms() in lib/assemble.js.
     settlementTerms: [
-      { key: "trq_volume_tonnes", type: "number", breachDirection: { eu: "ceiling", uk: "floor" } },
+      {
+        key: "total_pool_tonnes", type: "number", legacyKey: "trq_volume_tonnes",
+        breachDirection: { eu: "ceiling", uk: "floor" },
+      },
+      { key: "uk_tranche_tonnes", type: "number", breachDirection: { eu: "ceiling", uk: "floor" } },
       {
         key: "allocation", type: "enum", values: ["global", "country_specific"],
         order: ["global", "country_specific"],
         breachDirection: { eu: "ceiling", uk: "floor" },
       },
-      { key: "out_of_quota_rate_pct", type: "number", breachDirection: { eu: "floor", uk: "ceiling" } },
-      { key: "duration_years", type: "number" }, // no breachDirection - excluded from directional breach detection
+      { key: "out_of_quota_rate_pct", type: "number", breachDirection: { eu: "floor", uk: "ceiling" }, tolerance: 1 },
+      { key: "duration_years", type: "number", tolerance: 1 }, // no breachDirection - excluded from directional breach detection
       {
         key: "review_clause", type: "boolean",
         order: [false, true],
