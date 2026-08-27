@@ -9,6 +9,7 @@
 //   node --env-file=.env run.js --scenario s1-article-xxviii-steel --arm control
 //   node --env-file=.env run.js --rounds-variant four --arm control --repeats 1
 //   node run.js --list-rounds-variants
+//   node --env-file=.env run.js --repeats 4 --repeat-start 5   (continues rep5..rep8)
 
 import { runNegotiation } from "./lib/engine.js";
 import { packIndex, defaultPackId } from "./public/scenarios/index.js";
@@ -20,7 +21,7 @@ import { isLive, modelName } from "./lib/model.js";
 
 function parseArgs(argv) {
   const out = {
-    repeats: 1, arm: "all", scenario: defaultPackId, variant: undefined, roundsVariant: undefined,
+    repeats: 1, repeatStart: 1, arm: "all", scenario: defaultPackId, variant: undefined, roundsVariant: undefined,
     list: false, models: false, arms: false, variants: false, roundsVariants: false,
     model: undefined, judgeModel: undefined, rounds: undefined,
   };
@@ -29,6 +30,14 @@ function parseArgs(argv) {
     const next = argv[i + 1];
     const v = inline ?? (next && !next.startsWith("--") ? argv[++i] : undefined);
     if (k === "repeats") out.repeats = Number(v) || 1;
+    // repeat-start lets a later invocation continue the repeat count from
+    // where an earlier one left off - the loop below always started at 1
+    // with no way to say "these are actually rep5..rep8", so two separate
+    // batches of the same arm both got labelled rep1 (in the filename AND
+    // in config.repeat), distinguishable only by timestamp. Filenames from
+    // an earlier batch are untouched; this only changes what a NEW batch is
+    // numbered.
+    else if (k === "repeat-start") out.repeatStart = Number(v) || 1;
     else if (k === "arm") out.arm = v;
     else if (k === "scenario") out.scenario = v;
     else if (k === "list") out.list = true;
@@ -129,7 +138,8 @@ console.log(`  scenario : ${opts.scenario}`);
 console.log(`  variant  : ${opts.variant || "(pack default)"}`);
 console.log(`  rounds   : ${opts.roundsVariant || "(pack default)"}`);
 console.log(`  mode     : ${isLive(opts.model) ? `LIVE (${modelName(opts.model)})` : "OFFLINE (stub responses, no API calls)"}`);
-console.log(`  matrix   : ${arms.length} arm(s) x ${opts.repeats} repeat(s) = ${total} run(s)`);
+console.log(`  matrix   : ${arms.length} arm(s) x ${opts.repeats} repeat(s) = ${total} run(s)` +
+  (opts.repeatStart !== 1 ? ` (rep${opts.repeatStart}..rep${opts.repeatStart + opts.repeats - 1})` : ""));
 console.log("");
 
 const results = [];
@@ -137,7 +147,7 @@ let n = 0;
 let warned = false;
 
 for (const arm of arms) {
-  for (let repeat = 1; repeat <= opts.repeats; repeat++) {
+  for (let repeat = opts.repeatStart; repeat < opts.repeatStart + opts.repeats; repeat++) {
     n++;
     process.stdout.write(`[${n}/${total}] arm=${arm} rep=${repeat} ... `);
     const started = Date.now();
