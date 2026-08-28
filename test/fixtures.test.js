@@ -26,8 +26,14 @@ import { pollToProposal, detectSettlement, checkCoherence } from "../lib/assembl
 import { reconcileSettlement } from "../lib/reconcile.js";
 import * as C from "../lib/channels.js";
 
+// Reads from baselines/, not runs/ - runs/ is gitignored scratch (see the
+// comment in .gitignore), so a fixture path into it works on the machine
+// that generated it and nowhere else: a fresh clone, CI, or another
+// contributor would 404 on every one of these tests. These four files are
+// also the first four of the tracked 20-run baseline added 27 Aug, so this
+// is just pointing at the copy that was always meant to be the durable one.
 const here = dirname(fileURLToPath(import.meta.url));
-const fixturesDir = join(here, "..", "runs", "evaluation runs");
+const fixturesDir = join(here, "..", "baselines", "2026-08-27-s1-v0.2-harsh-4rd-and-6rd-all-arms-claude-sonnet-5");
 
 function loadRun(filename) {
   const path = join(fixturesDir, filename);
