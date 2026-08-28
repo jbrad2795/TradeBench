@@ -434,6 +434,100 @@ test("paired brief/private-info lengths are compared within a level, not across"
   for (const g of Object.values(byLevel)) assert.equal(g.length, 2);
 });
 
+// --- human-seat demo hook (public/play.html) ------------------------------
+
+test("humanSeatId absent behaves identically to a normal run (parity)", async () => {
+  // The other 53 tests in this file already exercise runNegotiation without
+  // humanSeatId/onHumanTurn/skipLock, all still passing after those params
+  // were added - this test just makes the parity claim explicit and pins it.
+  const { result, events } = await runInTemp({ TB_STUB_ACCEPT: "never" });
+  assert.equal(result.summary.terminal, "rounds_exhausted");
+  assert.ok(events.some((e) => e.type === "table_turn"));
+});
+
+test("humanSeatId routes that seat's turns through onHumanTurn instead of the model", async () => {
+  const humanSeatId = "uk-geneva";
+  const seenKinds = [];
+  const onHumanTurn = async ({ seat, schema, instructions, input, kind }) => {
+    assert.equal(seat.id, humanSeatId);
+    assert.ok(instructions.length > 0, "human should get the same assembled prompt a model would");
+    assert.ok(input.length > 0);
+    assert.ok(schema && schema.json, "onHumanTurn should receive the real schema, not just its kind");
+    seenKinds.push(kind);
+    // Answer shaped exactly like turnStub - onHumanTurn must return what
+    // callModel returns, so the rest of the engine can't tell the difference.
+    return {
+      text: "{}",
+      parsed: {
+        public_message: "A human typed this.",
+        proposal: { status: "counter", total_pool_tonnes: 900000, uk_tranche_tonnes: 400000, allocation: "country_specific", out_of_quota_rate_pct: 20, duration_years: 3, review_clause: true, other_terms: [] },
+        expectations: [],
+        private_rationale: "human-authored",
+      },
+      demo: false,
+      truncated: false,
+      usage: null,
+    };
+  };
+
+  const { events } = await runInTemp(
+    { TB_STUB_ACCEPT: "never" },
+    { dispositionArm: "control" },
+    1,
+    { humanSeatId, onHumanTurn, skipLock: true },
+  );
+
+  const humanTurn = events.find((e) => e.type === "table_turn" && e.seatId === humanSeatId);
+  assert.ok(humanTurn, "human seat's table turn should still be logged normally");
+  assert.equal(humanTurn.public_message, "A human typed this.");
+  assert.equal(humanTurn.proposal.total_pool_tonnes, 900000);
+  // The other post seat (eu-geneva) must still be model/stub-played -
+  // humanSeatId scopes to exactly one seat, not the whole table.
+  const otherTurn = events.find((e) => e.type === "table_turn" && e.seatId === "eu-geneva");
+  assert.ok(otherTurn);
+  assert.notEqual(otherTurn.public_message, "A human typed this.");
+  // uk-geneva is a post seat: declaration once, then turn+report per round -
+  // the exact sequence lib/play.js's form-picker depends on to know which
+  // shape to render for each of the human's turns.
+  assert.deepEqual(seenKinds, ["declaration", "turn", "report"]);
+});
+
+test("skipLock lets a play-mode run proceed without touching the shared run lock", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "tb-play-"));
+  const saved = {};
+  for (const k of ["TB_RUNS_DIR", "OPENAI_API_KEY"]) saved[k] = process.env[k];
+  process.env.TB_RUNS_DIR = dir;
+  delete process.env.OPENAI_API_KEY; // force offline stubs for the AI-played seats
+  try {
+    const { acquireRunLock } = await import("../lib/lock.js");
+    // Hold the real batch lock, as a concurrent run.js batch would.
+    const release = acquireRunLock({ model: "test:model", scenario: "s1" });
+    try {
+      // A play-mode run (skipLock) must not throw "already in progress".
+      await assert.doesNotReject(
+        runNegotiation({
+          condition: { dispositionArm: "control" },
+          rounds: 1,
+          skipLock: true,
+          humanSeatId: "uk-geneva",
+          onHumanTurn: async () => ({
+            text: "{}",
+            parsed: { public_message: "hi", proposal: { status: "counter" }, expectations: [], private_rationale: "x" },
+            demo: false, truncated: false, usage: null,
+          }),
+        }),
+      );
+    } finally {
+      release();
+    }
+  } finally {
+    for (const [k, v] of Object.entries(saved)) {
+      if (v === undefined) delete process.env[k];
+      else process.env[k] = v;
+    }
+  }
+});
+
 test("a second run cannot start while one holds the lock", async () => {
   const { acquireRunLock } = await import("../lib/lock.js");
   const dir = mkdtempSync(join(tmpdir(), "tb-lock-"));

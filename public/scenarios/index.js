@@ -23,4 +23,10 @@ export const packIndex = () =>
     dispositions: Object.keys(p.dispositions || {}),
     variants: Object.keys(p.variants || {}),
     defaultVariant: p.defaultVariant || null,
+    roundsVariants: Object.keys(p.roundsVariants || {}),
+    defaultRoundsVariant: p.defaultRoundsVariant || null,
+    // Structural (key/type/values), never prose - safe alongside seatList.
+    // public/play.js uses this to build the human-turn form generically,
+    // the same way lib/assemble.js's termLines() generates Schemas C/D/E.
+    settlementTerms: p.placeholder ? [] : (p.proposal?.settlementTerms || []),
   }));

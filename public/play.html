@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="TradeBench - play a seat yourself" />
+    <title>TradeBench · Play a Seat</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/play.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="TradeBench home"><span class="brand-mark">T</span><span>TradeBench</span></a>
+      <div class="room-meta"><span class="status-dot"></span><span id="connectionLabel">Checking model</span></div>
+      <a class="quiet-button" href="/">&larr; Observation room</a>
+    </header>
+
+    <main class="shell">
+      <section class="briefing">
+        <div class="eyebrow">Play a seat</div>
+        <div class="briefing-heading">
+          <div>
+            <h1 id="scenarioTitle">Select a scenario</h1>
+            <p id="scenarioStatus">Demo mode - the other three seats are model-played. This is a preview of a possible next step, not a data-collection run.</p>
+          </div>
+        </div>
+
+        <div class="run-controls">
+          <label for="scenarioSelect">Scenario</label>
+          <select id="scenarioSelect"></select>
+          <label for="seatSelect">Your seat</label>
+          <select id="seatSelect"></select>
+          <label for="modelSelect">Other seats played by</label>
+          <select id="modelSelect"></select>
+          <label for="armSelect">Disposition arm</label>
+          <select id="armSelect"></select>
+          <label for="variantSelect">Scenario variant</label>
+          <select id="variantSelect"></select>
+          <label for="roundsSelect">Rounds</label>
+          <select id="roundsSelect"></select>
+          <button id="runButton">Take your seat</button>
+          <span id="runStatus" class="run-status"></span>
+        </div>
+      </section>
+
+      <section class="game-grid">
+        <aside class="panel roster-panel" aria-label="Seats">
+          <div class="panel-title"><span>Seats</span><span class="round-pill">Round <b id="roundNumber">–</b></span></div>
+          <div id="rosters"></div>
+          <div class="rules-card">
+            <span class="rules-icon">i</span>
+            <div><strong>Room protocol</strong><p>Seats speak in fixed order. Only the public message is shared; rationale and proposals are private to the log. Your seat is <b id="humanSeatLabel">not yet chosen</b>.</p></div>
+          </div>
+        </aside>
+
+        <section class="panel dialogue-panel" aria-label="Public record">
+          <div class="dialogue-header">
+            <div><span class="live-label"><i></i> Public record</span><h2>Negotiation</h2></div>
+            <div class="turn-indicator" id="turnIndicator"><span>Idle</span><small>No run in progress</small></div>
+          </div>
+          <div class="channels">
+            <section class="channel channel-table">
+              <h3><span class="ch-badge ch-table">Table</span> Visible to both delegations</h3>
+              <div class="dialogue" id="dialogue" aria-live="polite">
+                <div class="system-message">Choose your seat and press Take your seat.</div>
+              </div>
+            </section>
+            <div class="rooms">
+              <section class="channel channel-consult">
+                <h3><span class="ch-badge ch-eu">EU room</span> Not seen by the UK</h3>
+                <div class="dialogue small" id="consultEu"><div class="system-message">—</div></div>
+              </section>
+              <section class="channel channel-consult">
+                <h3><span class="ch-badge ch-uk">UK room</span> Not seen by the EU</h3>
+                <div class="dialogue small" id="consultUk"><div class="system-message">—</div></div>
+              </section>
+            </div>
+          </div>
+
+          <form class="composer" id="humanForm" hidden>
+            <div class="role-row"><span id="turnKindLabel">Your turn</span></div>
+            <div id="humanFormFields"></div>
+            <div class="composer-actions">
+              <span id="humanFormHint"></span>
+              <button type="submit" id="submitTurnButton">Submit</button>
+            </div>
+          </form>
+          <div class="ai-wait" id="aiWait" hidden>
+            <div class="thinking"><i></i><i></i><i></i></div>
+            <div><strong id="aiWaitLabel">Waiting on the other seats</strong><small>The model-played seats are answering.</small></div>
+          </div>
+        </section>
+
+        <aside class="panel terms-panel" aria-label="Researcher view">
+          <div class="panel-title">Researcher view <span class="unsaved">Private</span></div>
+          <div class="deal-score">
+            <span>Outcome</span><strong id="agreementStatus">—</strong>
+            <small id="agreementDetail">Settlement is decided by the end-of-round poll</small>
+          </div>
+          <div id="termsBoard" class="terms-list"></div>
+          <div id="pollBoard"></div>
+          <div class="panel-title divergence-title">Divergence</div>
+          <div id="divergenceBoard" class="divergence-list"><p class="system-message">None yet</p></div>
+          <p class="privacy-note">This is a preview: one seat is played by you instead of a model. Everything else about the rules, schemas and detection logic is identical to the real headless runs.</p>
+        </aside>
+      </section>
+    </main>
+
+    <template id="messageTemplate">
+      <article class="message">
+        <div class="avatar"></div>
+        <div class="message-body">
+          <div class="message-meta"><strong></strong><span></span><time></time></div>
+          <p></p>
+          <details class="rationale"><summary>Private rationale &amp; tabled terms</summary><div></div></details>
+        </div>
+      </article>
+    </template>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script type="module" src="/play.js"></script>
+  </body>
+</html>

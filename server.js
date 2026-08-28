@@ -11,6 +11,7 @@ import { listModels } from "./lib/models.js";
 import { ARMS } from "./lib/arms.js";
 import { runNegotiation } from "./lib/engine.js";
 import { isLive, modelName } from "./lib/model.js";
+import { streamPlayRun, submitHumanTurn } from "./lib/play.js";
 
 const root = fileURLToPath(new URL("./public/", import.meta.url));
 const port = Number(process.env.PORT || 4173);
@@ -25,6 +26,27 @@ const mime = {
 function send(res, status, body, type = "application/json; charset=utf-8") {
   res.writeHead(status, { "content-type": type, "cache-control": "no-store" });
   res.end(type.startsWith("application/json") ? JSON.stringify(body) : body);
+}
+
+/** Reads and JSON-parses a request body. Only the play-mode submit route needs one. */
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    let size = 0;
+    req.on("data", (chunk) => {
+      size += chunk.length;
+      if (size > 1_000_000) { req.destroy(); reject(new Error("body too large")); return; }
+      chunks.push(chunk);
+    });
+    req.on("end", () => {
+      try {
+        resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : {});
+      } catch {
+        reject(new Error("invalid JSON body"));
+      }
+    });
+    req.on("error", reject);
+  });
 }
 
 /**
@@ -90,6 +112,26 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/run") {
       return streamRun(req, res, url);
     }
+
+    // --- Human-seat demo (public/play.html). Isolated in lib/play.js -
+    // reuses runNegotiation() itself but never the batch pipeline, the run
+    // lock, or where evaluation data is written. See lib/play.js's header.
+    if (req.method === "GET" && url.pathname === "/api/play/run") {
+      return streamPlayRun(req, res, url);
+    }
+    if (req.method === "POST" && url.pathname.startsWith("/api/play/") && url.pathname.endsWith("/submit")) {
+      const runId = url.pathname.slice("/api/play/".length, -"/submit".length);
+      let answer;
+      try {
+        answer = await readJsonBody(req);
+      } catch (error) {
+        return send(res, 400, { error: error.message });
+      }
+      const ok = submitHumanTurn(runId, answer);
+      if (!ok) return send(res, 409, { error: "no turn is currently pending for this run" });
+      return send(res, 200, { ok: true });
+    }
+
     if (req.method !== "GET") return send(res, 405, { error: "Method not allowed" });
 
     const pathname = url.pathname === "/" ? "/index.html" : url.pathname;

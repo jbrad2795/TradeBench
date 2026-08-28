@@ -1,0 +1,24 @@
+/* Additions for the human-turn form. styles.css already has composer/
+   textarea/role-row/composer-actions (built for the original human-seat
+   demo, unused since the observation-room rebuild) - this only adds what's
+   missing: labelled field groups for structured (settlementTerms-shaped)
+   inputs, which styles.css never needed for a read-only observation room. */
+
+.composer{display:block}
+.composer[hidden]{display:none}
+.field-group{margin:10px 0 14px}
+.field-group>label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--muted);margin-bottom:5px}
+.field-group textarea,.field-group input[type="text"]{width:100%;border:1px solid #cfd8d3;border-radius:8px;padding:10px 12px;font:13px/1.45 inherit;outline:none;background:white}
+.field-group textarea{resize:vertical;min-height:64px}
+.field-group textarea:focus,.field-group input:focus,.field-group select:focus{border-color:var(--green-2);box-shadow:0 0 0 3px #e4eee9}
+.field-group .hint{font-size:9px;color:#929a96;margin-top:4px}
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 14px;margin:10px 0 14px}
+.term-field label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--muted);margin-bottom:4px}
+.term-field input,.term-field select{width:100%;border:1px solid #cfd8d3;border-radius:7px;padding:7px 9px;font:12px inherit;background:white;outline:none}
+.term-field input[type="checkbox"]{width:auto;padding:0;height:18px}
+.term-checkbox{display:flex;align-items:center;gap:7px}
+.term-checkbox label{margin:0}
+.section-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:var(--green-2);margin:16px 0 4px}
+.section-label:first-child{margin-top:0}
+#submitTurnButton{min-width:110px}
+.your-turn-banner{background:var(--mint);color:var(--green);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700;margin-bottom:10px}
