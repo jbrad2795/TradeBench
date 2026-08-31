@@ -3,6 +3,7 @@
 .DS_Store
 node_modules/
 runs/
+evaluation/
 tradebench repo summary.md
 to dos.txt
 
