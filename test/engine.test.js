@@ -121,6 +121,12 @@ test("only the focal seat is tagged in the focal arm", () => {
   assert.deepEqual(dispositionsForArm(pack, "control"), {});
 });
 
+test("focal_firm_eugva mirrors focal_firm_ukgva on the EU post seat", () => {
+  const m = dispositionsForArm(pack, "focal_firm_eugva");
+  assert.equal(m["eu-geneva"], "firm");
+  for (const s of seats) if (s.id !== "eu-geneva") assert.ok(!m[s.id], `${s.id} should be untagged`);
+});
+
 test("every arm names only dispositions the pack defines", () => {
   for (const key of ARM_KEYS) assert.doesNotThrow(() => dispositionsForArm(pack, key));
 });
