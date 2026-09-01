@@ -327,10 +327,15 @@ figcaption b { color: var(--ink); font-weight: 600; }
 
 /* --------------------------------------------------- prose lists (pitch etc) */
 
-section.prose ul, section.prose ol,
+/* .limits is excluded throughout: it is not a bulleted prose list, it hangs its
+   own dash in the margin and sets its own indent. Matching it here collapsed
+   that indent and pushed the dash under the first word. */
+section.prose ul:not(.limits), section.prose ol,
 #results > .inner ol { margin: 1.4rem 0; padding-left: 1.4rem; }
-section.prose li, #results > .inner ol li { margin: 0 0 .8rem; color: var(--ink-soft); padding-left: .3rem; }
-section.prose li::marker, #results > .inner ol li::marker { color: var(--green-2); }
+section.prose ul:not(.limits) > li, section.prose ol > li,
+#results > .inner ol li { margin: 0 0 .8rem; color: var(--ink-soft); padding-left: .3rem; }
+section.prose ul:not(.limits) > li::marker, section.prose ol > li::marker,
+#results > .inner ol li::marker { color: var(--green-2); }
 section.prose li b, #results > .inner ol li b { color: var(--ink); }
 section.prose h3 { margin-top: 2.4rem; }
 section.prose h3:first-of-type { margin-top: 1.5rem; }
