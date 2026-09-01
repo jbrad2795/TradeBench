@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeBench - Observation room</title>
+<meta name="description" content="A replay of one recorded TradeBench negotiation, showing the two consultation rooms staying sealed from each other.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">T</span><span>TradeBench</span></a>
+  <nav class="nav">
+    <a href="index.html">Overview</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="whats-next.html">What&rsquo;s next</a>
+    <a href="observation-room.html" class="current">Observation room</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="inner">
+    <h1>Watch one negotiation happen.</h1>
+    <p class="lede">A replay of a single recorded run - the public table on one side,
+    the two consultation rooms below it, staying sealed from each other for the whole
+    four rounds.</p>
+    <p class="framing">This page replays a run that has already happened, from a static
+    log file. It does not call any model API. There is no live harness behind it - that
+    would put an open spend surface on the public internet, and the recorded run shows
+    the same thing.</p>
+  </div>
+</section>
+
+<section style="padding-top:2rem">
+  <div class="replay">
+    <p class="small" id="replay-caption" style="max-width:52rem;margin-bottom:1.4rem"></p>
+    <div id="replay"></div>
+    <p class="small" style="max-width:52rem;margin-top:1.6rem">
+      Watch the two lower panels. Nothing crosses between them for the whole run - that
+      is <code>lib/channels.js</code> doing its job, and it is
+      <a href="evidence.html#methods">asserted by test</a> rather than left to care. The
+      capital seats can read the table but cannot speak into it. Private rationale is
+      expandable here for evaluation; no seat could ever see another's.
+      The full log for this run is in
+      <a href="evidence.html#reproduce">Reproduce it</a>.
+    </p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="inner">
+    <div>
+      <p><b>TradeBench</b> - an evaluation benchmark and harness for trade negotiations.&nbsp;</p>
+      <div class="slot" style="background:none;border-color:#3c6355;color:#9fbcb0" data-slot="JB - author line, affiliation, ChinaTalk attribution">
+        Jack Bradley - University of Cambridge. I am a trade practitioner and part-time postgraduate student. My research aims to explore the dynamics between China's domestic political economy and behaviour in international organisations.&nbsp;<div><div>Huiyuan Xie - Tsinghua University. My current research interests sit at the intersection of AI and social sciences, with a particular interest in legal AI and computational modelling of legal reasoning.<br><br></div><div>The model, evaluations, website and experiment design were created by Jack with Claude Code. Please forgive the messy humanities student vibe-coding in the repo.&nbsp;</div><div>Huiyuan acted as a consultant for experiment design and helped to set up the original demo. She takes no responsibility for said messy vibe-coding.&nbsp;</div></div></div>
+      <p class="cite" id="cite"></p>
+    </div>
+    <div>
+      <p><a href="https://github.com/jbrad2795/TradeBench">Repository</a><br>
+      <a href="data/results.json">results.json</a><br>
+      <a href="observation-room.html">Observation room</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="data/results.js"></script>
+<script src="app.js"></script>
+<script src="data/replay.js"></script>
+<script src="replay.js"></script>
+<script src="nav.js"></script>
+<!-- Draft mode: append ?edit - see site/README.md -->
+<script src="edit.js"></script>
+</body>
+</html>

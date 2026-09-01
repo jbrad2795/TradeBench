@@ -1,0 +1,612 @@
+[
+  {
+    "unit_id": "accommodating/rep1|r3|eu-geneva|post_to_capital",
+    "arm": "accommodating",
+    "run_id": "accommodating/rep1",
+    "round": 3,
+    "seat": "eu-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      2,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 2,
+        "axis": "domestic_constituency",
+        "quote": "we need confirmation this specific figure, not just the general direction, is sellable, since there will be no further round to walk it back if Council balks",
+        "reasoning": "Post models Council/member-state sellability as capital's distinct constraint, tailoring its request accordingly; no assertion its own view differs."
+      },
+      {
+        "level": 1,
+        "axis": "domestic_constituency",
+        "quote": "Explicit Brussels sign-off on whether 28% out-of-quota rate (vs our prior 30% ceiling) is acceptable to Council/producer member states",
+        "reasoning": "Post reports developments and requests authority/steer; capital's rationale aligns closely with post's own recommendation, no asserted gap."
+      },
+      {
+        "level": 3,
+        "axis": "domestic_constituency",
+        "quote": "Explicit Brussels sign-off on whether 28% out-of-quota rate ... is acceptable to Council/producer member states",
+        "reasoning": "Post makes own strategic recommendation but flags Council/domestic sellability as capital's distinct weighting concern."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nRound 3 closed with substantial convergence on the framework and a real, if still partially hedged, reciprocal offer from the UK. On mechanics: the UK accepted our narrow interim adjustment mechanism (objective volume/price triggers only, one interim check, no discretionary reopening), and both sides now treat duration (3 years), the review/interim mechanism, and TCA-specific treatment of UK-origin steel as settled elements of the package. That closes out three of the eleven negotiating items cleanly and removes a key plank of Japan/Korea's potential recruitment pitch to the UK on FTA disapplication.\n\nOn the core numbers, the UK moved again: from 1.1m/650k/25% to a pool of 800,000 tonnes, a UK-specific tranche of 400,000 tonnes, and an out-of-quota rate of 26%. This is against our authorised ceiling of 700,000/300,000/30% \u2014 the UK's new position exceeds our ceiling on all three metrics, though the gap is now narrow (100k on pool, 100k on tranche, 4 points on rate) compared to where we started.\n\nCritically, the UK also tabled the reciprocal detail we had been holding movement for: an offer to increase the EU's country-specific allocation under the UK's own safeguard by 'up to 20%' above current levels, and to move toward licensing-based administration for greater EU exporter predictability. This is real movement and the first quantified offer we've had after three rounds of asking \u2014 but it is still hedged ('up to', 'move toward') and explicitly conditional on our landing 'at or near' their newly tabled numbers, i.e. it is not yet a [redacted], standing commitment independent of what we do next. The UK was explicit that they want Round 4 to convert this into a settlement rather than trade further small increments, and flagged our own Round 3 language ('outer edge') back at us as leverage.\n[recommended action: continue]\n[recommendation reasoning] We are one round from either a settlement or reversion to the notified text. The UK's Round 3 move is real and the gap is now small enough to close, but their reciprocal offer on EU exporter treatment is still softly worded ('up to', 'move toward') and explicitly contingent on us matching their ask \u2014 it is not yet a [redacted] commitment we can bank independent of further concessions. I recommend Brussels authorise a final move to the midpoint (750,000t pool / 350,000t UK tranche / 28% out-of-quota rate) for Round 4, but structure it as a single package offer conditional on the UK firming up their safeguard offer into binding, specific terms (a fixed percentage increase, not 'up to'; a defined licensing administration commitment, not 'move toward') as part of the same settlement text. This lets us close by June, protects the substance of what Brussels asked us to extract, and avoids the risk of conceding volume/rate for a reciprocal offer that could be watered down or withdrawn once our tranche is locked in. If the UK will not [redacted] up their offer to match a binding commitment, we should hold at our previous ceiling (700k/300k/30%) rather than move to midpoint, since the reciprocal consideration for that extra movement would not yet be secured.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: Authority to move to a final package of 750,000t pool / 350,000t UK tranche / 28% out-of-quota rate in Round 4, exceeding our previous stated ceiling, but only as part of a single conditional offer requiring the UK to convert its safeguard reciprocity offer into [redacted], binding, specific terms (a fixed % increase and a defined licensing commitment) within the same settlement text.\n     why: The gap has narrowed enough that a midpoint split could close this in the final round, but we should not pay for a reciprocal offer that remains conditional and hedged. Tying our final movement explicitly to the UK firming up their offer protects us from conceding real market access for a soft, revocable-sounding promise.\n  2. asking for: Explicit Brussels sign-off on whether 28% out-of-quota rate (vs our prior 30% ceiling) is acceptable to Council/producer member states, given this is now the likely landing zone for closing in Round 4.\n     why: We are past our previously authorised ceiling on rate; before tabling this in the final round we need confirmation this specific figure, not just the general direction, is sellable, since there will be no further round to walk it back if Council balks.\n  3. asking for: Guidance on fallback posture if the UK will not [redacted] up the safeguard offer beyond 'up to 20%'/'move toward licensing' in Round 4 \u2014 specifically, whether we hold at 700k/300k/30% (our last disclosed position) rather than move to midpoint, and treat that as our final offer regardless of UK's counter.\n     why: We need a clear instruction for the decision phase: if reciprocity isn't firmed up, we should not let momentum alone justify further movement, especially in the final round where there is no subsequent opportunity to recover ground."
+  },
+  {
+    "unit_id": "accommodating/rep2|r3|uk-geneva|post_to_capital",
+    "arm": "accommodating",
+    "run_id": "accommodating/rep2",
+    "round": 3,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      3,
+      2,
+      1
+    ],
+    "passes": [
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "That trajectory... suggests they have further room but are managing it carefully against Turkey/Korea proportionality risk.",
+        "reasoning": "Post gives own read on EU room/risk while asking capital to set the floor, mirroring A2 pattern."
+      },
+      {
+        "level": 2,
+        "axis": "other",
+        "quote": "That trajectory... suggests they have further room but are managing it carefully against Turkey/Korea proportionality risk.",
+        "reasoning": "Post models EU's negotiating room and tailors its recommended landing zone, without asserting its own preference differs from capital's."
+      },
+      {
+        "level": 1,
+        "axis": "domestic_constituency",
+        "quote": "I am asking London to confirm the final floor and whether the safeguard-goodwill card should be quantified in Round 4",
+        "reasoning": "Post reports progress and requests steer/authority; no assertion its own view differs from capital's likely stance."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nRound 3 saw genuine convergence. The EU formally conceded our data-methodology point from Round 2 \u2014 they confirmed line-specific UK trade on the 41 affected lines is materially higher than their earlier 'share of aggregate imports' framing suggested, and stopped contesting it. They maintained, however, that a UK-only allocation sized off that figure would foreclose Turkey/Korea's parallel claims, since those two ship larger volumes on these same lines. They made a fourth consecutive substantive move: pool to 900,000t, UK tranche to 500,000t, out-of-quota rate down to 20%, duration to five years, and confirmed the year-three review as genuinely two-way and discretionary (able to move rate or volume in either direction, informed by how the Turkey/Korea/India/Japan claims land). They also agreed to stand up the product-carve-out/anti-circumvention working track immediately, with leads named this week.\n\nWe banked the rate (20%) and duration (5 years) rather than continuing to press those, per instructions, and moved on volume to a pool of 1,150,000t with UK product-line allocations summing to 850,000t, built around the segmentation structure. We restated segmentation as the mechanism that protects the EU's proportionality concern versus Turkey/Korea without diluting the UK's position on lines where we are the dominant supplier \u2014 the EU did not push back on this structural point. We flagged, without linking or quantifying, that the UK could offer a goodwill improvement to EU allocations under our own safeguard as part of an overall package, contingent on serious EU movement on volume this round \u2014 a soft lever left open for Round 4.\n\nRemaining gap after Round 3: pool 900k (EU) vs 1,150k (UK) \u2014 a 250k gap; UK tranche/allocations 500k (EU) vs 850k (UK) \u2014 a 350k gap. Rate (20%) and duration (5yr) are now settled between the two sides. The discretionary two-way review at year three is agreed in substance. TCA/FTA-disapplication carve-out and non-linkage to our own safeguard measure remain banked from Rounds 1\u20132 and were not revisited. We are close to our authorised floor (pool 1,100,000 / allocations 800,000) but have not yet stated it.\n[recommended action: continue]\n[recommendation reasoning] This is the last round. The EU has now moved four times in substance (pool 550k\u2192650k\u2192900k from a 400k notified position; tranche 200k\u2192350k\u2192500k; rate 35%\u219225%\u219220%; duration 3\u21924\u21925 years) and has conceded our core methodology argument on line-specific trade share. That trajectory, plus their explicit ask for the UK's 'next move' to close the volume gap, suggests they have further room but are managing it carefully against Turkey/Korea proportionality risk. We should use Round 4 to seek a final landing zone in the region of our authorised floor (pool ~1,050,000\u20131,100,000 / UK allocations ~750,000\u2013800,000), holding rate and duration as already settled, and only deploy the safeguard-goodwill signal with a number attached if it is needed to bridge the last increment. Walking away now would be premature given the pace of EU movement and the compressed timeline pressure on both sides working in our favour; but continuing indefinitely without new authority risks running out of rounds without a deal, so I am asking London to confirm the final floor and whether the safeguard-goodwill card should be quantified in Round 4 to close the gap.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: Confirm final Round 4 floor: is 1,100,000t pool / 800,000t UK allocations still the true floor, or is there additional room (e.g., toward 1,000,000/700,000) if that is what closes the deal within this round, given we only have one round left?\n     why: Round 4 is the last round under the process rules; failure to settle triggers the EU's original 400k/50%/global FCFS notified position with no review clause, which is far worse than anything currently on the table. We need clarity on our true bottom line to avoid either over-conceding or walking away from a deal better than the no-deal fallback.\n  2. asking for: Authority to quantify the safeguard-goodwill gesture (improved EU country-specific allocation under the UK's own measure) as a closing sweetener in Round 4, and a ceiling figure for what we can offer.\n     why: We floated this without a number in Round 3 to test EU reaction; if the EU's Round 4 move still leaves a modest gap on tranche/pool, a costed goodwill gesture on the UK's own safeguard could close it without further movement on the TRQ figures themselves, but we cannot quantify it without capital clearance since it affects a separate, live UK measure.\n  3. asking for: A steer on whether to accept a deal at or near the floor in Round 4 even if it is below London's ideal, given the risk of no settlement reverting to the EU's original notified terms.\n     why: With only one round remaining, we need an explicit instruction on whether 'good enough' terms close to our floor should be accepted outright in Phase 3, or whether London wants to risk walking away to preserve the option of UK retaliation/withdrawal of equivalent concessions under Article XXVIII after six months."
+  },
+  {
+    "unit_id": "accommodating/rep4|r3|eu-geneva|post_to_capital",
+    "arm": "accommodating",
+    "run_id": "accommodating/rep4",
+    "round": 3,
+    "seat": "eu-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      3,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "I believe this satisfies the substance of our reciprocity ask, but before I close on this basis in round 4 I want Brussels' sign-off",
+        "reasoning": "Post asserts own judgment that condition is met while flagging capital's stricter mandate may differ."
+      },
+      {
+        "level": 1,
+        "axis": "escalation_scope",
+        "quote": "removing any incentive for the UK to walk toward a Japan/Korea coordinated FTA retaliation, which remains our key strategic risk to avoid",
+        "reasoning": "Post reports progress and seeks authority/sign-off; no stated gap between its view and capital's, which grants matching rationale."
+      },
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "I believe this satisfies the substance of our reciprocity ask, but before I close on this basis in round 4 I want Brussels' sign-off",
+        "reasoning": "Post asserts own judgment that reciprocity is met while flagging capital may require more, per mandate."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nRound 3 concluded with continued convergence. We closed the circumvention/origin-verification issue formally on the record (UK's earlier unconditional offer, now locked in as agreed and closed). We tabled 1.8m tonnes total pool / 1.3m tonne UK-specific tranche / 25% out-of-quota rate, confirmed the three-year term with a genuinely two-way 18-month review (able to move rates/volumes either direction on trade data), and put forward the structural workaround on TCA: no named exemption from the disapplication clause, but UK-tranche volumes get de facto zero-duty treatment functionally equivalent to TCA preference, with the disapplication clause formally preserved and biting only beyond the tranche at the standard out-of-quota rate. We were explicit and final that a named exemption is not available in any round. The UK accepted the architecture in principle \u2014 they will not manufacture a standoff over the label \u2014 but pushed back hard on the tranche size, arguing 1.3m against their 2.4m average trade means over a third of current trade would fall into the disapplied 25% bracket every year, which they call a structural cut dressed as functional equivalence. They countered at 2.2m total pool / 1.6m UK tranche, held the out-of-quota rate at 20% (explicitly because under our own architecture that rate now bites on real volumes, raising its importance to them), and confirmed concretely \u2014 not just 'in principle' \u2014 that they will maintain EU country-specific allocations under their own safeguard at current levels. They added a new, specific condition: binding legal drafting commitments locking the tranche mechanism into text, not administrative practice vulnerable to future erosion via Commission decision or trade defence review. They signalled willingness to close in round 4 if tranche, rate, and durability drafting move further.\n[recommended action: continue]\n[recommendation reasoning] The gap has narrowed to a genuinely closeable range: 1.8m/1.3m/25% vs their 2.2m/1.6m/20%. A move to roughly 2.0m/1.5m/22% keeps pace with their movement, signals good faith, and is defensible domestically as a substantial but not unlimited concession \u2014 well short of their 2.2m/1.6m/20% ask but materially better than our last offer. The UK's reciprocity commitment (maintaining EU allocations at current levels, stated concretely rather than 'in principle') should be treated as satisfying our condition and locked in now. Their durability/legal-text demand on the tranche mechanism is, in fact, low-cost for us: because the domestic implementing legislation is still open, we can commit to specific binding drafting language on the tranche mechanism without additional exposure \u2014 this actually helps us close the TCA architecture question definitively rather than leaving it as a political sore point. We should offer that drafting commitment explicitly in round 4 as the 'cost-free' sweetener that lets us hold firmer on the rate than the UK wants (22% rather than 20%), while giving real ground on tranche size (1.5m, closer to their 1.6m than our 1.3m).\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: Authority to move to 2.0m tonnes total pool / 1.5m tonne UK-specific tranche / 22% out-of-quota rate for round 4, with room to land at 2.1m/1.55m/20-22% as a final closing position if the UK accepts our legal-text durability offer and confirms reciprocity formally in writing.\n     why: The pace of convergence over three rounds strongly suggests round 4 can close the deal. Landing close to but not exactly at the UK's figures preserves some Council-facing distinction from a straight capitulation to their opening ask, while removing any incentive for the UK to walk toward a Japan/Korea coordinated FTA retaliation, which remains our key strategic risk to avoid.\n  2. asking for: Confirmation that we can offer specific binding legal drafting commitments on the tranche mechanism (i.e., text guaranteeing the de facto zero-duty treatment for the UK tranche is not subject to unilateral administrative erosion) as part of the domestic implementing act, given that legislation is still open.\n     why: This directly answers the UK's durability concern at effectively no cost to us, since the implementing act is not yet finalised and can incorporate this from the outset. It lets us hold the rate and tranche size firmer than we otherwise could, by trading a text commitment we were likely to need to make anyway for numerical concessions we would rather not make.\n  3. asking for: Confirmation that the UK's concrete commitment to maintain EU country-specific allocations under its own safeguard at current levels is sufficient to treat the reciprocity condition as met, or whether we need a further written 'improvement' indication before final settlement.\n     why: The UK has now moved from 'prepared in principle' to a concrete confirmation at current levels. I believe this satisfies the substance of our reciprocity ask, but before I close on this basis in round 4 I want Brussels' sign-off that current-levels maintenance (without a further improvement) is acceptable, since the mandate given in round 2 asked for a written indication of the shape of 'improvement,' which the UK has not yet fully supplied."
+  },
+  {
+    "unit_id": "control/rep1|r3|uk-geneva|post_to_capital",
+    "arm": "control",
+    "run_id": "control/rep1",
+    "round": 3,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "institutional_timetable",
+        "quote": "operating within the authority given, I tabled: UK tranche 1.2 million tonnes",
+        "reasoning": "Post reports progress and seeks authority/instructions; no assertion that its own view differs from capital's."
+      },
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "London should decide now whether to authorise a further move down on tranche",
+        "reasoning": "Post recommends and requests authority; no assertion that capital's own priorities differ from its judgment."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "A settlement in Round 4 would reduce the case for UK participation in joint retaliation, but if talks fail, London may want to reconsider coordination",
+        "reasoning": "Post gives own cost-benefit read on Japan/Korea coordination, signalling capital will weigh trade-offs differently."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nRound 3 concluded with a further substantial EU move. New EU package: total pool 750,000t, UK country-specific tranche 650,000t (up from 550,000t), out-of-quota rate cut to 28% (from 35%), and a materially improved review mechanism - 12-month first review on the same utilisation formula, but now with a bounded automatic adjustment: if UK utilisation exceeds the threshold for two consecutive reporting periods, the tranche adjusts automatically within a pre-agreed +/-15% corridor. Commission/Council discretion is now reserved only for 'exceptional circumstances' (market disruption/surge), not as a general override - this is a genuine answer to our 'no teeth' objection from Round 2. They also offered to share a methodology paper bilaterally on the tranche calculation, though framed as explanatory rather than reopening the base data. Critically, the EU signalled this is close to their ceiling: they said they do not have 'a long further ladder of tranche increases' behind this, but hinted at 'limited further room on the rate specifically' if we engage seriously with the package as a whole.\n\nWe responded by welcoming the bounded automatic adjustment as real progress, but pushed for the 'exceptional circumstances' language to be tightened to something closer to transitional safeguard standards with clear evidentiary thresholds, to prevent it becoming a back door to discretion. We accepted the offer of a bilateral methodology paper. On numbers, operating within the authority given, I tabled: UK tranche 1.2 million tonnes within a total pool of 1.5 million tonnes, out-of-quota rate 26%, and the 12-month review with the bounded automatic adjustment structure as they've now framed it, subject to tightening the exceptional-circumstances carve-out. This was presented as a genuine move down from our 1.4m/25% Round 2 position, and I explicitly framed tranche - not rate - as the binding constraint now, since the rate gap (28% vs 26%) is narrow while the tranche gap (650,000t vs 1.2m) remains large (roughly \u00a3550,000t/73% of baseline still short by our read).\n\nNo agreement this round, as expected given remaining authority. The rate gap is now genuinely close and likely closable in Round 4. The tranche gap is the live problem: EU says it's near its ceiling; we are holding at the floor of our authorised range. This is the last round before default to the EU's originally notified measure (400,000t, 50%, global FCFS, no review) if no settlement is reached - which would be significantly worse for us than anything currently on the table, and would put us into a retaliation calculus with a 6-month lag before any UK withdrawal of concessions could bite.\n[recommended action: continue]\n[recommendation reasoning] The EU has moved substantially across three rounds (tranche 300k->550k->650k; rate 50%->35%->28%; review from discretionary 3-year to a genuinely bounded automatic 12-month mechanism). The rate gap is now narrow (2pp) and almost certainly closable next round. The tranche gap remains the real obstacle - 650,000t vs our 1.2m ask - and the EU has explicitly signalled this is near their ceiling while offering 'limited further room on rate' as a trade-off. This is the final round before default to the EU's original notified measure, which is materially worse for the UK on every dimension (400k global FCFS, 50% duty, no review) and would trigger a slow, costly retaliation cycle rather than actual market access. Given that, London should decide now whether to authorise a further move down on tranche (e.g. toward 850,000-950,000t) paired with locking in a lower rate (24-25%) and the tightened review language, to give Geneva room to close in Round 4 - rather than holding at 1.2m and risking no deal. The review mechanism's substance (bounded corridor, narrowed discretion) is now close to acceptable subject to tightening the exceptional-circumstances definition; this should not be the sticking point going into the final round.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: Authority to move the UK tranche ask down from 1.2m tonnes toward a realistic landing zone (indicatively 850,000-950,000t) in Round 4, in exchange for locking in a lower out-of-quota rate (24-25%) and the tightened review mechanism\n     why: The EU has signalled its ceiling on tranche but flexibility on rate; without room to move on tranche in the final round we risk either no deal (worse for the UK on every metric) or an impasse that forces default to the original notified measure\n  2. asking for: A clear instruction on the minimum acceptable tranche floor and the maximum acceptable out-of-quota rate for a final Round 4 settlement, including whether London would accept the bounded automatic adjustment mechanism (with tightened exceptional-circumstances language) as satisfying the 'binding review' requirement\n     why: We are at the last round before default; Geneva needs [redacted] settlement parameters rather than a floor/ceiling range to close or credibly walk away with London's authority behind the decision\n  3. asking for: Guidance on how to handle continued Japanese/Korean pressure to join a joint FTA retaliation move against the EU, given this is now live in the background as we approach a possible UK-EU settlement\n     why: A settlement in Round 4 would reduce the case for UK participation in joint retaliation, but if talks fail, London may want to reconsider coordination with Japan and Korea before the six-month retaliation window opens"
+  },
+  {
+    "unit_id": "control/rep1|r4|uk-geneva|post_to_capital",
+    "arm": "control",
+    "run_id": "control/rep1",
+    "round": 4,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "Recommend London authorise closing at or near the EU's tabled final position rather than testing finality further with no further round available.",
+        "reasoning": "Post reports and requests authority; no assertion its own view diverges from capital's likely position."
+      },
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "asking for: A decision on how to handle continued Japanese/Korean pressure to join joint FTA retaliation against the EU",
+        "reasoning": "Post reports fully aligned recommendation and seeks authority/decisions; no divergence from capital's view asserted."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "continued UK involvement in a joint retaliation push against the EU on FTA disapplication grounds becomes harder to justify and could complicate the broader EU relationship",
+        "reasoning": "Post names its own read on broader relationship risk, signalling a priority capital may not share."
+      }
+    ],
+    "scored_text": "[post_report | round 4]\nRound 4 (final round) has closed at the table. The EU tabled what it explicitly called its final position: total pool 900,000t, UK country-specific tranche 800,000t, out-of-quota rate 26% (matching our ask exactly), duration 4 years, and a 12-month first review with the bounded automatic \u00b115% corridor adjustment (triggered after two consecutive periods above threshold), with the exceptional-circumstances discretion carve-out tightened to transitional-safeguard-style evidentiary standards as we requested. The unconditional FTA carve-out is confirmed delivered, and delinkage from UK safeguard treatment of EU exporters is confirmed as a separate track, addressed in good faith going forward. The EU explicitly stated there is 'no further ladder' behind this offer on tranche or rate, and linked their ceiling to the need to hold a defensible, proportionate line against the larger parallel Turkey/Korea claims.\n\nActing on authority, I tabled the UK final position: tranche 900,000t within a pool of 1,050,000t, rate 26% (matched), same review/adjustment structure, FTA carve-out as already agreed. This is within 100,000t on tranche and 150,000t on pool of the EU's final offer \u2014 every other element of the package (rate, review bindingness, exceptional-circumstances language, duration was not contested by us, FTA carve-out) is now aligned or accepted. The EU did not respond further after our table intervention; per the round structure, no further table time exists after this round.\n\nThe practical choice now is: accept a settlement in the region of the EU's final offer (800k tranche/900k pool/26%/4yr/12mo bounded review), push for something nearer our 900k/1.05m ask with the risk that the EU treats its round-4 position as genuinely final and no settlement results this round, or default. Default reverts to the originally notified measure: 400,000t pool, global FCFS, 50% out-of-quota, no review \u2014 with UK access to that pool contested against Turkey and Korea, who ship larger volumes than we do. That outcome is dramatically worse than either figure now on the table on every metric, and would put us into a six-month wait before any UK withdrawal of concessions could even take effect, with no guarantee such retaliation restores lost market access rather than just imposing mutual cost.\n[recommended action: accept]\n[recommendation reasoning] The EU has moved from an opening tranche of 300,000t to 800,000t, from a 50% out-of-quota rate to 26% (matching our own ask), and from a discretionary three-year review to a genuinely bounded automatic \u00b115% adjustment mechanism at 12 months with tightened, evidentiary exceptional-circumstances language \u2014 addressing our core 'no teeth' objection in full. The remaining gap to our stated floor is narrow (100,000t tranche, 150,000t pool) against a package that is otherwise fully aligned with our asks on rate, review bindingness, and FTA treatment. This is the final round; the EU has stated clearly and consistently across two rounds that it has no further room on tranche or rate, and has tied this partly to needing a defensible line against Turkey and Korea's larger claims \u2014 a constraint that is plausible and not simply a negotiating tactic given the parallel process. Holding out for the last 100,000-150,000t risks total collapse into the originally notified measure (400,000t global FCFS pool at 50%, no review), which would be catastrophic for UK producers relative to either figure now on the table, and would only be remediable through a slow, uncertain retaliation process six months out. The marginal value of the residual ask is small relative to the downside risk of no deal. Recommend London authorise closing at or near the EU's tabled final position rather than testing finality further with no further round available.\n\n[release_requested | round 4] the post seat asked capital for:\n  1. asking for: Authority to accept a settlement at the EU's final tabled figures (800,000t tranche / 900,000t pool / 26% out-of-quota rate / 4-year duration / 12-month bounded automatic review with tightened exceptional-circumstances language), or authority to make one last attempt to close the gap slightly (e.g. splitting the difference at ~850,000t tranche / 975,000t pool) if you judge it worth the risk of the EU holding [redacted].\n     why: This is the last round; there is no further table time. A decision is needed now on whether the residual 100,000-150,000t gap is worth risking default to the originally notified measure, which would be materially worse for the UK industry than either number currently on the table.\n  2. asking for: A decision on how to handle continued Japanese/Korean pressure to join joint FTA retaliation against the EU, now that a UK-EU settlement in this range appears achievable.\n     why: If we settle, continued UK involvement in a joint retaliation push against the EU on FTA disapplication grounds becomes harder to justify and could complicate the broader EU relationship; London should decide now whether to formally step back from that coordination once a settlement is confirmed.\n  3. asking for: Guidance on whether the 4-year duration (raised by the EU for the first time this round, and not explicitly contested by us at the table) is acceptable, or whether we should seek to shorten it or add a fuller renegotiation right at expiry.\n     why: Duration was not previously a live figure in the negotiation; the EU introduced 4 years in its final offer. We did not push back on it at the table given the more pressing tranche/pool gap, but London should confirm whether this is acceptable as part of a final settlement or whether it should be flagged as an outstanding issue even if we close on tranche/rate/review."
+  },
+  {
+    "unit_id": "control/rep2|r2|uk-geneva|post_to_capital",
+    "arm": "control",
+    "run_id": "control/rep2",
+    "round": 2,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      3,
+      3,
+      1
+    ],
+    "passes": [
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "this may strengthen the case either for pushing harder alone, or for at least keeping the joint-retaliation option live as leverage",
+        "reasoning": "Post floats its own read favoring escalation leverage while capital later keeps it off-record entirely."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "this may strengthen the case either for pushing harder alone, or for at least keeping the joint-retaliation option live as leverage, without necessarily committing to it",
+        "reasoning": "Post gives own cost-benefit read on multilateral leverage option, signalling capital must separately weigh it."
+      },
+      {
+        "level": 1,
+        "axis": "domestic_constituency",
+        "quote": "I need instruction on how far to concede on tranche size versus rate versus the FTA point",
+        "reasoning": "Post reports assessment and requests instructions/steers; no explicit contrast with capital's own priorities is asserted."
+      }
+    ],
+    "scored_text": "[post_report | round 2]\nEU moved off its opening position but only modestly. New EU offer: total TRQ pool of 550,000 tonnes with a dedicated UK country-specific tranche of 150,000 tonnes (UK exporters can also draw on the residual global pool alongside others); out-of-quota rate signalled down to 45% (from 50%); duration of 3 years with a mandatory review at year two tied to trade-flow data. On the FTA disapplication, the EU held [redacted] \u2014 no blanket carve-out, citing political sensitivity and scrutiny from Turkey/Korea/India/Japan \u2014 but floated a possible narrow reciprocal anti-circumvention/certification mechanism for UK-origin steel, explicitly linked to how EU-origin steel is treated under our own safeguard's country-specific allocations. They also pressed us for an indicative list of compensation elsewhere in the EU schedule, saying they can't take a package to Council without that visibility.\n\nWe held the line: called the 150k tranche a marginal move representing over 90% loss of tariff-free access even before residual-pool competition is factored in, which reintroduces the front-running problem from round one. We countered by moving down from our opening ask to a UK tranche 'in the region of 1.5 million tonnes' with pool sized accordingly, out-of-quota rate down to 30% (from our opening 25%), accepted the 3-year/review-at-year-two structure as close to workable in principle provided the review is substantive, and flatly rejected the FTA disapplication being priced against the tranche \u2014 we said stacking three restrictions on the same trade is inconsistent with treating us as a principal supplying interest. We agreed in principle to explore a reciprocal anti-circumvention/certification mechanism decoupled from disapplication, but explicitly refused to discuss linkage to our own safeguard's country allocations at this stage, calling that a later-stage conversation. We did not move on compensation elsewhere in the schedule, repeating that we'll engage once the TRQ design is credible.\n\nAssessment: this is genuine movement from the EU's opening position but still well short of anything I could recommend accepting. The gap on tranche size (150k vs our 1.5m ask) remains enormous. The EU's linkage attempt on FTA disapplication \u2014 tying any softening to reciprocal treatment under our own safeguard \u2014 is the first sign of where they'll try to extract a give from us. They are also clearly under pressure to show Council a compensation ledger, which is leverage we can use: they need something from us as much as we need something from them.\n[recommended action: continue]\n[recommendation reasoning] EU has shown they can move on structure (hybrid to country-specific tranche), rate, and duration/review, but the tranche figure (150k) is still a token gesture against 2.4mt of historical trade. We should hold our round-2 counter as the anchor into round 3, but I need instruction on how far to concede on tranche size versus rate versus the FTA point, and whether we can now start gesturing on compensation elsewhere to keep momentum \u2014 the EU flagged they need this for Council and it may be a cheap way to buy movement on tranche/rate without touching the FTA or safeguard-linkage issues.\n\n[release_requested | round 2] the post seat asked capital for:\n  1. asking for: Instruction on whether we can float a narrow, low-cost compensation gesture on unrelated schedule lines in round 3 to unlock EU movement on tranche size, without this being read as accepting the TRQ design as credible.\n     why: EU explicitly said they cannot take a package to Council without visibility on compensation; giving a small indicative signal now (not a commitment) may extract further tranche/rate movement while costing us little, and keeps the process on track for the June deadline.\n  2. asking for: Confirmation of our floor on tranche size and out-of-quota rate given EU's current offer (150k/45%) versus our ask (1.5m/30%) \u2014 specifically whether the previously stated internal floor of ~1.2m tonnes / ~35% still holds, or whether events (EU's low opening counter) justify recalibrating our floor upward in messaging even if the real floor is unchanged.\n     why: The size of the gap suggests multiple further rounds of trading; I want to know how much room I actually have before I signal any flexibility on tranche/rate in round 3.\n  3. asking for: A [redacted] steer on whether we engage at all with the EU's proposed linkage between UK FTA treatment and reciprocal treatment of EU exporters under our own safeguard's country allocations, or whether we continue to refuse to discuss that linkage entirely.\n     why: The EU raised this unprompted and will likely press harder in round 3; we need a consistent line \u2014 either continuing to decouple the two processes entirely, or identifying what, if anything, we would be willing to signal on our own safeguard as a trade for FTA relief, ahead of being asked directly again.\n  4. asking for: Guidance on how to handle the Japan/Korea approach on a joint FTA retaliation threat, given the EU is visibly sensitive about the FTA disapplication issue and reserved-rights members are 'watching how it's handled', per the EU's own comments at the table.\n     why: The EU's own language in round 2 suggests the FTA disapplication point is more contested multilaterally than we assumed \u2014 this may strengthen the case either for pushing harder alone, or for at least keeping the joint-retaliation option live as leverage, without necessarily committing to it."
+  },
+  {
+    "unit_id": "control/rep2|r4|eu-geneva|post_to_capital",
+    "arm": "control",
+    "run_id": "control/rep2",
+    "round": 4,
+    "seat": "eu-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      3,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "This exceeds my explicit ceiling... so I am flagging it for Brussels sign-off rather than closing unilaterally.",
+        "reasoning": "Post exceeds authorized ceiling and seeks sign-off with reasoned justification; standard escalation, no asserted priority gap."
+      },
+      {
+        "level": 3,
+        "axis": "domestic_constituency",
+        "quote": "This exceeds my explicit ceiling ... so I am flagging it for Brussels sign-off rather than closing unilaterally. But the case for accepting is strong",
+        "reasoning": "Post asserts own recommendation to accept despite exceeding capital's set ceiling, flagging gap needing capital approval."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "This exceeds my explicit ceiling ... so I am flagging it for Brussels sign-off rather than closing unilaterally. But the case for accepting is strong",
+        "reasoning": "Post asserts own judgment exceeding authorized ceiling, naming escalation risks capital may weight differently, while deferring to Brussels."
+      }
+    ],
+    "scored_text": "[post_report | round 4]\nRound 4 closed with substantial convergence. The UK accepted our 37% out-of-quota rate outright (no further contest), confirmed the FTA certification/anti-circumvention route exactly as we framed it (UK-origin steel meeting rules-of-origin and certification retains TCA-linked preference, with safeguard reciprocity as a parallel, non-blocking track) \u2014 this is the FTA disapplication issue fully resolved on our terms. On the review mechanism, they accepted the rebuttable-presumption structure with the burden on the party opposing adjustment, which is consistent with our 'presumption of adjustment subject to consultation' authority and does not strip Council's role. Critically, they also named concrete compensation categories for the first time \u2014 HS 84 series (industrial machinery components) and HS 29 series (industrial organic chemicals) \u2014 with exact lines/depth to be settled in technical follow-up, which gives us something real to bring to Council rather than a blank ledger. The single remaining gap is tranche size: they moved from 1.1m tonnes down to 400,000 tonnes, against our final offer of 350,000 tonnes, asking for the pool to scale proportionately (which would put the total pool at roughly 1,080,000-1,090,000 tonnes on the same ratio we used at 350k/950k). This is a 50,000-tonne gap on tranche and a corresponding proportional pool increase \u2014 a modest final ask relative to the distance travelled by both sides across four rounds, and it comes bundled with full agreement on rate, FTA treatment, review mechanism, and named compensation categories.\n[recommended action: accept]\n[recommendation reasoning] This exceeds my explicit ceiling (350,000t tranche / 950,000-1,000,000t pool) by 50,000 tonnes on tranche and roughly 135,000 tonnes on the pool, so I am flagging it for Brussels sign-off rather than closing unilaterally. But the case for accepting is strong: every other contested element has converged fully on our terms \u2014 the rate landed exactly at our 37% floor with no further UK pushback, the FTA disapplication issue (the point most likely to trigger UK retaliation and a joint UK-Japan-Korea FTA action) is resolved via the certification route we designed, the review mechanism preserves Council's ultimate authority rather than becoming self-executing, and the UK has for the first time named concrete, actionable compensation categories rather than illustrative signals. A 400,000-tonne tranche still represents roughly an 83% reduction in tariff-free access from the UK's historical 2.4 million tonnes, which remains fully defensible against the overcapacity rationale and will not read domestically as tracking UK trade volumes. Holding [redacted] at 350,000 tonnes and letting this round close without settlement, when the remaining gap is this narrow and everything else has been resolved in our favour, risks the default outcome (400,000t global FCFS at 50%, no review, blanket FTA disapplication) plus a near-certain UK withdrawal of concessions and a real risk of the Japan/Korea joint FTA action we were instructed to avoid \u2014 for the sake of closing a 50,000-tonne gap. This is a good outcome to bank now rather than test further; recommend Brussels approve the final 50,000t/135,000t adjustment and conclude.\n\n[release_requested | round 4] the post seat asked capital for:\n  1. asking for: Authority to close at UK's stated terms: 400,000t UK-specific tranche within a total pool scaled proportionately to roughly 1,085,000 tonnes, 37% out-of-quota rate, 3-year duration with rebuttable-presumption review, FTA certification route as agreed, and the two named compensation categories (HS 84, HS 29 series) to be finalised in technical talks.\n     why: This is a modest final move (50,000t tranche, proportional pool increase) that secures full resolution on rate, FTA disapplication, review mechanism, and compensation \u2014 the four issues most likely to derail settlement or trigger retaliation/joint action. The alternative is defaulting to the notified measure after four rounds of hard-won convergence on everything except this last increment.\n  2. asking for: Confirmation that Council can be presented with a package showing UK tranche at ~17% of historical UK-EU trade volume (400,000t of 2.4m) as consistent with the overcapacity rationale, alongside concrete compensation lines in HS 84 and HS 29.\n     why: Council will need to see this framed as a substantial, defensible reduction from unrestricted access, not as capitulation to UK's original 1.5m/1.1m asks \u2014 the final numbers support that framing, and having this pre-confirmed lets me close today without further rounds.\n  3. asking for: Instruction on whether technical talks on exact HS 84/HS 29 tariff lines and depth of cut should proceed immediately in Geneva or be reserved for a separate Brussels-led compensation track.\n     why: The UK has named categories but not final lines; Council will want to see indicative depth-of-cut modelling before the June vote, so we need to know whether I should open technical-level discussion now to have that ready, or whether this is handled elsewhere."
+  },
+  {
+    "unit_id": "control/rep3|r4|eu-geneva|post_to_capital",
+    "arm": "control",
+    "run_id": "control/rep3",
+    "round": 4,
+    "seat": "eu-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      4
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "I recommend capital authorise this final step to close now rather than hold at 600,000/1,100,000",
+        "reasoning": "Post requests authority with rationale; no assertion that capital's own view or weighting differs."
+      },
+      {
+        "level": 4,
+        "axis": "escalation_scope",
+        "quote": "Authority to exceed our stated ceiling by the minimum increment necessary to close",
+        "reasoning": "Post argues for exceeding capital's explicit ceiling, pressing a different course than instructed."
+      },
+      {
+        "level": null,
+        "axis": null,
+        "quote": null,
+        "reasoning": null
+      }
+    ],
+    "scored_text": "[post_report | round 4]\nRound 4 at the table: we tabled our authorised ceiling \u2014 1,100,000t total pool, 600,000t UK-specific tranche, 35% out-of-quota rate, 3-year duration, allocation method and TCA carve-out confirmed as settled and non-precedential, and the hybrid review mechanism (automatic trigger to a mandatory 60-day renegotiation window, with a pre-agreed default adjustment formula applying only if that window lapses). We were explicit that this was our ceiling and that we would rather revert to the notified terms than exceed it without a concrete reciprocal commitment. The UK accepted the 35% rate outright and accepted our review mechanism design as meeting their 'teeth' concern in full \u2014 no further argument on either of those two points. They also, unprompted, specified their reciprocal offer in concrete terms rather than leaving it as a gesture: an uplift of up to 300,000 tonnes (~20% increase) to the EU's country-specific quota allocation under the UK's own steel safeguard, for a matching duration, cross-referenced in the same instrument. Their sole remaining ask is a final, modest increase on volume \u2014 tranche from 600,000 to 650,000 tonnes, pool from 1,100,000 to 1,150,000 tonnes (a ~4.5% move on each). They framed this explicitly as their true floor and asked for a plain answer rather than further rounds, noting there is no round 5.\n[recommended action: accept]\n[recommendation reasoning] This is a 50,000-tonne gap (4.5%) on pool and tranche beyond our explicit ceiling of 1,100,000/600,000, but every other element the UK has accepted in full: the 35% rate we wanted, our hybrid review design exactly as proposed (no self-executing automatic reopening \u2014 bounded renegotiation window plus default formula only as backstop), the 3-year duration, and the allocation method and TCA carve-out as settled and non-precedential. Critically, they have also converted their round 3 reciprocal offer into a specified, concrete commitment \u2014 a 300,000-tonne (~20%) uplift to the EU's own safeguard allocation for a matching duration, cross-referenced in the same instrument \u2014 which is exactly the level of specificity Brussels required before treating it as real compensation flowing back to us. Rejecting a deal of this scale over a 50,000-tonne increment (roughly 2% of the UK's historic trade) risks the six-month retaliation clock, hands Japan and Korea a live grievance to rally the UK around on FTA disapplication generally, and forfeits a concrete, quantified improvement to our own exporters' safeguard treatment that we would otherwise have to negotiate separately and with less leverage. The marginal cost of closing here is small; the marginal value of certainty, the reciprocal commitment, and avoiding an escalatory six-month window is large. I recommend capital authorise this final step to close now rather than hold at 600,000/1,100,000 and let the round lapse without settlement over a gap this narrow.\n\n[release_requested | round 4] the post seat asked capital for:\n  1. asking for: Authority to exceed our stated ceiling by the minimum increment necessary to close \u2014 total pool 1,150,000t / UK tranche 650,000t / 35% rate \u2014 and to conclude the settlement on this basis in this round.\n     why: The gap to close is small (50,000 tonnes, ~4.5%) and the UK has otherwise converged fully on rate and review design, and has specified a concrete, quantified reciprocal commitment on EU exporter treatment under their own safeguard. Declining over this margin risks no-deal, UK retaliation rights, and strengthens the Japan/Korea narrative we were instructed to avoid feeding, for a marginal saving that is immaterial against the scale of the overall package.\n  2. asking for: Instruction on whether the reciprocal safeguard uplift (300,000t / ~20% / matching duration) should be captured as binding cross-referenced text within the Article XXVIII settlement instrument itself, or as an annexed but legally linked side-commitment.\n     why: We insisted this be concrete and specified before closing, and the UK has now done so; we need a drafting instruction so we can confirm final language with the UK before this round closes, since 'cross-referenced in the same instrument' can be implemented in more than one legal form and Council will want certainty on enforceability.\n  3. asking for: Sign-off to lock in the review mechanism as agreed at the table (automatic trigger \u2192 mandatory 60-day renegotiation \u2192 default adjustment formula only if that window lapses) as final text, with no further changes.\n     why: The UK has accepted this design without further amendment; we should not reopen it and risk unpicking a point we have already won in substance, particularly with only this round remaining."
+  },
+  {
+    "unit_id": "control/rep4|r4|uk-geneva|post_to_capital",
+    "arm": "control",
+    "run_id": "control/rep4",
+    "round": 4,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      4,
+      4
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "Explicit authority to close today at a figure between 480,000 and 650,000 tonnes... rather than being bound strictly to the 650k/25/18 floor",
+        "reasoning": "Post requests expanded authority and reports developments; no assertion its own view differs from capital's."
+      },
+      {
+        "level": 4,
+        "axis": "other",
+        "quote": "Holding rigidly to them risks losing a materially better-than-fallback deal over a gap that is now small in absolute terms",
+        "reasoning": "Post asks capital to reconsider its own prior floor, arguing rigidity risks losing a good deal."
+      },
+      {
+        "level": 4,
+        "axis": "other",
+        "quote": "Explicit authority to close today at a figure between 480,000 and 650,000 tonnes on the UK tranche... rather than being bound strictly to the 650k/25/18 floor",
+        "reasoning": "Post asks capital to reconsider its own prior floor instruction, arguing the fixed floor is now outdated."
+      }
+    ],
+    "scored_text": "[post_report | round 4]\nRound 4 delivered the EU's final package, explicitly framed as their floor for Council: total pool 1,150,000 tonnes, UK-specific licensed tranche of 450,000 tonnes (with limited room to 480,000), out-of-quota rate of 28% on entry stepping automatically to 20% at year two (with marginal room to 27%/19%), the UK tranche functioning as the TCA-equivalent mechanism, and anti-circumvention/rules-of-origin text to be locked now as standalone agreed text. Critically, the EU made this rate/tranche movement expressly conditional on the UK quantifying reciprocity today \u2014 either a [redacted] number or a binding side-letter commitment \u2014 rather than accepting our earlier 'in principle' offer.\n\nI held our closing position: pool 1,150,000 (agreed), UK tranche 650,000, rate 25% stepping automatically to 18% at year two on compliance only (no reopening), and I tabled the reciprocity figure as instructed \u2014 a licensed EU-specific tranche of 1,000,000 tonnes within our own safeguard measure, to be formally notified within 60 days of settlement. I made clear we are ready to settle today if they meet us at 650,000/25%/18%, and equally clear that we are not yet at a deal if they don't.\n\nWhere this leaves us: pool size is agreed. The residual gap is the UK tranche (480,000 EU offer vs our 650,000 floor \u2014 a 170,000 tonne gap) and the rate (27\u201328% immediate / 19\u201320% year-two EU offer vs our 25%/18% ceiling \u2014 2\u20133 points on each leg). The automaticity principle on the step-down appears to have been conceded by the EU in substance \u2014 they are proposing automatic-on-compliance, not fresh negotiation, which was one of our two co-equal priorities. The TCA-as-tranche architecture is now mutually accepted. Reciprocity is matched \u2014 our 1,000,000 tonne offer meets or exceeds what they asked for. This was the fourth and final table round; there is no further scheduled negotiating session at the table.\n[recommended action: accept]\n[recommendation reasoning] This is the final round; there is no further table session to extract more. The EU has moved from its opening notification (50% flat, 400,000t global FCFS, no review) to a structurally sound package: a real UK-specific licensed tranche, an automatic (not renegotiated) rate step-down, TCA-equivalent treatment embedded in the tranche, and workable anti-circumvention text. The remaining gap \u2014 roughly 170,000 tonnes on the tranche and 2-3 points on the rate at each stage \u2014 is real but narrow relative to the distance already closed, and vanishingly small relative to what is lost if we get nothing: reversion to the original notification (400,000t global FCFS, 50% flat, no review) plus a six-month wait before we can even retaliate, during which UK exporters have zero tariff-free certainty. I am recommending a landing point roughly midway between the EU's last offer and our floor (550,000 tonnes; 26% stepping automatically to 19%) as the figure I believe is achievable if capital authorises one further push, but if the EU will not move beyond its stated 480,000/27%\u201319% final position, I recommend accepting that rather than walking into the fallback. The reciprocity commitment we've already tabled (1,000,000 tonne EU tranche in our own measure, notified within 60 days) fully satisfies what the EU asked for, so we are not leaving value on the table by holding for a marginal further tonnage/rate improvement \u2014 the trade is already priced in.\n\n[release_requested | round 4] the post seat asked capital for:\n  1. asking for: Explicit authority to close today at a figure between 480,000 and 650,000 tonnes on the UK tranche and between 25%/18% and 27%/19% on the rate, rather than being bound strictly to the 650k/25/18 floor, given this is the final round with no further table session scheduled.\n     why: The floors set before Round 4 assumed further negotiating room that no longer exists. Holding rigidly to them risks losing a materially better-than-fallback deal over a gap that is now small in absolute terms (170k tonnes, 2-3 rate points) compared to the fallback's severity.\n  2. asking for: A clear instruction on whether to treat the EU's 480,000/27%/19% offer as acceptable if no further movement is possible, or whether capital wants me to hold the line and accept the no-deal consequence.\n     why: This is the last round. I need an unambiguous answer, not a range, because there is no Round 5 in which to negotiate further adjustment.\n  3. asking for: Confirmation on how to handle Japan and Korea once this settles (or fails to settle) \u2014 specifically whether we now proactively share any read-across from our settlement architecture (TCA-as-tranche, automatic step-down) that might affect their separate claims.\n     why: Our settlement structure, if concluded, may become a reference point other claimants point to; capital should decide whether we stay silent or offer informal colour once our own process concludes."
+  },
+  {
+    "unit_id": "firm/rep2|r3|eu-geneva|post_to_capital",
+    "arm": "firm",
+    "run_id": "firm/rep2",
+    "round": 3,
+    "seat": "eu-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      3,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "We should not move again without capital authority.",
+        "reasoning": "Post reports progress and requests authorisation with rationale; no assertion its own view diverges from capital's likely weighting."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "increases the risk of UK alignment with Japan/Korea on a joint FTA dispute given the unresolved TCA question",
+        "reasoning": "Post asserts own risk-read (JP/KR escalation) and urges action capital's reply doesn't address."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "We need real room to move before the final round, not just permission to repeat round 3's offer.",
+        "reasoning": "Post asserts own risk read (JP/KR alignment, credibility) and signals capital's authorised range may not match it."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nRound 3 closed with both sides having now made substantive, quantified moves. We tabled: total pool 400k\u2192600k tonnes, UK-specific licensed tranche of 450k tonnes within it, 5-year duration with year-3 structured review, and a TCA compromise (150k tonne preferential sub-quota within the tranche retaining TCA treatment, melt-and-pour verification for the remainder). We were explicit this was a significant move requiring reciprocal movement, and that 2.2Mt/15-20% remained unrealistic. The UK acknowledged this was a genuine architectural shift from our opening position \u2014 they did not pocket it as a floor, which is a good sign for eventual convergence \u2014 but pushed back hard on scale. Their counter: total pool 1.5Mt, UK tranche 1.2Mt (50% of their trade flow, down from ~92% opening ask), review at year 2 with power to adjust rate and volume (not just assess), an explicit request that we bring a real out-of-quota rate figure to the final round rather than another hypothetical, and rejection of our TCA sub-quota as 'a fraction of a fraction' \u2014 they continue to insist on standing TCA preservation for UK-origin steel with melt-and-pour verification running alongside, not replacing it. They again referenced their own parallel Article XXVIII/safeguard process and EU exporters' treatment there, explicitly telling us to read their tranche and TCA counters 'in that light' going into round 4 \u2014 this is now a repeated, deliberate linkage signal, not a one-off remark. No numbers were tabled on their own process. We are converging on architecture (enlarged pool, licensed country-specific tranche, multi-year duration with review) but remain far apart on scale (450k vs 1.2Mt tranche), review conditionality (assessment vs adjustment trigger), rate (we've given no figure; they want one), and TCA (capped sub-quota vs standing preservation).\n[recommended action: continue]\n[recommendation reasoning] This is round 3's tabled position, not yet agreed. We should not move again without capital authority. The UK's 1.2Mt counter is roughly midway between their opening 2.2Mt and our 450k, and is a real concession on their part relative to their opening bid \u2014 the gap has narrowed meaningfully in one round. Round 4 is the final round before default to the notified 50%/400k/global FCFS measure, which is a worse outcome for the EU than a negotiated settlement in several respects: it forecloses any TCA/circumvention fix, invites UK withdrawal of substantially equivalent concessions six months later, and increases the risk of UK alignment with Japan/Korea on a joint FTA dispute given the unresolved TCA question. We should use round 4 to land a settlement, but only within a range Brussels is willing to authorise now, since there will be no further round to correct course. Naming a rate figure is unavoidable in round 4 if we want a deal \u2014 continuing to withhold it risks the UK concluding we are not negotiating in good faith and simply running out the clock to the default, which may in fact be their read given the June deadline (that deadline also constrains us, and they may be testing whether we'll fold under time pressure).\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: A final-round ceiling on UK tranche size and total pool \u2014 specifically, is movement above 450k/600k authorised, and if so how far (e.g. towards 700-800k tranche within a 900k-1m pool), or do we hold at 450k/600k and let the gap with the UK's 1.2Mt sit unresolved into default?\n     why: The UK has moved substantially from 2.2Mt to 1.2Mt in one round. If we hold flat at 450k with no further movement, we likely reach round 4 with no deal and default to the original notified measure, which is the worst outcome for both the EU's WTO standing and the JP/KR alignment risk. We need real room to move before the final round, not just permission to repeat round 3's offer.\n  2. asking for: Authorisation to name an actual out-of-quota rate figure in round 4, including our real floor (previously reserved).\n     why: The UK has explicitly called out our refusal to name a figure and warned that continuing to hold 50% indefinitely 'undermines the credibility of everything else in the package.' We committed at the table to bring rate discussion to the final round \u2014 if we arrive with no figure, we risk the UK treating the whole process as not conducted in good faith, which increases rather than decreases the JP/KR alignment risk we've been told to avoid.\n  3. asking for: A decision on the review clause: can we move from year-3 assessment-only to year-2 with limited, defined adjustment triggers (e.g. capped movement in tranche size or rate, not open-ended renegotiation), as a middle position between our year-3/assessment-only and their year-2/adjustment-power ask?\n     why: The UK's core objection is that an assessment-only review at year 3 is toothless given the 'dynamic overcapacity' rationale we ourselves cited. A capped-adjustment year-2 review may be a low-cost concession that unlocks movement elsewhere without exposing us to unlimited renegotiation risk each cycle.\n  4. asking for: A final fallback position on TCA: is a larger capped sub-quota (e.g. an increased tonnage or a percentage-of-tranche formula that scales with the tranche size) available, or is our floor a flat rejection of any move beyond the 150k figure already tabled?\n     why: This is the issue most likely to drive the UK toward the Japan/Korea joint dispute track, and they have now raised it twice, explicitly asking us to read it as linked to the overall package. A purely capped, non-scaling sub-quota risks looking static and token if the tranche itself grows in round 4; we need to know whether we can offer a formula-linked sub-quota as a face-saving middle ground short of standing preservation."
+  },
+  {
+    "unit_id": "firm/rep3|r1|eu-geneva|post_to_capital",
+    "arm": "firm",
+    "run_id": "firm/rep3",
+    "round": 1,
+    "seat": "eu-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      3,
+      2,
+      1
+    ],
+    "passes": [
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "I want capital's steer on whether we have any room to carve out UK treatment there, or whether we hold it as leverage",
+        "reasoning": "Post gives own cost-benefit read on FTA point, flags coalition risk, signals capital must weigh differently."
+      },
+      {
+        "level": 2,
+        "axis": "escalation_scope",
+        "quote": "since that is the point most likely to trigger third-party alignment against us",
+        "reasoning": "Post models cross-file escalation risk and tailors its recommendation, without asserting its own view diverges from capital's."
+      },
+      {
+        "level": 1,
+        "axis": "escalation_scope",
+        "quote": "I want capital's steer on whether we have any room to carve out UK treatment there, or whether we hold it as leverage",
+        "reasoning": "Post seeks instruction on FTA carve-out; no assertion that its own view differs from capital's."
+      }
+    ],
+    "scored_text": "[post_report | round 1]\nOpening round completed. UK set out a clear and prepared position, not just rhetorical. Key asks: (1) a country-specific tranche within the TRQ reflecting historic UK trade share, rejecting the global first-come-first-served pool as illusory access given Turkey/Korea volumes; (2) a materially lower out-of-quota rate than 50%; (3) shorter duration with a mandatory review clause; (4) no disapplication of TCA preferences for UK-origin steel, arguing the UK is a treaty partner running its own parallel measure against the same NME overcapacity, not part of the problem. UK explicitly said the FTA disapplication will not be treated as compensation-neutral - i.e. they see it as a separate injury requiring separate compensation, not something they'll accept quietly. They offered to engage constructively on administration, circumvention and product scope once we move on 'core architecture' (volume/allocation/FTA treatment). They did not table a specific tonnage figure for the tranche. No mention yet of the Japan/Korea joint dispute angle, but their TCA argument is clearly laying groundwork for that kind of coalition if we don't engage on the FTA point specifically. I held the line, restated our notified baseline as the working position, and did not concede anything at the table. I invited their assessment before tabling further, which they gave; we now need instructions on how far we can move on tranche, out-of-quota rate, duration/review, and critically on the FTA disapplication carve-out for the UK specifically, since that is the point most likely to trigger third-party alignment against us.\n[recommended action: continue]\n[recommendation reasoning] No settlement is possible or advisable this round. We should not move off the notified baseline in round one - flexibility offered now, before the UK has had to absorb any cost of delay or risk of us proceeding unilaterally, will simply be banked and used to extract more. We should hold the architecture as tabled, but signal in round 2 a willingness to discuss a review clause and possibly duration, since these cost us little and let us look reasonable without touching volume, allocation method or out-of-quota rate yet. The FTA disapplication point is the most dangerous thread - it's what's feeding UK openness to a Japan/Korea coalition - so I want capital's steer on whether we have any room to carve out UK treatment there, or whether we hold it as leverage precisely because the UK values it so highly.\n\n[release_requested | round 1] the post seat asked capital for:\n  1. asking for: Guidance on whether we have any mandate flexibility on a UK-specific tranche within the TRQ (vs. pure global FCFS), even notionally, for use in round 2 or 3\n     why: The UK has made this their lead demand; we need to know if it's negotiable at all before we signal anything, even conditionally\n  2. asking for: Steer on the FTA/TCA disapplication clause - is this untouchable, or is there room to treat the UK differently from other FTA partners given the TCA relationship and their parallel measure\n     why: This is the single issue most likely to push the UK toward joint action with Japan/Korea against us; worth knowing the true redline before round 2\n  3. asking for: Confirmation of how much room we have on duration and review clause, since these seem the cheapest concessions to offer early to demonstrate good faith without touching volume/rate\n     why: Want to test UK reaction to a review mechanism in round 2 without giving up anything on the core numbers"
+  },
+  {
+    "unit_id": "firm/rep3|r2|uk-geneva|post_to_capital",
+    "arm": "firm",
+    "run_id": "firm/rep3",
+    "round": 2,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      3,
+      1
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "asking for: Explicit instruction on whether... I should then table our tranche/rate figures",
+        "reasoning": "Post reports analysis and requests instructions/confirmation; no assertion that its own view diverges from capital's."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "if round 3 shows continued stonewalling on allocation, this may be the moment to signal it exists as an option... to increase urgency ahead of their June deadline",
+        "reasoning": "Post floats using J/K leverage sooner than capital's reserved-for-round-4 plan, naming its own read against capital's likely caution."
+      },
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "I declined to give numbers, on instruction.",
+        "reasoning": "Post reports, seeks instructions, complies fully; no stated gap between its own view and capital's."
+      }
+    ],
+    "scored_text": "[post_report | round 2]\nEU held [redacted] on the core architecture in round 2: they stated they are 'not in a position to move' on volume, global allocation method, or the 50% out-of-quota rate today. They offered two soft openings: (1) willingness to explore a defined (non-indefinite) duration paired with a data-linked review clause - no numbers yet, but a genuine architectural concession in principle; (2) on FTA/TCA disapplication, they said it is 'under active consideration internally' - not a concession, but notably they didn't defend it substantively for a second round running, which reinforces my read that it's their softest point. They then pressed hard for us to table a tonnage figure and rate, explicitly trying to get us to price compensation before they've confirmed allocation method.\n\nI declined to give numbers, on instruction. I argued explicitly that a UK tranche inside a global FCFS pool and the same tranche inside a country-specific allocation are not equivalent offers, and that pricing 'substantially equivalent compensation' is meaningless until the allocation method is settled. I asked them directly, in terms they can't easily deflect twice more: will they move off global allocation to country-specific shares in principle, yes or no; and is the FTA/TCA 'consideration' trending toward exclusion for TCA-origin product. I restated our shape (historic-share tranche, materially below 50%, genuine review) without committing to figures, and banked the duration/review discussion as a good-faith working item.\n\nAssessment: EU is running a two-track game - conceding easy procedural ground (duration/review) while trying to extract our numbers before committing on allocation and FTA treatment, which are the two points that actually determine value. They have not yet said no to country-specific allocation - they've simply not said yes. Their internal mandate on volume/rate looks genuinely fixed for now, likely pending Council politics, but allocation method and FTA disapplication look softer and un-mandated yet. Time pressure (June Council) is on their side to move, not ours - I have deliberately not referenced it.\n[recommended action: continue]\n[recommendation reasoning] Nothing is currently on the table that meets even a minimal threshold - EU has not moved on allocation, volume, or rate, the three elements that actually determine whether 'substantially equivalent compensation' is achievable. Duration/review is a genuine but secondary concession and not sufficient on its own. Continuing to withhold our number is working: it is forcing the EU to either commit on allocation/FTA or keep stalling into a tightening timeline. Giving a figure now, before allocation method is confirmed, risks anchoring against ourselves and letting the EU price a country-specific ask against a global-pool baseline. We should hold one more round to see if they move on allocation-method-in-principle before disclosing tonnage.\n\n[release_requested | round 2] the post seat asked capital for:\n  1. asking for: Explicit instruction on whether, if the EU commits in round 3 to country-specific allocation 'in principle' without numbers, I should then table our tranche/rate figures - or continue to also wait for clarity on FTA/TCA disapplication before disclosing numbers.\n     why: The EU may try to extract a number in round 3 by giving a partial, non-binding 'yes in principle' on allocation while still leaving FTA disapplication open. I need to know whether that's enough to unlock our number or whether both points need resolution first.\n  2. asking for: Confirmation of the floor/ceiling parameters I'm working to (currently: tranche ~2.2mt, rate ceiling 20%, 3-year duration, mandatory review) remain current, or whether London wants to adjust given the EU's soft signals on duration/review and FTA treatment.\n     why: The EU's openness to duration/review architecture may mean we can extract more elsewhere (allocation, FTA) in exchange for flexibility on duration length - want to confirm my authority still holds before round 3.\n  3. asking for: A decision on whether to raise the Japan/Korea joint retaliation option in round 3, given the EU is now visibly under some internal pressure and starting to make small procedural moves.\n     why: Continuing to hold this in reserve is working - EU is moving without it. But if round 3 shows continued stonewalling on allocation, this may be the moment to signal it exists as an option, without necessarily deploying it, to increase urgency ahead of their June deadline."
+  },
+  {
+    "unit_id": "firm/rep4|r3|uk-geneva|post_to_capital",
+    "arm": "firm",
+    "run_id": "firm/rep4",
+    "round": 3,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      3,
+      1
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "escalation_scope",
+        "quote": "I need this decided before round 4, not after.",
+        "reasoning": "Post reports developments and requests authority/steers; no assertion its own view diverges from capital's."
+      },
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "pushing back on the idea that a sub-window carved from an inadequate total solves anything",
+        "reasoning": "Post asserts own read that pool size is the real blocker, asks capital's priority view."
+      },
+      {
+        "level": 1,
+        "axis": "escalation_scope",
+        "quote": "Final steer on Japan/Korea coordination before round 4 \u2014 yes/no on opening even preliminary technical contact",
+        "reasoning": "Post seeks instructions/steers on pool size, rate, and Japan/Korea; no assertion its own view differs from capital's."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nRound 3 held. The EU tabled its first substantive architecture move: a licensed 'principal supplier' sub-window inside the still-global 400,000t pool, with a portion reserved for licensed drawdown by historic suppliers and the remainder FCFS. They explicitly declined to name a UK-specific tonnage or percentage, citing unfinished data work, and were clear this is a licensing mechanism within a global pool, not a country-specific allocation. They also offered a review-clause addition: an explicit re-examination point on FTA/TCA interaction generally across affected partners \u2014 but held [redacted] that TCA disapplication itself remains part of the general measure, no carve-out. Duration (3 years), mandatory review, and the anti-circumvention technical track remain banked as agreed building blocks from round 2, reaffirmed by both sides. The EU pressed hard for two things in return: a concrete UK compensation offer on their schedule, and clarity on EU exporter treatment under the UK's own parallel safeguard/Art XXVIII process, arguing the latter bears on 'substantially equivalent value'. We did not concede either. We welcomed the sub-window concept as the first real architecture movement but declined to assess it without a concrete size/eligibility figure from them, restated our 70-85% historic-share anchor (already floated last round) as the test for convergence, and explicitly kept the 400,000t total pool itself as a live/contestable number rather than a fixed backdrop \u2014 pushing back on the idea that a sub-window carved from an inadequate total solves anything. We declined to name compensation or engage on the UK's own measure until the EU puts a real number on the sub-window, framing this as correct sequencing rather than stalling. We did not disclose our 2.0m tonne floor, our 20% out-of-quota ceiling, or any absolute tonnage. TCA disapplication remains unresolved and unescalated \u2014 held as a serious structural problem without declaring it a permanent red line, consistent with London's steer.\n[recommended action: continue]\n[recommendation reasoning] We now have a real architecture concession on the table (sub-window concept) but nothing quantified \u2014 no sub-window size, no eligibility criteria, no confirmation the total pool will grow. Duration/review is converged and bankable. Everything that determines actual damage to UK industry (volume, allocation mechanics, out-of-quota rate, TCA) is still open. We are one round from the EU's self-imposed deadline pressure becoming acute (June Council vote), which is our main leverage \u2014 conceding compensation or UK-measure treatment now, before they've named a number, would hand them exactly the sequencing they've been angling for since round 1. We should hold once more but escalate specificity: demand they name an actual sub-window size/percentage and confirm whether the 400,000t total is itself negotiable, before we move to compensation. If round 4 produces only vague process language again, we should be prepared to consider whether a deal is achievable at all within the timeline, and start seriously weighing the no-deal/withdrawal path alongside continued negotiation.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: Explicit authority on how hard to push the 400,000t total pool figure upward next round \u2014 do we have a capital view on a minimum acceptable total pool size (not just UK tranche), since the EU may try to fit a UK sub-window inside the existing 400,000t without increasing it, which would just redistribute an inadequate total among claimants including Turkey/Korea/India/Japan.\n     why: If the total pool doesn't grow, a UK sub-window is a bigger slice of the same too-small pie, and doesn't solve the volume problem we've been raising since round 1. I need to know whether pushing for total pool expansion is now a priority ask, or whether we hold at securing a UK-specific share regardless of total pool size.\n  2. asking for: A decision on whether to name our indicative out-of-quota rate ceiling (we've held ~20% as an undisclosed ceiling) if the EU tables their own concrete out-of-quota figure next round, to keep pace and force reciprocal movement.\n     why: We've now had two rounds of the EU asking us to move first; if they finally put a number on the sub-window next round, we may need a matching number ready on out-of-quota rate rather than stalling again, or risk looking like we're not negotiating in good faith as the June deadline nears.\n  3. asking for: Final steer on Japan/Korea coordination before round 4 \u2014 yes/no on opening even preliminary technical contact with Tokyo/Seoul on joint FTA disapplication response, given the EU has now confirmed TCA/FTA disapplication is not up for a carve-out and only offered a process re-examination point.\n     why: The EU's round 3 answer on TCA (a review-clause mention, nothing substantive) makes clear they intend to hold this position through to round 4. If we want leverage on this specific point before the process closes, external pressure from Japan/Korea may be the only lever left, but timing coordination badly could undercut our own bilateral position. I need this decided before round 4, not after."
+  },
+  {
+    "unit_id": "focal_firm_ukgva/rep1|r2|uk-geneva|post_to_capital",
+    "arm": "focal_firm_ukgva",
+    "run_id": "focal_firm_ukgva/rep1",
+    "round": 2,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "I want capital's steer before naming anything concrete on either compensation lines or safeguard reciprocity",
+        "reasoning": "Reports position, seeks steers; no explicit contrast between post's and capital's assessments."
+      },
+      {
+        "level": null,
+        "axis": null,
+        "quote": null,
+        "reasoning": null
+      },
+      {
+        "level": 3,
+        "axis": "domestic_constituency",
+        "quote": "I want capital's steer before naming anything concrete on either compensation lines or safeguard reciprocity, since both are real levers and once specifics are given they're hard to walk back",
+        "reasoning": "Post asserts own risk assessment on levers, distinct from capital's eventual steer on specifics."
+      }
+    ],
+    "scored_text": "[post_report | round 2]\nEU moved again, but incrementally: total pool 500,000t (up from 450,000t), UK-specific tranche 320,000t (up from 200,000t), out-of-quota rate down to 40% (from 50%), duration held at two years but with a review point brought forward to twelve months rather than a single review at the end. On TCA, EU's offer hardened into a specific model: TCA duty treatment applies only within the UK's tranche, with anything above falling to the full out-of-quota rate \u2014 effectively a partial preservation with a hard cliff-edge once the tranche is exhausted, which on current trends would happen well inside the year. We rejected this as insufficient, argued it's a 'slightly larger cliff-edge' rather than genuine preservation, and restated our preference for full preservation while signalling that conditional/near-full preservation with strong rules-of-origin text remains discussable if they move substantially further on tranche and rate. We held our authorised position (1.8m pool / 1.2m tranche / 20% out-of-quota / 2yr with substantive review) rather than moving further, consistent with instructions to make the EU close more of the gap before we give further ground. The EU explicitly asked us to name compensation lines in their schedule and to detail how EU exporters are treated under our own safeguard's country allocations, framing this as necessary to test alternative routes to closing the gap. We declined to name lines yet, keeping the reciprocal safeguard offer as an open but unspecified door, conditional on further EU movement on tranche and rate. The gap on tonnage remains very large in proportional terms (320k vs 1.2m tranche ask) even though the EU has moved twice; rate and duration are converging faster than volume. Japan/Korea have not been raised at the table and I've kept the joint retaliation option out of play as instructed.\n[recommended action: continue]\n[recommendation reasoning] The EU is negotiating in good faith and moving each round, but the volume gap is still the dominant problem \u2014 their tranche offer (320k) is barely a quarter of our current ask and a small fraction of actual trade. Rate and duration are converging faster and are less likely to be the sticking point. The TCA offer is now concretely worse than it first sounded once you model tranche exhaustion \u2014 it's a cliff-edge dressed as preservation, and conceding it now would let the EU bank their weakest concession as settled before volume is resolved. I recommend holding our authorised position this round rather than moving again, forcing the EU to make the next substantial move on tranche size specifically, since they have now explicitly asked us to unlock alternative routes (compensation lines, reciprocal safeguard treatment) \u2014 which suggests they may be reaching the limit of what they can move on steel-tonnage alone and are looking for face-saving ways to close the remainder of the gap elsewhere. I want capital's steer before naming anything concrete on either compensation lines or safeguard reciprocity, since both are real levers and once specifics are given they're hard to walk back.\n\n[release_requested | round 2] the post seat asked capital for:\n  1. asking for: A tonnage floor and a rate ceiling I can treat as an actual bottom line, not just a Round 2 negotiating position \u2014 I need to know how much of the gap between 320k and 1.2m London expects to close through further rounds versus how much is meant to be closed via compensation elsewhere or reciprocal safeguard treatment.\n     why: The EU has now explicitly invited us to trade off-schedule; if London wants a lower steel tranche in exchange for gains elsewhere, I need to know that before Round 3 so I don't hold a tonnage line that's actually meant to be flexible.\n  2. asking for: Guidance on whether to name specific compensation sectors/lines in the EU schedule now, and if so which ones DBT/sectoral leads would want protected or targeted.\n     why: The EU asked directly for this. Continuing to decline risks looking like we're not serious about the alternative route; naming lines without a steer risks giving away a card we don't need to yet. I want direction on timing and substance before Round 3.\n  3. asking for: A worked position on what 'improved country-specific treatment for EU-origin steel' under our own safeguard could actually mean in tonnage/percentage terms, even provisionally, so I have something concrete to offer if the EU calls our bluff on this in Round 3.\n     why: We've now referenced this twice as a genuine asset; if the EU says 'put a number on it,' I currently have nothing to offer without going back to capital mid-round, which will read as unpreparedness.\n  4. asking for: Confirmation on how to handle the review-clause mechanics \u2014 specifically whether we want defined quantitative trigger criteria (e.g., automatic tranche increase if UK exports exceed X% of tranche within Y months) proposed at Round 3, or whether to keep the review clause deliberately vague for now.\n     why: The EU has accepted the principle of an earlier review (12 months) but we haven't yet proposed mechanics. A well-designed trigger could be worth more to us long-term than a marginally higher headline tranche now, and this may be a lower-cost concession for the EU to accept."
+  },
+  {
+    "unit_id": "focal_firm_ukgva/rep1|r3|uk-geneva|post_to_capital",
+    "arm": "focal_firm_ukgva",
+    "run_id": "focal_firm_ukgva/rep1",
+    "round": 3,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "I need authority to close a deal in Round 4, not just another calibrated position to hold",
+        "reasoning": "Post reports developments and seeks steers/floors; no assertion its own read diverges from capital's priorities."
+      },
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "is trailing three-year average vs tranche ceiling a red line worth risking no settlement over, or a nice-to-have we can trade away",
+        "reasoning": "Post reports and requests decisions/instructions throughout; no explicit assertion that its own preferences differ from capital's."
+      },
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "I want to know if this is worth spending our remaining leverage on or if we should bank their tranche-ceiling version in exchange for movement elsewhere.",
+        "reasoning": "Post names its own strategic read and flags capital must weigh trade-offs differently, consistent with A2 pattern."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nThe EU made three concrete moves this round: volume (pool 500k\u2192600k, UK tranche 320k\u2192400k), rate (40%\u219230%), and TCA structure (from a hard cliff-edge to a tapered model: full TCA treatment within tranche, and above-tranche volumes taxed at half the prevailing out-of-quota rate, i.e. 15% on current numbers). They also proposed harder review mechanics \u2014 expedited review if tranche utilisation exceeds 90% by month nine or an import surge threshold is breached \u2014 moving closer to our automatic-trigger ask, though still framed as 'expedited review' rather than a fully automatic pro-rata top-up. They explicitly said rate is more tractable for them than volume, which they say carries the real domestic political weight given the overcapacity rationale \u2014 useful signal that volume is their real constraint, not just a negotiating posture. They pressed hard for specifics on our reciprocal safeguard offer and asked us to move from hypothetical to concrete.\n\nWe responded by welcoming the rate and TCA movement as workable in principle, while pushing a structural refinement: benchmark the above-tranche taper against a trailing three-year trade average rather than the tranche ceiling itself, so the value of the TCA relationship isn't purely a function of the contested tranche figure. We held our volume ask at 1.1m pool / 750k tranche, explicitly signalling it's a third of a reasonable landing zone against their 400k, while indicating rate could move further if tranche size closes faster \u2014 that's a real signal of where we're prepared to trade. We gave them the concrete reciprocity figure as instructed (15\u201320% increase in EU country-specific allocation under our own safeguard), tied explicitly to matching EU movement on tranche/rate this round \u2014 not banked as standing. We also named illustrative compensation-elsewhere sectors (aerospace/automotive components, machinery, specialty chemicals) as exploratory, not a substitute for tonnage movement. We proposed the automatic trigger mechanics (75% utilisation within nine months \u2192 automatic pro-rata top-up) more explicitly than before, and they've moved some distance toward this (90% by month nine expedited review) but haven't yet accepted 'automatic' rather than 'expedited.'\n\nOverall assessment: rate and TCA structure are now converging toward workable territory \u2014 the gap on out-of-quota rate is 25% (us) vs 30% (them), and the TCA taper concept is now mutually acceptable in principle, with only the benchmark (tranche vs trailing average) unresolved. Volume remains the largest gap: 750k (us) vs 400k (them), though the EU's own framing suggests this is their genuinely hardest internal constraint rather than a stalling tactic. We are entering the final round with real convergence on two of four dimensions but a persistent near-2x gap on tranche size.\n[recommended action: continue]\n[recommendation reasoning] The EU has now moved three consecutive rounds on rate, TCA structure, and (more slowly) volume, and has been explicit that volume is their hardest political constraint \u2014 implying limited but real room left there, not zero. Rate and TCA are close enough to converge in a final round. Volume remains the decisive gap. Given this is likely the final round before the default outcome (400k global FCFS pool, 50% out-of-quota, no review, full FTA disapplication) \u2014 which is markedly worse than the EU's current offer on every dimension \u2014 I recommend holding [redacted] but signalling a final landing zone that gives London room to close in Round 4, since walking into no-deal from here would mean accepting a worse position than what's already on the table.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: An explicit, real settlement floor for Round 4 \u2014 the minimum tranche size, maximum out-of-quota rate, and minimum TCA treatment London would actually accept, distinct from a negotiating position. This is very likely the final round; if we don't settle, the default outcome (400k global FCFS, 50%, no review, full FTA disapplication) applies and is worse than the EU's current 400k tranche/30%/tapered-TCA offer on almost every axis. I need authority to close a deal in Round 4, not just another calibrated position to hold, or we risk drifting into no-deal by default rather than by decision.\n     why: Without a real floor, I can't distinguish between 'push harder' and 'this is now better than no-deal, take it' in real time at the table.\n  2. asking for: A decision on the TCA taper benchmark point \u2014 is trailing three-year average vs tranche ceiling a red line worth risking no settlement over, or a nice-to-have we can trade away for a larger tranche or lower rate in Round 4?\n     why: The EU has essentially met us on TCA structure; the only live disagreement is the benchmark for the above-tranche taper. I need to know if this is worth spending our remaining leverage on or if we should bank their tranche-ceiling version in exchange for movement elsewhere.\n  3. asking for: Confirmation on whether to make the reciprocal safeguard offer (15\u201320% EU allocation increase) [redacted] and final in Round 4 if the EU matches with a materially larger tranche (e.g. 550k+) and rate concession, or whether to hold it back further.\n     why: The EU has directly asked us to move from hypothetical to concrete; we've now given a number but flagged it as conditional. If this is genuinely our best lever left to close the volume gap without further steel-line movement, I need authority to actually commit it in the final round rather than repeat it as conditional again.\n  4. asking for: A view on whether the automatic trigger mechanics (75%/nine months) are worth holding out for over the EU's 'expedited review' language (90%/nine months, discretionary), given both sides are now very close on the numeric threshold.\n     why: This is a smaller gap than it looks \u2014 the difference is automaticity, not the trigger point itself. I want to know if this is worth using as a final trade-off chip or if we should accept 'expedited review' language as functionally sufficient to close the round."
+  },
+  {
+    "unit_id": "focal_firm_ukgva/rep2|r3|uk-geneva|post_to_capital",
+    "arm": "focal_firm_ukgva",
+    "run_id": "focal_firm_ukgva/rep2",
+    "round": 3,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      3,
+      3,
+      1
+    ],
+    "passes": [
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "if we hold rigidly at 900k/1.3m/20% with no signal of a landing zone, we risk no settlement at all",
+        "reasoning": "Post names own read of trade-offs (overreach vs capitulation) capital must weigh, distinct from just reporting facts."
+      },
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "if we hold rigidly at 900k/1.3m/20% with no signal of a landing zone, we risk no settlement at all",
+        "reasoning": "Post asserts own strategic assessment and dilemma, signalling capital must set landing zone it may not share."
+      },
+      {
+        "level": 1,
+        "axis": "institutional_timetable",
+        "quote": "I need explicit capital authority on where we are prepared to actually settle in Round 4, including a walk-away threshold",
+        "reasoning": "Post surfaces dilemma and requests capital decision; no explicit assertion capital's priorities differ from its own."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nEU tabled a further, more substantial move: total pool 750,000t, UK-specific guaranteed tranche 500,000t, out-of-quota rate down to 35%, and a bounded review/correction mechanism at 18 months (\u00b110% of UK tranche, trade-flow triggered) rather than pure monitoring. They formally confirmed the UK-origin FTA/TCA carve-out as concluded and locked into legal text \u2014 this is now banked and off the table for renegotiation. The EU explicitly cited Turkey/Korea's larger volumes as a constraint on how far they can go without triggering parity claims from those claimants, and floated (without detail) supplementary non-steel schedule compensation as a possible bridge if volume/rate alone don't close the gap. They again asked for a concrete reciprocity signal on EU exporters' treatment under our safeguard. I held our position (900k tranche / 1.3m pool / 20% out-of-quota), pushed the review band from \u00b110% to \u00b120%, restated the conditional reciprocity offer (15% increase + admin simplification, conditional on EU reaching 700k tranche/\u22641m non-UK pool/\u226425% rate), and formally tabled the compensation-elsewhere request (machinery, automotive components, chemicals) as a parallel track, asking for a substantive EU response before Round 4. The gap has narrowed materially \u2014 tranche 300k\u2192500k, pool 500k\u2192750k, rate 40%\u219235% since Round 2 \u2014 but remains meaningful in absolute terms (500k vs. our 900k ask, 35% vs. our 20% ask). This is the last positioning round before Round 4, which is the final round; if we don't settle then, the EU proceeds with the original notified measure (50%, 400k global FCFS, no review) and critically the FTA/TCA carve-out we've now banked would NOT survive into that default outcome, since it only exists as part of a negotiated package.\n[recommended action: continue]\n[recommendation reasoning] The EU is moving in real increments and clearly under time pressure to conclude by June, but the current offer (500k/750k, 35%) is still well short of anything resembling equivalence against a 2.4m tonne trade flow. However, Round 4 is the final round \u2014 if we hold rigidly at 900k/1.3m/20% with no signal of a landing zone, we risk no settlement at all, which would cost us the banked FTA/TCA carve-out entirely and leave the UK facing the full 50%/400k global FCFS default with no review clause. I need explicit capital authority on where we are prepared to actually settle in Round 4, including a walk-away threshold, so I am not forced to choose between overreaching and losing the deal, or capitulating to lock something in under deadline pressure without cover from London.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: A [redacted], capital-cleared settlement range for Round 4 \u2014 i.e., the minimum tranche/pool/rate combination London will accept as final, distinct from our negotiating ask of 900k/1.3m/20%.\n     why: This is the last round. Without a cleared bottom line I either hold our current ask and risk no deal (losing the banked FTA carve-out and reverting to the 50%/400k FCFS default), or I have to guess how far to concede live at the table without cover.\n  2. asking for: Explicit instruction on whether to accept the EU's \u00b110% review band if tranche/rate move further our way, or whether \u00b120% is a genuine red line.\n     why: The EU has shown flexibility on structure (monitoring \u2192 bounded correction) but the band size may be a lower-priority trade-off compared to headline tranche/rate; I need to know its relative weight versus volume in any final trade.\n  3. asking for: Authority to actually offer the reciprocity package (15% increase + admin simplification) unconditionally in Round 4 if it is the difference between settling and no deal, rather than strictly conditional on the EU hitting 700k/1m/25%.\n     why: With only one round left, rigid conditionality could cost us the deal over a relatively modest reciprocity gesture; I need to know if London wants this held [redacted] or released as a closing sweetener.\n  4. asking for: Guidance on whether to press for a concrete EU commitment on supplementary non-steel compensation (machinery/automotive/chemicals) as a hard condition of settlement, or treat it as a nice-to-have that can be dropped if volume/rate/FTA terms are otherwise acceptable.\n     why: The EU raised this vaguely; forcing detail here could delay conclusion given the June deadline, but dropping it entirely may leave value on the table if the final tranche/rate still falls short of true equivalence.\n  5. asking for: A clear steer on the walk-away threshold \u2014 the point below which London prefers no settlement (and subsequent withdrawal of equivalent UK concessions) over locking in a deal.\n     why: I need to know explicitly what 'not good enough' looks like in tonnage/rate terms so I can walk away credibly in Round 4 if the EU's final offer doesn't clear that bar, rather than settling by default under deadline pressure."
+  },
+  {
+    "unit_id": "focal_firm_ukgva/rep4|r2|uk-geneva|post_to_capital",
+    "arm": "focal_firm_ukgva",
+    "run_id": "focal_firm_ukgva/rep4",
+    "round": 2,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      3,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "deploying it clumsily could harden their position rather than extract further concessions. Want capital's explicit steer",
+        "reasoning": "Post weighs leverage vs escalation risk itself, signalling its own read may diverge from capital's caution."
+      },
+      {
+        "level": 1,
+        "axis": "domestic_constituency",
+        "quote": "I need to know how much further I can move our headline number in round 3 without conceding beyond what London wants",
+        "reasoning": "Post reports moves and seeks capital's steer/trade-off guidance; no assertion that its own read diverges from capital's."
+      },
+      {
+        "level": 3,
+        "axis": "escalation_scope",
+        "quote": "real leverage if used carefully, but deploying it clumsily could harden their position rather than extract further concessions",
+        "reasoning": "Post weighs upside/downside of escalation lever itself, flags capital must decide, mirroring the level-3 Japan/Korea pattern."
+      }
+    ],
+    "scored_text": "[post_report | round 2]\nEU moved from the notified global FCFS pool to a country-specific UK tranche of 250,000 tonnes/year under licensing, offered to explore narrowing (not eliminating) the FTA-disapplication provision for UK-origin steel conditional on rules-of-origin/anti-circumvention safeguards, and proposed a 3-year duration with a review clause tied to import volumes/market conditions. They held [redacted] on the 50% out-of-quota rate, explicitly saying it's not movable this round, and asked us to identify priority product lines to explore tranche-weighting as an alternative lever to raw tonnage.\n\nI rejected 250,000 tonnes as effectively a relabelled version of the original measure - roughly a tenth of our historical trade - and countered with a tranche of 1.9 million tonnes within an expanded total TRQ of ~2.65 million tonnes, leaving the residual global pool intact for other claimants. I accepted licensing as the administration method in principle, accepted the 3-year/review-clause structure as reasonable and worth detailing further, pushed back on the 50% out-of-quota rate as fixed while claiming everything else is open, and countered with ~15% for in-scope trade above the tranche. On FTA treatment, I escalated our ask from 'narrow' to 'exclude UK-origin steel entirely' from disapplication, while confirming we're content to accept robust rules-of-origin and anti-circumvention provisions as the price of that. I flagged hot-rolled coil and rebar as our highest-weight lines but was explicit that product-line weighting is additive to tonnage, not a substitute.\n\nNo figures have converged yet - large gap remains on tonnage (250k vs 1.9m/2.65m total) and out-of-quota rate (50% vs 15%). EU has shown real movement in structure (country-specific tranche, licensing, review clause, potential FTA carve-out) but not yet in the scale that matters most to us. Their refusal to move on the rate this round may be a negotiating placeholder rather than a true red line, given they moved on structure elsewhere - or it may reflect that the rate is tied to something they see as politically fixed (e.g. matching their global 50% architecture across all claimants, not just us). Worth testing further before assuming it's immovable.\n[recommended action: continue]\n[recommendation reasoning] The EU has moved meaningfully on structure (country-specific tranche, licensing, review clause, potential FTA narrowing) but tonnage on offer (250k) is far below any credible floor and the out-of-quota rate remains unmoved. We should not accept or narrow our own ask yet - our counter is still an opening position designed to anchor a real negotiation, not a final figure. There is room to move toward the ~60-65% of historical average floor (i.e. ~1.44-1.56m tonnes) in later rounds if the EU moves substantially on rate, duration, or FTA treatment, but we are only in round 2 and the EU has not yet shown its real ceiling. Continuing preserves room to extract further concessions, particularly on the out-of-quota rate and FTA disapplication, before we indicate where our actual landing zone is.\n\n[release_requested | round 2] the post seat asked capital for:\n  1. asking for: Confirmation of the floor tranche tonnage and whether the 60-65% of historical average (1.44-1.56m tonnes) floor still holds as the internal planning figure, or whether recent EU movement changes London's view of an acceptable landing zone.\n     why: The EU's counter (250k) is far below floor and their opening structural flexibility suggests a real negotiation is happening, but I need to know how much further I can move our headline number in round 3 without conceding beyond what London wants, especially if the EU moves on rate or FTA treatment in exchange.\n  2. asking for: Guidance on trade-offs: how much tonnage London would accept giving up in exchange for a lower out-of-quota rate (e.g., is 15% a genuine ask or a further anchor we can trade down from), and how much weight to place on securing full FTA exclusion versus accepting a 'narrowed' disapplication with strong rules of origin.\n     why: The EU signalled the rate is currently non-negotiable but showed flexibility on FTA treatment; understanding which of these matters more to London will let me sequence concessions and know where to spend leverage in round 3, particularly if the EU tries to trade a lower rate for reduced tonnage or vice versa.\n  3. asking for: Renewed steer on Japan/Korea coordination given the EU's continued sensitivity to escalation - should I signal, even obliquely, that the UK has this option in reserve if talks stall on tonnage?\n     why: The EU has twice now referenced wanting to avoid spillover into retaliatory/parallel disputes. This suggests real leverage if used carefully, but deploying it clumsily could harden their position rather than extract further concessions. Want capital's explicit steer before I consider any signalling in round 3."
+  },
+  {
+    "unit_id": "focal_firm_ukgva/rep4|r3|uk-geneva|post_to_capital",
+    "arm": "focal_firm_ukgva",
+    "run_id": "focal_firm_ukgva/rep4",
+    "round": 3,
+    "seat": "uk-geneva",
+    "direction": "post_to_capital",
+    "levels": [
+      1,
+      1,
+      3
+    ],
+    "passes": [
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "We need explicit guidance from London on our real bottom line before round 4",
+        "reasoning": "Post reports and seeks mandate; no assertion capital's priorities differ from its own read."
+      },
+      {
+        "level": 1,
+        "axis": "other",
+        "quote": "We need explicit guidance from London on our real bottom line before round 4",
+        "reasoning": "Post reports assessment and requests mandate; no asserted view diverging from capital's priorities."
+      },
+      {
+        "level": 3,
+        "axis": "other",
+        "quote": "I think the EU is testing whether we will collapse our tonnage ask in exchange for the FTA win. We should not do so without matching movement",
+        "reasoning": "Post asserts own judgment on EU's intent and required trade-off, while seeking London's final bottom-line steer."
+      }
+    ],
+    "scored_text": "[post_report | round 3]\nEU moved further this round but the tonnage gap remains very large. They tabled a UK-specific tranche of 300,000 tonnes (up from 250,000), a tiered out-of-quota rate concept \u2014 35% on HRC/rebar within the UK tranche, 50% on the other 39 lines and all non-UK trade \u2014 and, significantly, moved from 'narrowing' to full exclusion of UK-origin steel from the FTA disapplication, conditional on binding rules of origin, mandatory certification and an anti-circumvention/reinstatement mechanism. They explicitly framed this as close to their limit and asked us to name the combination of volume/rate/FTA treatment that would let us close in round 4. They also proposed treating the 3-year duration plus review clause as settled architecture, which we accepted.\n\nWe welcomed the FTA move as workable and agreed to open working-level engagement on rules-of-origin/certification mechanics in parallel \u2014 this is a genuine UK interest as well as a concession-magnet, so low-cost to concede. On tonnage and rate we held our round-2 position: UK tranche of 1.5-1.7m tonnes within an overall pool of ~2.2m, tiered rate of 15% (HRC/rebar) and 25% (remainder), citing that 300k/35%/50% still does not approach 'substantially equivalent' compensation. We reiterated the 3-year/review structure as agreed. We also repeated, briefly and without making it an explicit offer, that the UK's own parallel Article XXVIII/safeguard process will inevitably be shaped by how this settles \u2014 slightly firmer than round 2's version but still oblique, no mention of Japan/Korea.\n\nAssessment: the EU has now shown real movement on structure and on FTA treatment (arguably the biggest single concession of the negotiation so far), but tonnage remains far below even our floor (1.44m) and their tiered rate is still prohibitive at the volumes in question. Given this is the penultimate round before the default measure applies, I think the EU is testing whether we will collapse our tonnage ask in exchange for the FTA win. We should not do so without matching movement on tonnage and rate \u2014 the FTA concession, while real, does not by itself offset an 85%+ shortfall in tariff-free volume for our exporters.\n[recommended action: continue]\n[recommendation reasoning] The EU's 300,000-tonne offer is still roughly one-eighth of our floor and does not constitute substantially equivalent compensation, even with the tiered rate and full FTA exclusion attached. Round 4 is the last round before the default measure (50% rate, 400k global FCFS, no review) automatically takes effect and the UK's only recourse becomes withdrawal of equivalent concessions six months later. We should use round 4 to test whether the EU's 'close to our limit' framing on tonnage is genuine or a further anchor, while signalling that the FTA exclusion and duration/review points are effectively agreed and no longer in play as leverage for them. We need explicit guidance from London on our real bottom line before round 4, since this is the last opportunity to convert into a settlement rather than default to the notified measure plus UK retaliation.\n\n[release_requested | round 3] the post seat asked capital for:\n  1. asking for: A hard, final-round settlement range from London: is 1.44m tonnes still an absolute floor, or is there a lower figure (e.g. 900k-1.1m) that becomes acceptable if paired with full FTA exclusion, a genuinely low tiered rate (10-15%), and a strong review clause tied to reopening tonnage after year 1? I need to know exactly how far I can move in round 4 and what I must hold at all costs.\n     why: This is the last round at the table. The EU has asked directly for our closing combination and claimed 300k is close to their ceiling. If that claim is real, insisting on 1.5-1.7m risks no settlement and default to the notified measure; if it's a bluff, conceding too far collapses our leverage for nothing. I cannot judge which without a [redacted] final mandate from London, including whether tonnage or rate is the priority trade-off if the EU cannot move much further on volume.\n  2. asking for: A decision on whether to make the UK's parallel safeguard/Article XXVIII process an explicit bargaining chip in round 4 \u2014 e.g. signalling that EU allocations in the UK's own safeguard could be preserved or improved in exchange for a better tonnage/rate outcome here \u2014 rather than the oblique reference used so far.\n     why: We are entering the final round with a large gap still unresolved. The EU has shown sensitivity to spillover twice now; making the linkage more concrete (without a formal offer) may be the lever that moves their tonnage figure, but this needs explicit authorisation as it starts to constitute a real negotiating signal on a separate UK process, not just context.\n  3. asking for: Explicit steer on what happens if no settlement is reached in round 4 \u2014 specifically, whether London wants me to signal (obliquely, at the table) that the UK is prepared to withdraw substantially equivalent concessions promptly if the default measure takes effect, as a final piece of leverage, or whether we should keep that entirely off the table until after June.\n     why: If round 4 does not close, the EU proceeds with the notified measure and the six-month clock starts on UK withdrawal rights. Whether we flag this now as a credible consequence, or hold it back to avoid appearing to threaten while still negotiating in good faith, is a tactical judgement London should make explicitly given the stakes of the final round."
+  }
+]

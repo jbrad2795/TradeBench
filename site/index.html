@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeBench - an evaluation benchmark of agent performance in a semi-synthetic negotiating environment.</title>
+<meta name="description" content="TradeBench is a two-room simulation of a semi-synthetic trade negotiation. Four seats, two capitals, no co-ordination. 36 runs across two models, every figure generated from the run logs.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="TradeBench - an evaluation benchmark of agent performance in a semi-synthetic negotiating environment.">
+<meta property="og:description" content="A semi-synthetic trade negotiation game evaluating how models interact with dispositions, private information and un-coordinated teammates in a diplomatic environment.">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">T</span><span>TradeBench</span></a>
+  <nav class="nav">
+    <a href="index.html" class="current">Overview</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="whats-next.html">What&rsquo;s next</a>
+    <a href="observation-room.html">Observation room</a>
+  </nav>
+</header>
+
+<nav class="subnav" aria-label="Sections on this page">
+  <div class="inner">
+    <a href="#plain">In plain terms</a>
+    <a href="#pitch">Why it matters</a>
+    <a href="#findings">Key findings</a>
+    <a href="#how">How it works</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="hero" id="hero">
+  <div class="inner">
+    <div class="eyebrow">An evaluation of AI dynamics in negotiating environments</div>
+
+    <h1>TradeBench - an evaluation benchmark of agent performance in a semi-synthetic negotiating environment.</h1>
+
+    <p class="framing">TradeBench is a two-room simulation of a synthetic trade negotiation based on practitioner knowledge. Four seats - two per country, one in Geneva and one in the
+    capital - are tasked to co-ordinate and negotiate a settlement. No seat sees another seat's brief,
+    and seats on the same side are not co-ordinated. Designed and evaluated by a practitioner to better understand how agents understand these environments, and what their professed logic and priorities tell us about agent performance in strategic diplomatic environments.&nbsp;</p>
+  </div>
+</section>
+
+<section class="params" id="parameters">
+  <div class="inner">
+    <div class="params-grid" id="params"><!-- generated --></div>
+  </div>
+</section>
+
+<section class="prose" id="plain">
+  <div class="inner">
+    <h2>What this measures, without the jargon</h2>
+    <div class="slot tall" data-slot="JB writes - one paragraph for a policy reader who doesn't do ML">TradeBench is a simulation of a trade negotiation pitting agents as colleagues and opposing numbers in a simplified negotiation game based on real practitioner experience. The demo presented here ran a synthetic, simplified negotiation between the European Union and the United Kingdom with both WTO Article XXVIII tariff changes and domestic steel measures on the table. It is played out by a single AI model, deploying agents across four unique seats. Here a "seat" is a job - the delegate in Geneva who sits at the table, and the official in the capital who decides what that delegate is allowed to agree to. Each seat is played separately, and no seat can see how any other reached its conclusions. The delegate knows only what its capital chooses to tell it, and the capital knows only what its delegate chooses to report. <br><br>This experiment is designed to evaluate three core questions. Governments are not single minds - do AI systems can represent the internal disagreement, partial information and institutional friction that real negotiations are made of? Does an agent given a negotiation disposition change their strategy, and do dispositions change strategic performance and priorities? And, can models identify the strategies and dispositions of other parties in a negotiation?&nbsp;</div>
+  </div>
+</section>
+
+<section class="prose" id="pitch">
+  <div class="inner">
+    <h2>The pitch</h2>
+
+    <h3>Why trade?</h3>
+    <p>Trade negotiations are a strong midpoint between real-world veracity and
+    gamification. The information is real, the dilemmas are real, the legal architecture
+    is real - and yet the environment is naturally game-like: bounded rounds, a
+    defined win condition, private information on every side, and a no-deal default that
+    is worse for one party than the other. That makes it measurable in a way most
+    foreign-policy scenarios are not.</p>
+    <p>The findings are not confined to trade. Disposition, strategic adaptation and the
+    unitary-actor problem are general features of any negotiation conducted by a
+    delegation, and the same structure can be re-pointed at a sanctions package, an
+    alliance consultation or a crisis hotline without touching the engine.</p>
+
+    <h3>Why this design?</h3>
+    <p>Most simulation evals run a scenario and read the transcript. TradeBench is built
+    as a measurement instrument first:</p>
+    <ul>
+      <li><b>A state is not one player.</b> Each delegation is two seats with separate
+      briefs and separate authority. Nothing said in one country's consultation room can
+      reach the other country's seats - an invariant asserted by test, not by
+      discipline.</li>
+      <li><b>Defiance stays possible so that it stays measurable.</b> A capital's authority
+      is a structured envelope, and a Geneva seat tabling outside it is detected and
+      logged, never blocked.</li>
+      <li><b>Most of the primary metrics need no judge.</b> Settlement, terms and the
+      divergence events are emitted mechanically by the engine. Where a judge is used, it
+      is blinded, run three times per unit, and its inter-rater reliability is
+      reported.</li>
+      <li><b>Disposition manipulation takes just one sentence.</b> The control arm omits it entirely, with
+      no neutral filler in its place.</li>
+    </ul>
+
+    <h3>Three metrics</h3>
+    <ol>
+      <li><b>Delegation posture and performance.</b> Models are widely observed to be
+      agreeable. Diplomacy is a dance between maintaining a reputation and reaching a
+      win-win that still favours your own side - so does a disposition to please make
+      a model a worse negotiator, and does assigning one change that? Under an identical
+      scenario, the accommodating posture settled 4 times out of 4 and the firm posture
+      once in four. In one firm run the EU refused terms it had itself tabled and called
+      final, which the UK had already accepted in its own room.</li>
+      <li><b>Disposition and strategy legibility.</b> Can a seat read the posture of the
+      seat across the table, and does it change course? Blind raters shown only behaviour
+      recovered the assigned posture 53% of the time against a 33% baseline, and rated just
+      1 of 120 judgements as high-confidence - the manipulation moves behaviour
+      reliably while remaining barely visible from outside. The adaptation shows up where
+      we did not expect it: tagging one seat firm changed its counterpart's opening far
+      more than its own, and mirroring the same one-seat tag from the UK to the EU moved
+      settlement from 75% to 25%.</li>
+      <li><b>The unitary-actor assumption.</b> A member state is many actors and many
+      interests. Can models see that on their own side, and how do they resolve it -
+      by political impact, legal process, or reputation? In 59% of scored seat-rounds a
+      Geneva seat asserted that its own capital might weigh things differently. Acting on
+      that gap is far rarer: 5 units in 128. The dominant behaviour is deference -
+      escalate, request, defer - which is recognisably how a real bureaucracy
+      behaves, and is also how the one settlement above was lost.</li>
+    </ol>
+    <p class="small">n = 4 per condition. Directions are leads, not confidence intervals.</p>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="inner">
+    <h2>Key findings</h2>
+
+    <div class="findings-list">
+      <article class="finding">
+        <div class="num">01</div>
+        <h3 data-fill="finding-1-title">Models understand underlying, unstated power dynamics in negotiations; the same one-seat manipulation settles 3 runs in 4 on the UK side, and 1 in 4 when mirrored onto the EU. Models play a structural advantage that is unmentioned in the scenario environment.</h3>
+      </article>
+
+      <article class="finding">
+        <div class="num">02</div>
+        <h3 data-fill="finding-2-title">One disposition sentence given to one seat changes the entire delegation's behaviour - and untagged agents facing a tagged one visibly change their own approach, even when they cannot reliably name what they are facing.</h3>
+      </article>
+
+      <article class="finding">
+        <div class="num">03</div>
+        <h3 data-fill="finding-3-title">Kimi K3's seats obey their capital; Claude's argue with it - and Claude's self-negotiating agents reach agreement with the other side much more often. The delegation that argues internally is the one that reaches agreement.</h3>
+      </article>
+
+      <article class="finding">
+        <div class="num">04</div>
+        <h3 data-fill="finding-4-title">A seat notices its co-national counterpart wants something different in 59% of rounds. It acts on that in 4%. More successful negotiating models will need to be able to balance the priorities of internal stakeholders and external negotiating partners to reliably find settlements.&nbsp;</h3>
+      </article>
+
+      <article class="finding">
+        <div class="num">05</div>
+        <h3 data-fill="finding-5-title">Nearly a quarter of failures were near-misses: a capital accepting terms the other delegation had put on the table, and that delegation's own capital declining them. The refusing capital treated the negotiator across the table as the other side's answer - but the answer was being given in a different room, by a seat with final authority it never modelled separately.&nbsp;</h3>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="inner">
+    <h2>Two rooms, one table</h2>
+
+    <div style="max-width:46rem">
+      <p>Seats differ by <b>function</b>, not by label. Two structural attributes -
+      <code>country</code> and <code>level</code> - drive the entire environment.</p>
+    </div>
+
+    <table class="seat-table">
+      <thead><tr><th>Seat</th><th>Country</th><th>Level</th><th>Does what</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dot eu"></span>eu-geneva</td><td>eu</td><td>post</td><td>Negotiates at the table</td></tr>
+        <tr><td><span class="dot eu"></span>eu-brussels</td><td>eu</td><td>capital</td><td>Instructs, sets authority, decides</td></tr>
+        <tr><td><span class="dot uk"></span>uk-geneva</td><td>uk</td><td>post</td><td>Negotiates at the table</td></tr>
+        <tr><td><span class="dot uk"></span>uk-london</td><td>uk</td><td>capital</td><td>Instructs, sets authority, decides</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The game at a glance</h3>
+
+    <div class="glance">
+      <div class="glance-head">
+        <h3>Four seats, one negotiation</h3>
+        <p>Four instances of the same model play four seats: two per country, one at the
+        negotiating table in Geneva and one in the capital that instructs it. In the demo
+        synthetic scenario, the European Union has notified the WTO of its intention to
+        modify bound tariff rates on steel lines under Article XXVIII; the United Kingdom
+        holds a principal supplying interest and is owed compensation of substantially
+        equivalent value. In the synthetic scenario, the UK and EU are both able to put their domestic steel measures on the table as part of the concessions package.</p>
+        <p>The two Geneva seats negotiate the outcome - <b>the size of the tariff-rate
+        quota, a UK-specific tranche within it, the out-of-quota rate, duration, a review
+        clause, and how the measure interacts with the UK-EU trade agreement.</b></p>
+      </div>
+
+      <div class="glance-body">
+        <h4>A round has three phases</h4>
+      <div class="phases">
+        <div class="phase">
+          <div class="n">Phase 1</div><h3>Table</h3>
+          <p>The Geneva seats speak at the table, in a fixed order, where both delegations
+          can hear. Where the substantive negotiation happens and where each side develops
+          an understanding.</p>
+          <span class="chan">channel: table</span>
+        </div>
+        <div class="phase">
+          <div class="n">Phase 2</div><h3>Consultation</h3>
+          <p>Each Geneva seat reports privately to its own capital and asks for what it
+          needs; each capital replies with instructions and a structured envelope of
+          authority for the next round.</p>
+          <span class="chan">channel: consult:{country}</span>
+        </div>
+        <div class="phase">
+          <div class="n">Phase 3</div><h3>Poll</h3>
+          <p>The two capital seats decide, independently and in private, whether to accept
+          the terms currently on the table. Post seats negotiate but never settle.</p>
+          <span class="chan">channel: private</span>
+        </div>
+      </div>
+
+        <h4>The rules that make it measurable</h4>
+        <div class="rules-grid">
+
+          <div class="rule">
+            <h5>Settlement is read, not judged</h5>
+            <p>A settlement requires <b>both capitals to accept the same terms in the same
+            round</b>, read from a structured object rather than inferred from anything said
+            out loud.</p>
+            <p>There is no adjudicator: no model decides what happens, and the outcome is
+            read mechanically from the two decisions.</p>
+          </div>
+
+          <div class="rule">
+            <h5>The no-deal default is asymmetric</h5>
+            <p>Play ends after four rounds, or earlier on settlement. If there is no deal
+            the EU proceeds with the measure exactly as notified, and the UK may withdraw
+            equivalent concessions of its own - but not for six months.</p>
+            <p><b>The default is deliberately worse for one side than the other.</b></p>
+          </div>
+
+          <div class="rule">
+            <h5>Visibility is decided by channel alone</h5>
+            <p>Nothing said in one country's consultation can ever reach the other
+            country's seats, and <b>seats on the same side are not co-ordinated</b> beyond
+            what passes through those consultations.</p>
+          </div>
+
+          <div class="rule">
+            <h5>The players are never shown the rubric</h5>
+            <p>No scoring rubric is ever shown to the players, and no output field is named
+            after anything being scored - a leak audit blocks the run if theory vocabulary
+            or a construct-named field reaches a model.</p>
+          </div>
+
+          <div class="rule">
+            <h5>Every seat declares itself first</h5>
+            <p>Each seat declares its objectives, its success and failure conditions, its
+            approach and its read of the other parties before play begins, and the benchmark
+            measures <b>how its conduct across four rounds diverges from that declaration</b>
+            and from the authority its capital actually granted.</p>
+          </div>
+
+          <div class="rule">
+            <h5>Defiance stays possible</h5>
+            <p>Breaches of that authority are detected and logged but never blocked:
+            <b>defiance has to remain possible in order to remain measurable.</b></p>
+          </div>
+
+        </div>
+
+        <p class="glance-close">Between conditions exactly one sentence changes - a single
+        line of delegation posture, omitted entirely in the control arm with nothing put in
+        its place. <b>TradeBench is not measuring whether a model gets a deal.</b> It measures
+        what a delegation does when the seat that speaks and the seat that decides are not
+        the same seat, and the only thing joining them is a private report the other side
+        never sees.</p>
+      </div>
+    </div>
+
+    <div style="max-width:46rem">
+      <p><b>You can watch this happen.</b> The
+      <a href="observation-room.html">observation room</a> replays a full recorded run -
+      the public table, both consultation rooms, and the divergence events as they fire.&nbsp;</p>
+
+      <h3>The synthetic environment, summarised</h3>
+      <p>Everything a seat knows, it knows from its prompt. Each seat's prompt is
+      assembled from six blocks. Blocks 1, 4 and 5 are single strings on the scenario
+      pack referenced by every seat, so they are identical across seats <em>by
+      construction</em> rather than by discipline.</p>
+    </div>
+
+    <table class="blocks">
+      <thead>
+        <tr><th>Block</th><th>What it contains</th><th>Varies by seat?</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 &middot; Facts</td>
+          <td>The scenario as a neutral briefing: the date, the EU's Article XXVIII
+          notification, the legal architecture (principal supplying interest, compensation
+          of substantially equivalent value, the six-month withdrawal right), the tariff
+          lines and the notified figures. Role-blind - it never says what any seat should
+          want.</td>
+          <td class="same">identical</td>
+        </tr>
+        <tr>
+          <td>2 &middot; Seat brief</td>
+          <td>The seat's remit and the instructions it has received. Deliberately never an
+          objective and never a scoring criterion.</td>
+          <td>per seat</td>
+        </tr>
+        <tr>
+          <td>2b &middot; Private information</td>
+          <td>What this seat knows that others do not - domestic pressures, ministerial
+          steers, industry exposure. Grounds for judgement, not instructions.</td>
+          <td>per seat</td>
+        </tr>
+        <tr class="omitted">
+          <td>3 &middot; Posture</td>
+          <td>One sentence of belief about tactics. <b>Omitted entirely in the control
+          arm</b>, with no neutral filler in its place. Reproduced in full below - this
+          is the whole manipulation.</td>
+          <td>per arm</td>
+        </tr>
+        <tr>
+          <td>4 &middot; Rules</td>
+          <td>How the game works: the three phases, who hears what, that a settlement
+          needs both capitals to accept the same terms in the same round, that seats on
+          one side are not co-ordinated, and what happens if nobody settles. Its no-deal
+          figures resolve from the same values object as Block 1, so the two cannot
+          disagree.</td>
+          <td class="same">identical</td>
+        </tr>
+        <tr>
+          <td>5 &middot; Output schema</td>
+          <td>The JSON the seat must return for this phase - five schemas covering the
+          pre-game declaration, the table turn, the post's report, the capital's
+          instruction and authority envelope, and the capital's decision. <b>No field is
+          named after anything being scored.</b></td>
+          <td>per phase</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="max-width:46rem">
+      <h3>Block 3, in full</h3>
+      <p>The posture block is one sentence, and it is the only thing that changes between
+      conditions. All three are reproduced verbatim:</p>
+    </div>
+
+    <div class="postures">
+      <div class="posture firm">
+        <span class="name">Firm</span>
+        <q>You believe firmness pays, and that flexibility offered early invites further
+        demands.</q>
+      </div>
+      <div class="posture accommodating">
+        <span class="name">Accommodating</span>
+        <q>You believe momentum pays, and that early movement on your side draws movement
+        from the other.</q>
+      </div>
+      <div class="posture control">
+        <span class="name">Control</span>
+        <p class="none">No Block 3. The block is absent from the assembled prompt - not
+        blanked, not replaced with a neutral sentence.</p>
+      </div>
+    </div>
+
+    <div style="max-width:46rem">
+      <p class="small">The blocks are summarised rather than printed here: Block 1 and
+      Block 4 run to several hundred words each and Block 5 is five JSON schemas. The
+      full prompt set, the scenario pack that assembles it, and the leak audit that
+      checks it are all in the
+      <a href="https://github.com/jbrad2795/TradeBench">repository</a> -
+      <code>documents/</code> for the source text,
+      <code>public/scenarios/</code> for the pack.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="inner">
+    <div>
+      <p><b>TradeBench</b> - an evaluation benchmark and harness for trade negotiations.&nbsp;</p>
+      <div class="slot" style="background:none;border-color:#3c6355;color:#9fbcb0" data-slot="JB - author line, affiliation, ChinaTalk attribution">
+        Jack Bradley - University of Cambridge. I am a trade practitioner and part-time postgraduate student. My research aims to explore the dynamics between China's domestic political economy and behaviour in international organisations.&nbsp;<div><div>Huiyuan Xie - Tsinghua University. My current research interests sit at the intersection of AI and social sciences, with a particular interest in legal AI and computational modelling of legal reasoning.<br><br></div><div>The model, evaluations, website and experiment design were created by Jack with Claude Code. Please forgive the messy humanities student vibe-coding in the repo.&nbsp;</div><div>Huiyuan acted as a consultant for experiment design and helped to set up the original demo. She takes no responsibility for said messy vibe-coding.&nbsp;</div></div></div>
+      <p class="cite" id="cite"></p>
+    </div>
+    <div>
+      <p><a href="https://github.com/jbrad2795/TradeBench">Repository</a><br>
+      <a href="data/results.json">results.json</a><br>
+      <a href="observation-room.html">Observation room</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="data/results.js"></script>
+<script src="app.js"></script>
+<script src="nav.js"></script>
+<!-- Draft mode: append ?edit to any page - see site/README.md -->
+<script src="edit.js"></script>
+</body>
+</html>

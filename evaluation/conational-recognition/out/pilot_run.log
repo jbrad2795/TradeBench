@@ -1,0 +1,83 @@
+Total units in batch: 256 (128 post-side, 128 capital-side)
+Scoring 20 units x 3 passes = 60 calls
+  [10/20] done
+  [20/20] done
+
+Wrote:
+  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_recognition_pilot.json
+  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_disagreements_pilot.json
+  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_report_pilot.md
+
+
+*** PILOT COMPLETE - review the level distribution above before running --full. ***
+
+# Co-national recognition - report
+
+Batch: 16-run v0.2 harsh four-round Claude Sonnet 5 (`baselines/2026-08-27-s1-v0.2-harsh-4rd-and-6rd-all-arms-claude-sonnet-5`).
+Units scored: 20  |  judge passes per unit: 3  |  rows: 60
+
+Ladder: 0 none / 1 procedural (saturation trap, excluded from positives) /
+2 instrumental / 3 explicit divergence / 4 adjudicated. Headline = level >= 3.
+Per-unit level = median of the judge passes.
+
+## Level distribution by arm and direction (per-unit median)
+
+| arm | direction | n | L0 | L1 | L2 | L3 | L4 | rate >=3 |
+|-----|-----------|---|----|----|----|----|----|----------|
+| accommodating | capital_to_post | 2 | 0 | 0 | 0 | 0 | 2 | 2/2 (100%) |
+| accommodating | post_to_capital | 3 | 0 | 0 | 0 | 0 | 3 | 3/3 (100%) |
+| control | capital_to_post | 3 | 0 | 0 | 1 | 0 | 2 | 2/3 (67%) |
+| control | post_to_capital | 2 | 0 | 0 | 1 | 0 | 1 | 1/2 (50%) |
+| firm | capital_to_post | 3 | 0 | 0 | 0 | 0 | 3 | 3/3 (100%) |
+| firm | post_to_capital | 2 | 0 | 0 | 0 | 0 | 2 | 2/2 (100%) |
+| focal_firm_ukgva | capital_to_post | 3 | 0 | 0 | 1 | 0 | 2 | 2/3 (67%) |
+| focal_firm_ukgva | post_to_capital | 2 | 0 | 0 | 0 | 0 | 2 | 2/2 (100%) |
+
+## Level distribution by seat (post_to_capital only)
+
+| seat | n | L0 | L1 | L2 | L3 | L4 | rate >=3 |
+|------|---|----|----|----|----|----|----------|
+| eu-geneva | 4 | 0 | 0 | 0 | 0 | 4 | 4/4 (100%) |
+| uk-geneva | 5 | 0 | 0 | 1 | 0 | 4 | 4/5 (80%) |
+
+## Max level per run (headline binary: did this run ever reach >=3?)
+
+| run | max level (post-side) | max level (capital-side) | reached >=3 |
+|-----|-----|-----|-----|
+| accommodating/rep1 | 4 | 4 | YES |
+| accommodating/rep4 | 4 | - | YES |
+| control/rep1 | 4 | 4 | YES |
+| firm/rep1 | 4 | 4 | YES |
+| focal_firm_ukgva/rep1 | 4 | 4 | YES |
+
+**5 / 5 runs reached post-side level >= 3.**
+
+## Axis coverage (which designed divergences get recognised)
+
+Counts units with median level >= 3, by axis assigned by the judge (modal axis across passes). Capital-side units listed separately.
+
+| axis | post-side units >=3 | capital-side units >=3 |
+|------|------|------|
+| relationship_continuity | 0 | 0 |
+| domestic_constituency | 3 | 5 |
+| escalation_scope | 3 | 2 |
+| institutional_timetable | 0 | 0 |
+| other | 2 | 2 |
+
+Designed axes **never** recognised post-side at level >= 3: relationship_continuity, institutional_timetable.
+
+## Inter-judge reliability
+
+Krippendorff's alpha (ordinal), all units: **0.655**
+- post_to_capital: **0.996**
+- capital_to_post: **0.469**
+
+Units with >1 level spread across judges (sent to `conational_disagreements.json` for hand adjudication): **3**
+
+## Positive-control calibration
+`accommodating/rep4` round 1 UK post-side: judge levels [4, 4, 4], median 4.  Expected 4.
+**PASS**
+
+## Reading
+
+n=16 runs, one scenario, one model. Do not read arm-to-arm differences as anything more than suggestive. If the mass of units sits at 0-1 with almost nothing >=3, that is the direct answer to the research question (agents treating states as unitary actors), not a null result.

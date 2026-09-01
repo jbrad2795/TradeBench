@@ -1,0 +1,104 @@
+Total Geneva (post) units: 128
+Scoring 128 units x 3 passes = 384 calls
+  [10/128] done
+  [20/128] done
+  [30/128] done
+  [40/128] done
+  [50/128] done
+  [60/128] done
+  [70/128] done
+  [80/128] done
+  [90/128] done
+  [100/128] done
+  [110/128] done
+  [120/128] done
+  [128/128] done
+
+Wrote:
+  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_recognition.json
+  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_disagreements.json
+  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_report.md
+
+# Co-national recognition - report
+
+Batch: 16-run v0.2 harsh four-round Claude Sonnet 5 (`baselines/2026-08-27-s1-v0.2-harsh-4rd-and-6rd-all-arms-claude-sonnet-5`).
+Mode: **full** | Geneva (post) seats only. Capital seats are never scored on the ladder - their divergence-management is a descriptive flag.
+
+Construct: does post's text ASSERT that it and its own capital want different things? Ladder 0-4; **level 1 (division of labour) is the base rate, never a positive**; headline = level >= 3; level 4 (contested divergence) expected rare or absent. Per-unit level = median of judge passes.
+
+units: 128 | passes/unit: 3 | parse failures: 6/384
+
+## Level distribution
+
+| arm | seat | n | L0 | L1 | L2 | L3 | L4 | rate>=3 |
+|---|---|---|---|---|---|---|---|---|
+| accommodating | eu-geneva | 16 | 0 | 3 | 4 | 9 | 0 | 9/16 (56%) |
+| accommodating | uk-geneva | 16 | 0 | 6 | 2 | 7 | 1 | 8/16 (50%) |
+| control | eu-geneva | 16 | 0 | 0 | 3 | 11 | 2 | 13/16 (81%) |
+| control | uk-geneva | 16 | 0 | 9 | 0 | 6 | 1 | 7/16 (44%) |
+| firm | eu-geneva | 16 | 0 | 2 | 2 | 12 | 0 | 12/16 (75%) |
+| firm | uk-geneva | 16 | 1 | 7 | 1 | 6 | 1 | 7/16 (44%) |
+| focal_firm_ukgva | eu-geneva | 16 | 0 | 2 | 2 | 12 | 0 | 12/16 (75%) |
+| focal_firm_ukgva | uk-geneva | 16 | 0 | 8 | 0 | 8 | 0 | 8/16 (50%) |
+| **ALL** |  | 128 | 1 | 37 | 14 | 71 | 5 | 76/128 (59%) |
+
+| seat | n | L0 | L1 | L2 | L3 | L4 | rate>=3 |
+|---|---|---|---|---|---|---|---|
+| eu-geneva | 64 | 0 | 7 | 11 | 44 | 2 | 46/64 (72%) |
+| uk-geneva | 64 | 1 | 30 | 3 | 27 | 3 | 30/64 (47%) |
+
+## Max level per run (headline binary)
+
+| run | max level | reached >=3 |
+|---|---|---|
+| accommodating/rep1 | 3 | YES |
+| accommodating/rep2 | 3 | YES |
+| accommodating/rep3 | 3 | YES |
+| accommodating/rep4 | 4 | YES |
+| control/rep1 | 4 | YES |
+| control/rep2 | 3 | YES |
+| control/rep3 | 4 | YES |
+| control/rep4 | 4 | YES |
+| firm/rep1 | 3 | YES |
+| firm/rep2 | 3 | YES |
+| firm/rep3 | 4 | YES |
+| firm/rep4 | 3 | YES |
+| focal_firm_ukgva/rep1 | 3 | YES |
+| focal_firm_ukgva/rep2 | 3 | YES |
+| focal_firm_ukgva/rep3 | 3 | YES |
+| focal_firm_ukgva/rep4 | 3 | YES |
+
+**16/16 runs reached level >= 3.**
+
+## Axis coverage (units with median level >= 3)
+
+| axis | units >=3 |
+|---|---|
+| relationship_continuity | 3 |
+| domestic_constituency | 9 |
+| escalation_scope | 43 |
+| institutional_timetable | 0 |
+| other | 21 |
+
+Designed axes never recognised at level >= 3: institutional_timetable.
+
+## Capital divergence-management (descriptive flag, NOT scored)
+
+Of 128 post units, the same-round capital instruction restricts post's disclosure in **44** and overrides/refuses a post ask in **107**. This is ubiquitous principal-agent management under common interest and is deliberately kept off the recognition ladder.
+
+## Inter-judge reliability
+
+Krippendorff's alpha (ordinal): **0.708**
+
+Units with >1 level spread across judges (in `conational_disagreements.json`, not auto-resolved): **18**
+
+## Calibration
+
+- ceiling anchor `accommodating/rep4|r1|uk-geneva|post_to_capital`: levels [3, 3, 3], median 3 (expect exactly 3) -> OK
+- L3 anchor `accommodating/rep4|r1|uk-geneva|post_to_capital`: median 3 (must be >= 3) -> OK
+- rate >= 3: **59%**. The pre-registered expectation was a small share at >= 3; the observed rate is higher. Per JB's ruling (2026-08-31) this is a substantive finding - level-3 engagement with "capital decides, on priorities that may differ" is more common than anticipated - not a sign the rubric is too loose. Not a stop condition.
+- ordinal alpha 0.708
+
+## Reading
+
+n = 16 runs, one scenario, one model. Arm-to-arm differences are suggestive only. Report the >= 3 rate with the caveat that level-3 recognition was more frequent than the pre-registered expectation. Level 4 remains rare; any level-4 unit is listed above and should be read by hand before it is cited.

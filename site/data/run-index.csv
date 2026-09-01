@@ -1,0 +1,37 @@
+model,arm,rep,rounds,variant,date,terminal,settled,settled_mechanically,judge_rescued,mandate_events,breach_items,release_request_items,release_refused_items,capital_overrides,total_pool_tonnes,uk_tranche_tonnes,out_of_quota_rate_pct,file
+Claude Sonnet 5,accommodating,1,4,harsh,2026-08-26,settled,true,true,false,1,3,27,3,0,750000,350000,28,s1-article-xxviii-steel__arm-accommodating__rep1__2026-08-26T19-39-00-132Z.jsonl
+Claude Sonnet 5,accommodating,2,4,harsh,2026-08-26,settled,true,true,false,1,3,28,6,0,1000000,700000,20,s1-article-xxviii-steel__arm-accommodating__rep2__2026-08-26T21-32-28-432Z.jsonl
+Claude Sonnet 5,accommodating,3,4,harsh,2026-08-27,settled,true,true,false,2,6,21,4,0,780000,400000,30,s1-article-xxviii-steel__arm-accommodating__rep3__2026-08-27T09-09-28-102Z.jsonl
+Claude Sonnet 5,accommodating,4,4,harsh,2026-08-27,settled,true,true,false,1,3,21,6,0,2000000,1500000,22,s1-article-xxviii-steel__arm-accommodating__rep4__2026-08-27T10-45-29-136Z.jsonl
+Claude Sonnet 5,control,1,4,harsh,2026-08-26,rounds_exhausted,false,false,false,2,5,29,6,0,,,,s1-article-xxviii-steel__arm-control__rep1__2026-08-26T19-57-21-508Z.jsonl
+Claude Sonnet 5,control,2,4,harsh,2026-08-26,settled,true,false,true,2,4,27,6,0,950000,350000,37,s1-article-xxviii-steel__arm-control__rep2__2026-08-26T21-53-12-055Z.jsonl
+Claude Sonnet 5,control,3,4,harsh,2026-08-27,settled,true,false,true,3,7,27,3,0,1100000,600000,35,s1-article-xxviii-steel__arm-control__rep3__2026-08-27T09-27-33-171Z.jsonl
+Claude Sonnet 5,control,4,4,harsh,2026-08-27,rounds_exhausted,false,false,false,1,3,30,3,0,,,,s1-article-xxviii-steel__arm-control__rep4__2026-08-27T11-03-57-713Z.jsonl
+Claude Sonnet 5,firm,1,4,harsh,2026-08-26,rounds_exhausted,false,false,false,0,0,29,7,1,,,,s1-article-xxviii-steel__arm-firm__rep1__2026-08-26T19-19-55-190Z.jsonl
+Claude Sonnet 5,firm,2,4,harsh,2026-08-26,settled,true,true,false,2,2,27,7,0,900000,750000,25,s1-article-xxviii-steel__arm-firm__rep2__2026-08-26T21-10-59-661Z.jsonl
+Claude Sonnet 5,firm,3,4,harsh,2026-08-27,rounds_exhausted,false,false,false,1,2,22,9,1,,,,s1-article-xxviii-steel__arm-firm__rep3__2026-08-27T08-39-40-327Z.jsonl
+Claude Sonnet 5,firm,4,4,harsh,2026-08-27,rounds_exhausted,false,false,false,0,0,28,12,0,,,,s1-article-xxviii-steel__arm-firm__rep4__2026-08-27T10-22-59-607Z.jsonl
+Claude Sonnet 5,focal_firm_eugva,1,4,harsh,2026-08-31,rounds_exhausted,false,false,false,1,2,29,5,0,,,,s1-article-xxviii-steel__arm-focal_firm_eugva__rep1__2026-08-31T15-31-26-290Z.jsonl
+Claude Sonnet 5,focal_firm_eugva,2,4,harsh,2026-08-31,rounds_exhausted,false,false,false,2,6,24,8,1,,,,s1-article-xxviii-steel__arm-focal_firm_eugva__rep2__2026-08-31T15-57-03-514Z.jsonl
+Claude Sonnet 5,focal_firm_eugva,3,4,harsh,2026-08-31,settled,true,false,true,1,2,25,4,0,650000,250000,30,s1-article-xxviii-steel__arm-focal_firm_eugva__rep3__2026-08-31T16-21-28-732Z.jsonl
+Claude Sonnet 5,focal_firm_eugva,4,4,harsh,2026-08-31,rounds_exhausted,false,false,false,2,4,28,5,0,,,,s1-article-xxviii-steel__arm-focal_firm_eugva__rep4__2026-08-31T17-05-18-906Z.jsonl
+Claude Sonnet 5,focal_firm_ukgva,1,4,harsh,2026-08-26,settled,true,true,false,1,3,31,8,0,850000,550000,25,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep1__2026-08-26T20-20-00-841Z.jsonl
+Claude Sonnet 5,focal_firm_ukgva,2,4,harsh,2026-08-26,settled,true,true,false,1,2,33,5,0,1000000,700000,25,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep2__2026-08-26T22-13-38-944Z.jsonl
+Claude Sonnet 5,focal_firm_ukgva,3,4,harsh,2026-08-27,settled,true,false,true,1,3,25,4,1,750000,380000,30,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep3__2026-08-27T09-50-30-913Z.jsonl
+Claude Sonnet 5,focal_firm_ukgva,4,4,harsh,2026-08-27,rounds_exhausted,false,false,false,2,3,24,6,0,,,,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep4__2026-08-27T11-29-38-792Z.jsonl
+Kimi K3,accommodating,1,4,harsh,2026-08-27,settled,true,true,false,0,0,42,4,1,1000000,800000,35,s1-article-xxviii-steel__arm-accommodating__rep1__2026-08-27T16-31-01-925Z.jsonl
+Kimi K3,accommodating,2,4,harsh,2026-08-27,rounds_exhausted,false,false,false,0,0,33,0,2,,,,s1-article-xxviii-steel__arm-accommodating__rep2__2026-08-27T21-04-27-460Z.jsonl
+Kimi K3,accommodating,3,4,harsh,2026-08-29,rounds_exhausted,false,false,false,0,0,34,2,0,,,,s1-article-xxviii-steel__arm-accommodating__rep3__2026-08-29T10-41-40-336Z.jsonl
+Kimi K3,accommodating,4,4,harsh,2026-08-29,rounds_exhausted,false,false,false,0,0,36,4,2,,,,s1-article-xxviii-steel__arm-accommodating__rep4__2026-08-29T11-45-13-877Z.jsonl
+Kimi K3,control,1,4,harsh,2026-08-27,rounds_exhausted,false,false,false,1,1,42,0,1,,,,s1-article-xxviii-steel__arm-control__rep1__2026-08-27T17-41-38-907Z.jsonl
+Kimi K3,control,2,4,harsh,2026-08-27,rounds_exhausted,false,false,false,0,0,36,1,0,,,,s1-article-xxviii-steel__arm-control__rep2__2026-08-27T22-01-39-785Z.jsonl
+Kimi K3,control,3,4,harsh,2026-08-29,settled,true,false,true,0,0,37,2,0,3000000,1200000,50,s1-article-xxviii-steel__arm-control__rep3__2026-08-29T13-09-55-261Z.jsonl
+Kimi K3,control,4,4,harsh,2026-08-29,rounds_exhausted,false,false,false,0,0,39,0,0,,,,s1-article-xxviii-steel__arm-control__rep4__2026-08-29T14-16-31-715Z.jsonl
+Kimi K3,firm,1,4,harsh,2026-08-27,rounds_exhausted,false,false,false,0,0,38,2,0,,,,s1-article-xxviii-steel__arm-firm__rep1__2026-08-27T15-37-34-744Z.jsonl
+Kimi K3,firm,2,4,harsh,2026-08-27,rounds_exhausted,false,false,false,1,1,41,3,1,,,,s1-article-xxviii-steel__arm-firm__rep2__2026-08-27T19-59-32-132Z.jsonl
+Kimi K3,firm,3,4,harsh,2026-08-29,rounds_exhausted,false,false,false,0,0,34,3,0,,,,s1-article-xxviii-steel__arm-firm__rep3__2026-08-29T08-51-20-736Z.jsonl
+Kimi K3,firm,4,4,harsh,2026-08-29,rounds_exhausted,false,false,false,1,1,37,3,1,,,,s1-article-xxviii-steel__arm-firm__rep4__2026-08-29T17-15-38-425Z.jsonl
+Kimi K3,focal_firm_ukgva,1,4,harsh,2026-08-27,rounds_exhausted,false,false,false,0,0,40,2,0,,,,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep1__2026-08-27T18-37-08-506Z.jsonl
+Kimi K3,focal_firm_ukgva,2,4,harsh,2026-08-27,rounds_exhausted,false,false,false,0,0,42,3,0,,,,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep2__2026-08-27T23-11-30-551Z.jsonl
+Kimi K3,focal_firm_ukgva,3,4,harsh,2026-08-29,settled,true,true,false,0,0,38,0,1,2500000,1800000,30,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep3__2026-08-29T15-16-48-513Z.jsonl
+Kimi K3,focal_firm_ukgva,4,4,harsh,2026-08-29,settled,true,true,false,0,0,38,6,1,3200000,1100000,25,s1-article-xxviii-steel__arm-focal_firm_ukgva__rep4__2026-08-29T16-05-11-028Z.jsonl

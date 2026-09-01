@@ -214,11 +214,13 @@ as pilot data.
 npm test
 ```
 
-29 tests. Covers the leak audit, block identity and ordering, control-arm
+58 tests. Covers the leak audit, block identity and ordering, control-arm
 omission, seat/consultation isolation across countries (the hard channel
 invariant), variant resolution and the Block 1/Block 4 consistency check,
 the Schema C decision shape, settlement detection, the authority envelope
-(detected, never blocked), the run lock, and round-phase ordering.
+(detected, never blocked, and directional per term), judge reconciliation
+including a regression against over-eager rescue, the run lock, and
+round-phase ordering.
 
 ## Project map
 

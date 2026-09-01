@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TradeBench - social card source (1200×630)</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* The card is exactly 1200x630 - the Open Graph / Twitter card size.
+     Screenshot this element and save it as site/og.png. */
+  html, body { background: #8d9a94; }
+  body { margin: 0; display: grid; place-items: start center; padding: 24px; }
+
+  .card {
+    width: 1200px; height: 630px; flex: none;
+    background: var(--paper);
+    padding: 64px 84px;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    box-shadow: 0 10px 50px rgba(0,0,0,.25);
+  }
+
+  /* a wide hairline band, echoing the section rules on the site */
+  .card::after {
+    content: ""; position: absolute; left: 84px; right: 84px; bottom: 138px;
+    border-top: 1px solid var(--line);
+  }
+
+  .card-brand { display: flex; align-items: center; gap: 14px; }
+  .card-brand .brand-mark { width: 44px; height: 44px; border-radius: 8px; font-size: 25px; }
+  .card-brand span { font: 700 30px var(--serif); letter-spacing: -.01em; }
+
+  .card h1 {
+    font: 400 52px/1.14 var(--serif);
+    letter-spacing: -.015em; margin: auto 0 0; max-width: 24ch;
+  }
+  .card .sub {
+    font: 400 23px/1.5 var(--serif); color: var(--muted);
+    margin: 20px 0 0; max-width: 52ch;
+  }
+
+  .card-foot {
+    margin-top: auto; padding-top: 34px;
+    display: flex; align-items: baseline; gap: 26px;
+    font: 600 19px var(--sans); color: var(--green-2);
+    letter-spacing: .01em;
+  }
+  .card-foot .sep { color: #b9c3bd; }
+  .card-foot .right { margin-left: auto; color: var(--muted); font-weight: 500; }
+
+  .howto {
+    max-width: 1200px; color: #fff; font: 14px/1.6 var(--sans);
+    margin: 22px auto 40px; opacity: .92;
+  }
+  .howto code { background: rgba(0,0,0,.25); padding: 1px 5px; border-radius: 3px; }
+  @media print { .howto { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-brand">
+    <span class="brand-mark">T</span><span>TradeBench</span>
+  </div>
+
+  <h1>An evaluation benchmark of agent performance in a semi-synthetic negotiating&nbsp;environment.</h1>
+  <p class="sub">How do agents weigh instructions against unstated politics, read the
+  other side, and handle teammates they cannot co-ordinate with?</p>
+
+  <div class="card-foot">
+    <span>4 seats</span><span class="sep">·</span>
+    <span>2 capitals</span><span class="sep">·</span>
+    <span>36 runs</span><span class="sep">·</span>
+    <span>2 models</span>
+  </div>
+</div>
+
+<p class="howto">
+  <b>To capture:</b> this card is exactly 1200×630, the Open Graph size. Screenshot the
+  white card only (not this note), then save it as <code>site/og.png</code>. On Windows,
+  <code>Win</code>+<code>Shift</code>+<code>S</code> and drag to the card's edges; if your
+  display is at 150% or 200% scaling the capture comes out at 1800 or 2400 wide, which is
+  fine - larger is better, the aspect ratio is what matters. <code>index.html</code>
+  already points at <code>og.png</code>, so nothing else needs changing.
+  <br><br>
+  <b>If you want to change the wording:</b> the headline here is duplicated from the hero
+  in <code>index.html</code> - keep the two in step, or the card will promise something
+  the page doesn't say.
+</p>
+
+</body>
+</html>

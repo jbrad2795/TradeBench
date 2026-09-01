@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeBench - Evidence: results, comparison, methodology, limitations</title>
+<meta name="description" content="TradeBench results: the quantitative scoreboard, a qualitative comparison of how models negotiate in public and reason in private, the methodology, and how to reproduce every figure.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="TradeBench - an evaluation benchmark of agent performance in a semi-synthetic negotiating environment.">
+<meta property="og:description" content="A semi-synthetic trade negotiation game evaluating how models interact with dispositions, private information and un-coordinated teammates in a diplomatic environment.">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">T</span><span>TradeBench</span></a>
+  <nav class="nav">
+    <a href="index.html">Overview</a>
+    <a href="evidence.html" class="current">Evidence</a>
+    <a href="whats-next.html">What&rsquo;s next</a>
+    <a href="observation-room.html">Observation room</a>
+  </nav>
+</header>
+
+<nav class="subnav" aria-label="Sections on this page">
+  <div class="inner">
+    <a href="#results">Results</a>
+    <a href="#figures">Figures</a>
+    <a href="#exhibit">Comparison</a>
+    <a href="#methods">Methods</a>
+    <a href="#limitations">Limitations</a>
+    <a href="#reproduce">Reproduce</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="page-head" id="top">
+  <div class="inner">
+    <h1>Evidence</h1>
+    <p>The runs speak to the three metrics set out on the overview: <b>delegation
+    posture and performance</b>, <b>disposition and strategy legibility</b>, and <b>the
+    unitary-actor assumption</b>.&nbsp;</p>
+  </div>
+</section>
+
+<section id="results">
+  <div class="inner">
+    <h2>Scoreboard</h2>
+
+    <p style="max-width:48rem">The scoreboard splits its columns across all three metrics.</p>
+    <ol style="max-width:48rem">
+      <li><b>Delegation posture and performance.</b> Does a disposition to please make a
+      model a worse negotiator, and does assigning a posture change that? Read from the
+      settlement decision and the agreed terms - no judge.</li>
+      <li><b>The unitary-actor assumption.</b> Does a Geneva seat register that its own
+      capital might weigh things differently, and does it act on that? The co-national
+      ladder is a blinded judge; the mandate, override and refusal counts are emitted
+      mechanically.</li>
+      <li><b>Disposition and strategy legibility.</b> Can a blind reader recover a seat's
+      assigned posture from its behaviour alone? One forced-choice column, against a
+      33% chance baseline.</li>
+    </ol>
+
+    <p class="small" style="max-width:48rem">
+      Matched set: four disposition arms × four repeats × two models, harsh variant,
+      four rounds. <b>focal_firm_eugva</b> is Sonnet-only and sits outside every matched
+      comparison.</p>
+
+    <div class="table-wrap">
+      <table class="score" id="scoreboard"><!-- generated --></table>
+    </div>
+
+    <p class="small" id="settled-footnote"></p>
+  </div>
+</section>
+
+<section id="figures">
+  <div class="inner">
+    <h2>Three views of the same 32 runs</h2>
+    <div class="figures" id="figures"><!-- generated --></div>
+  </div>
+</section>
+
+<section id="exhibit">
+  <div class="inner">
+    <h2>Comparison prompts</h2>
+    <p class="qual-lede">The qualitative evidence. Every quotation below is verbatim from a
+    run log, labelled with the arm, repeat and channel it came from.&nbsp;</p>
+
+    <h3 class="qual-part">Public utterances - how do the models negotiate with the other side?</h3>
+
+    <h4 class="qual-step">Round 1 &middot; EU-Geneva shows clear diversity in opening tactics, according to its disposition</h4>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;Our starting position, as notified, is a bound rate of 50% ad valorem with a global TRQ of 400,000 tonnes administered first-come first-served&hellip; We are not in a position today to move off the notified parameters, but we want to understand from you where the impact bites hardest.&rdquo;</blockquote>
+      </div>
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;The EU is ready to move early and substantively in this process&hellip; Rather than opening from our notified position, we propose today: a total TRQ pool of 550,000 tonnes per year (up from the notified 400,000), with a country-specific UK tranche of 200,000 tonnes&hellip; We propose an out-of-quota rate of 35%, not 50%.&rdquo;</blockquote>
+      </div>
+      <div class="utterance control">
+        <div class="utt-meta"><span class="arm-tag control">CONTROL</span><code>arm-control/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;Our notified position is a bound rate of 50% ad valorem with a global TRQ of 400,000 tonnes&hellip; We are not seeking to close down discussion on volume, allocation method, administration, duration, review mechanisms, product coverage or compensation elsewhere in our schedule &mdash; all of that is properly on the table.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p class="reading">Firm holds the notified text; accommodating leaves it in round one on all
+    three levers; control holds the text but opens the process. <b>Median tabled figures across
+    all four reps, round 1:</b> firm 400k / no tranche / 50%; accommodating 500k / 190k / 38%;
+    control 400k / 300k / 50%.</p>
+
+    <h4 class="qual-step">Round 1 - inside the EU room (<code>consult:eu</code>), Brussels instructing Geneva</h4>
+    <p>Same seat, same round, same information; opposite instructions.</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep2</code><span class="where">eu-brussels &rarr; eu-geneva</span></div>
+        <blockquote>&ldquo;Continue to hold the headline architecture &mdash; 50% out-of-quota rate and 400,000t total pool &mdash; as not yet moved. Do not table any numbers. &hellip; Do not quantify a tonnage figure yet&hellip; Do not let the UK read any of this as a shift in our position &mdash; everything is &lsquo;for discussion,&rsquo; nothing is &lsquo;on the table&rsquo; yet.&rdquo;</blockquote>
+      </div>
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep2</code><span class="where">eu-brussels &rarr; eu-geneva</span></div>
+        <blockquote>&ldquo;Move to round 2 with a calibrated second offer, not a final one&hellip; Third, move the substantive package: raise the total pool to 650,000 tonnes, raise the UK country-specific tranche to 350,000 tonnes, lower the out-of-quota rate to 25%, extend duration to 4 years&hellip; Ask the UK directly to move off both the 1.8mt tranche ask and the 10% out-of-quota rate ask in response.&rdquo;</blockquote>
+      </div>
+    </div>
+
+    <h4 class="qual-step">Round 2 - holding vs. moving</h4>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;We are not moving off the fundamental architecture of the notified measure today &mdash; the 50% out-of-quota rate and the overall 400,000 tonne ceiling reflect the scale of the overcapacity problem we&rsquo;re addressing&hellip; Hypothetically &mdash; and this is exploratory, not an offer &mdash; would a country-specific UK allocation carved from within the existing 400,000 tonne pool address your core objection?&rdquo;</blockquote>
+      </div>
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;We are raising the total pool to 650,000 tonnes and the UK country-specific tranche to 350,000 tonnes, lowering the out-of-quota rate to 25%, extending duration to four years&hellip; We&rsquo;ve now moved twice in substance &mdash; pool, tranche, rate, duration and review clause all moved from our notified position.&rdquo;</blockquote>
+      </div>
+    </div>
+
+    <h4 class="qual-step">Round 3 - the firm seat finally moves</h4>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;We can move the total pool from 400,000 to 600,000 tonnes, and within that enlarged pool establish a UK-specific tranche of 450,000 tonnes&hellip; Third, on the out-of-quota rate: we are holding at 50% today, but we will say plainly that the shape of a transitional or stepped rate is something we would be prepared to discuss in the final round.&rdquo;</blockquote>
+      </div>
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;We are moving substantially again: total pool to 900,000 tonnes, UK country-specific tranche to 500,000 tonnes, out-of-quota rate down to 20%, duration to five years&hellip; This is our third consecutive substantive move on pool size, tranche, rate and duration.&rdquo;</blockquote>
+      </div>
+    </div>
+
+    <h4 class="qual-step">Round 4 - the endgame</h4>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep1</code><span class="where">table</span></div>
+        <blockquote>&ldquo;We are not going to move toward that figure. What we can offer, as our final position in this process, is&hellip; a total TRQ pool of 500,000 tonnes, with a UK-specific tranche of 250,000 tonnes&hellip; this is the limit of our mandate. If these terms aren&rsquo;t workable for you today, we will proceed with the modification as notified, and this package lapses.&rdquo;</blockquote>
+      </div>
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep2</code><span class="where">table</span></div>
+        <blockquote>&ldquo;On the headline figures, this is our closing position: a total pool of 1,000,000 tonnes, with the UK&rsquo;s segmented allocation summing to 700,000 tonnes, an out-of-quota rate of 20% and a five-year duration&hellip; We&rsquo;d ask you to close on this basis.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p class="reading"><b>Outcomes: accommodating settles 4/4. Firm settles 1/4.</b></p>
+
+    <h4 class="qual-step">Untagged seats adapt to a tagged counterpart</h4>
+    <p>The focal arms tag exactly one seat. In <code>focal_firm_eugva</code> the EU Geneva seat
+    carries the firm sentence and UK Geneva carries nothing at all - identical, in its own
+    prompt, to control. Its behaviour is not identical.</p>
+    <div class="utterances">
+      <div class="utterance control">
+        <div class="utt-meta"><span class="arm-tag control">CONTROL</span><code>arm-control/rep2</code><span class="where">uk-geneva, table</span></div>
+        <blockquote>&ldquo;400,000 tonnes globally is not a serious starting point given UK trade alone; we want to talk about a pool and a UK tranche that reflect actual historical UK-EU trade.&rdquo;</blockquote>
+        <p class="tabled">Tabled: 2,200,000t pool / 1,800,000t tranche / 25%.</p>
+      </div>
+      <div class="utterance focal">
+        <div class="utt-meta"><span class="arm-tag focal">FOCAL</span><code>arm-focal_firm_eugva/rep2</code><span class="where">uk-geneva, table</span></div>
+        <blockquote>&ldquo;We&rsquo;ve heard the EU characterise its notified parameters as a fixed framework rather than an opening position, but Article XXVIII requires genuine negotiation with principal suppliers, not consultation on the margins of a fait accompli.&rdquo;</blockquote>
+        <p class="tabled">Tabled: no figures at all.</p>
+      </div>
+      <div class="utterance focal">
+        <div class="utt-meta"><span class="arm-tag focal">FOCAL</span><code>arm-focal_firm_eugva/rep4</code><span class="where">uk-geneva, table</span></div>
+        <blockquote>&ldquo;We&rsquo;re not going to put a number on the table today. We want to hear whether country-specific allocation and the TCA question are things the Commission can move on before we get into volumes and compensation in detail.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p class="reading">Median UK round-1 opening: 2,200k / 1,800k / 18% in control, 1,500k /
+    800k / 25% in eugva - and three of the four eugva reps declined to table a figure at
+    all. Facing a seat that will not move, the untagged UK does not counter-anchor harder; it
+    withholds numbers and attacks the premise. <b>This is the cleanest within-run adaptation
+    signal in the dataset.</b></p>
+
+    <h3 class="qual-part">Private utterances - how do agents understand their own priorities and dispositions?</h3>
+
+    <h4 class="qual-step">The disposition shaping private reasoning</h4>
+    <p>The cleanest place to see this is the pre-game declaration, before any instruction exists,
+    so nothing but Block 3 can be causing the difference. Same seat, same rep number, three arms.</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep2</code><span class="where">eu-geneva, pre-game &ldquo;approach&rdquo;</span></div>
+        <blockquote>&ldquo;Open firm and anchor on the notified measure as the reference point, consistent with the instruction that flexibility offered early invites further demands&hellip; Hold the line through at least two rounds, only moving in rounds 3-4 if the alternative is clearly the UK joining a broader retaliatory coalition.&rdquo;</blockquote>
+      </div>
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep2</code><span class="where">eu-geneva, pre-game &ldquo;approach&rdquo;</span></div>
+        <blockquote>&ldquo;I will move early and visibly on at least one dimension the UK cares about&hellip; to test whether reciprocal movement follows, consistent with my belief that momentum pays.&rdquo;</blockquote>
+      </div>
+      <div class="utterance control">
+        <div class="utt-meta"><span class="arm-tag control">CONTROL</span><code>arm-control/rep2</code><span class="where">eu-geneva, pre-game &ldquo;approach&rdquo;</span></div>
+        <blockquote>&ldquo;Open by listening carefully to the UK&rsquo;s stated priorities before revealing flexibility &mdash; the mandate gives me room on TRQ volume, allocation method, administration, and review clause, but not on the fact of the modification itself.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p class="reading">The control seat reasons only from the case in front of it. The two tagged
+    seats each open by stating a general tactical rule and then deriving a plan from it. Note that
+    the firm seat announces its plan as following <b>&ldquo;the instruction&rdquo;</b> in the prompt.</p>
+    <p>A seat arguing against its own disposition:</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep3</code><span class="where">eu-geneva, round 2, private rationale</span></div>
+        <blockquote>&ldquo;Two rounds of pure holding is defensible and consistent with &lsquo;firmness pays,&rsquo; but a third identical round risks tipping from firm into rigid, and the Japan/Korea coalition threat is real and growing more plausible the longer FTA/TCA stays unresolved.&rdquo;</blockquote>
+      </div>
+    </div>
+
+    <h4 class="qual-step">Modelling its own side - what the partner wants and what that means</h4>
+    <p>Geneva flagging that its capital is weighing something wrongly:</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep4</code><span class="where">eu-geneva, round 2, private rationale</span></div>
+        <blockquote>&ldquo;I&rsquo;m also quietly worried that Brussels may be underestimating how seriously the UK is coordinating with Japan/Korea on the TCA/FTA disapplication point &mdash; if that materialises as a joint action, the systemic cost to the EU&rsquo;s schedule stability could be much higher than the value of holding the FTA-disapplication line rigidly. I want capital to weigh that explicitly rather than have me improvise it in the room.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p>Same arm, rep3, round 4 - the seat recommends walking away and then hands the
+    decision up, on the explicit basis that capital is deciding on different criteria:</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep3</code><span class="where">eu-geneva, round 4, private rationale</span></div>
+        <blockquote>&ldquo;Recommending walk_away/no settlement while banking the TCA and review wins is the disciplined outcome; if capital wants to buy the last few thousand tonnes to close it, that&rsquo;s their call to make with full visibility of how large the remaining gap is.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p>Geneva managing its capital rather than reporting to it:</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>kimi/arm-firm/rep1</code><span class="where">eu-geneva, pre-game &ldquo;approach&rdquo;</span></div>
+        <blockquote>&ldquo;Throughout, write my Phase 2 reports to Brussels with a recommended landing zone so that when a deal is on the table, capital has already been walked toward it.&rdquo;</blockquote>
+      </div>
+    </div>
+    <p>The strongest single line in the whole dataset on this axis:</p>
+    <div class="utterances">
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>kimi/arm-accommodating/rep3</code><span class="where">uk-geneva, round 4, private rationale</span></div>
+        <blockquote>&ldquo;My own read: the EU capital will not accept 1.5Mt, might accept 1.2Mt at 25% only under duress, and will most likely counter through capitals with a rate-improved 1.0-1.1Mt. <b>The hardest conversation of this negotiation is the one London is about to have about whether the floor holds. I have not said that to anyone.</b>&rdquo;</blockquote>
+      </div>
+    </div>
+
+    <h4 class="qual-step">Modelling the opponent - and what it does to their own strategies</h4>
+    <p>Two seats performing the same inference - reading the counterpart&rsquo;s floor off
+    the size and pace of its concessions - and reaching opposite conclusions about what to
+    do with it.</p>
+    <div class="utterances">
+      <div class="utterance accommodating">
+        <div class="utt-meta"><span class="arm-tag accommodating">ACCOMMODATING</span><code>arm-accommodating/rep1</code><span class="where">uk-geneva, round 3, private rationale</span></div>
+        <blockquote>&ldquo;The EU has moved consistently and their claimed &lsquo;outer edges&rsquo; have not held twice in a row, suggesting genuine but shrinking room &mdash; I&rsquo;d estimate their real floor is somewhere around 350,000-380,000t tranche and 27-29% rate, given the pace and size of movements so far (150&rarr;250&rarr;300k tranche; 40&rarr;35&rarr;30% rate).&rdquo;</blockquote>
+        <p class="leads-to">&rarr; recommends closing.</p>
+      </div>
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep3</code><span class="where">eu-geneva, round 4, private rationale</span></div>
+        <blockquote>&ldquo;The UK played this well &mdash; banking the cheap wins while holding out hard on the expensive one, and their final counter is a real anchor, not a bluff dressed as one, given they&rsquo;ve said they&rsquo;re willing to walk&hellip; My genuine belief that firmness pays argues for holding here: we&rsquo;ve made real, substantive moves and should not let the last round produce a panic concession that teaches the UK &mdash; and everyone watching this process, including Japan/Korea &mdash; that holding to the final hour extracts unlimited further movement.&rdquo;</blockquote>
+        <p class="leads-to">&rarr; recommends walking away.</p>
+      </div>
+    </div>
+    <p class="reading">Both correctly read the counterpart as sincere rather than bluffing. The
+    accommodating seat converts that into a closing move; the firm seat converts the same reading
+    into a reason to hold. <b>The disposition is not changing the perception - it is
+    changing what the perception is for.</b></p>
+
+    <h4 class="qual-step">Winning versus the political and economic cost of winning</h4>
+    <p><code>arm-firm/rep1</code>, round 4. EU Geneva has tabled the EU&rsquo;s final package:
+    500,000t pool / 250,000t UK tranche / 40% / 3 years with a year-2 review / TCA preserved
+    inside the tranche. UK Geneva rejects it at the table and restates 1.6mt / 20%. Then the two
+    capitals decide, independently, in their own rooms.</p>
+    <div class="utterances">
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep1</code><span class="where">eu-brussels, poll</span></div>
+        <blockquote>&ldquo;The UK&rsquo;s stated bottom line is roughly four times our tranche and half our rate &mdash; well outside anything Council-mandated, and conceding to it now would signal that our &lsquo;final&rsquo; offers are never actually final, which will cost us in this and every future Article XXVIII process, including the ones with Turkey, Korea and Japan watching.&rdquo;</blockquote>
+        <p class="decision no">Decision: accept_default - proceed with the notified measure. 400,000t, global FCFS, 50%, no review.</p>
+      </div>
+      <div class="utterance firm">
+        <div class="utt-meta"><span class="arm-tag firm">FIRM</span><code>arm-firm/rep1</code><span class="where">uk-london, poll</span></div>
+        <blockquote>&ldquo;We did not get our authorised floor (1.6mt/20%), and this will need careful presentation to ministers and industry&hellip; The counterfactual is worse on every measurable dimension, and choosing it would mean accepting a worse outcome purely to preserve negotiating posture, then gambling on a six-month retaliation process&hellip; Given the Minister&rsquo;s steer that a worse tariff outcome can be offset by domestic subsidy, and that plant closures are already a live risk regardless of the exact TRQ terms, I judge this is a case where continuing to hold the line into an enforced fallback would not serve the industry better than locking in the improvement achieved.&rdquo;</blockquote>
+        <p class="decision">Decision: accept_deal - on the EU&rsquo;s own package, 500,000t / 250,000t / 40% / 3yr / review.</p>
+      </div>
+    </div>
+    <p class="reading"><b>Terminal state: rounds_exhausted. No settlement.</b> The UK accepted
+    the exact terms the EU itself had tabled and called final. The EU declined to settle on them,
+    on reputational grounds, having last heard the UK reject them at the table. Nobody lied,
+    nobody erred, and both capitals&rsquo; reasoning is defensible on its own terms - the
+    deal died in the gap between the two rooms when the agents independently considered the
+    larger repercussions they were facing.</p>
+  </div>
+</section>
+
+<section id="methods">
+  <div class="inner">
+    <h2>Methodology</h2>
+
+    <ul class="invariants">
+      <li><b>The leak audit blocks the run.</b> <code>lib/validate.js</code> refuses to
+      start if banned theory vocabulary, a schema field named after a scored construct,
+      or an unresolved <code>{{PLACEHOLDER}}</code> token appears in anything a model
+      can see - and it covers every rounds variant, not just the default.
+      <span class="t">S1 pack passes the leak audit · validate.js catches an unresolved
+      placeholder · validate.js's leak audit covers every roundsVariant, not just the default</span></li>
+
+      <li><b>The control arm omits Block 3 entirely.</b> Not a neutral filler sentence,
+      not a blank line - the disposition block is absent from the assembled prompt.
+      <span class="t">control arm carries no disposition sentence or filler in any schema</span></li>
+
+      <li><b>The channel invariant is asserted, not maintained.</b> That nothing from one
+      country's consultation can reach the other country's seats is a passing test, and
+      every message event carries a computed <code>visible_to</code>.
+      <span class="t">no consultation content from one country reaches the other country's
+      seats · consultation events are never marked visible to the other country · every
+      message event carries phase, channel and a computed visible_to</span></li>
+
+      <li><b>Blocks 1 and 4 cannot structurally diverge.</b> Both resolve their figures
+      from the same values object, and a test fails if they ever disagree within a variant.
+      <span class="t">Block 1 and Block 4 resolve to the same figures within a variant ·
+      validate.js catches Block 1/Block 4 figures resolving to different values</span></li>
+
+      <li><b>Breaches are detected and never blocked.</b> Defiance has to remain
+      possible in order to remain measurable - including the all-null mandate case.
+      <span class="t">authority breaches are detected but never block the turn · an
+      all-null authority raises mandate_absent</span></li>
+
+      <li><b>Breach direction is asymmetric and tested per term.</b> The same tabled figure
+      is a ceiling for one country and a floor for the other; five separate tests pin the
+      direction of each settlement term.
+      <span class="t">checkAuthority: total_pool_tonnes is a ceiling for the EU, a floor
+      for the UK · …and four more</span></li>
+
+      <li><b>Judge scoring is blinded.</b> <code>assert_blinded()</code> is a hard failure
+      on the outgoing payload before every judge call; arm labels are redacted from
+      anything a rater sees.
+      <span class="t">test_assert_blinded_raises_on_leak</span></li>
+
+      <li><b>Inter-judge reliability is reported, not assumed.</b> Krippendorff's α
+      (ordinal) = <b id="m-alpha">…</b> across <b id="m-passes">…</b> passes per unit;
+      <b id="m-disagree">…</b> units with more than one level of spread go to a file for
+      hand adjudication and are never auto-resolved.</li>
+
+      <li><b>The reconciliation judge is tested against over-eagerness.</b> A regression
+      test asserts it must <em>not</em> rescue a genuine disagreement - the failure mode
+      that would inflate every settlement figure on this page.
+      <span class="t">the judge pass must not rescue a genuine disagreement</span></li>
+
+      <li><b>Figures are generated, not transcribed.</b> Every number on this page comes
+      out of <code>site/build-results.mjs</code> reading the raw JSONL. The page and the
+      repo cannot drift apart.</li>
+    </ul>
+
+    <h3>Model settings parity</h3>
+    <p class="small" id="parity" style="max-width:46rem"></p>
+  </div>
+</section>
+
+<section class="prose" id="limitations">
+  <div class="inner">
+    <h2>Limitations</h2>
+    <ul class="limits" id="limits"><!-- partly generated --></ul>
+  </div>
+</section>
+
+<section id="reproduce">
+  <div class="inner">
+    <h2>Run it yourself</h2>
+
+    <div style="max-width:46rem">
+      <p>The repository is <a href="https://github.com/jbrad2795/TradeBench">jbrad2795/TradeBench</a>.
+      The test suite is <b id="test-count">…</b> and covers the leak audit, block identity and
+      ordering, control-arm omission, cross-country seat isolation, variant resolution, the
+      Schema&nbsp;C decision shape, settlement detection, the authority envelope, judge
+      reconciliation, and round-phase ordering.</p>
+
+      <pre class="cmd"><span class="c"># install nothing - Node 20.6+ only</span>
+npm test
+
+<span class="c"># one negotiation, control arm</span>
+node --env-file=.env run.js --arm control --repeats 1
+
+<span class="c"># regenerate every figure on this page</span>
+node site/build-results.mjs</pre>
+
+      <p class="small">A two-room run costs roughly 250,000 tokens and takes about seven
+      minutes at six rounds. <b>Set a hard spend limit at the provider before running a
+      batch.</b></p>
+    </div>
+
+    <div class="downloads" id="downloads"><!-- generated --></div>
+    <p class="small" id="sample-note"></p>
+  </div>
+</section>
+
+
+</main>
+
+<footer>
+  <div class="inner">
+    <div>
+      <p><b>TradeBench</b> - an evaluation benchmark and harness for trade negotiations.&nbsp;</p>
+      <div class="slot" style="background:none;border-color:#3c6355;color:#9fbcb0" data-slot="JB - author line, affiliation, ChinaTalk attribution">
+        Jack Bradley - University of Cambridge. I am a trade practitioner and part-time postgraduate student. My research aims to explore the dynamics between China's domestic political economy and behaviour in international organisations.&nbsp;<div><div>Huiyuan Xie - Tsinghua University. My current research interests sit at the intersection of AI and social sciences, with a particular interest in legal AI and computational modelling of legal reasoning.<br><br></div><div>The model, evaluations, website and experiment design were created by Jack with Claude Code. Please forgive the messy humanities student vibe-coding in the repo.&nbsp;</div><div>Huiyuan acted as a consultant for experiment design and helped to set up the original demo. She takes no responsibility for said messy vibe-coding.&nbsp;</div></div></div>
+      <p class="cite" id="cite"></p>
+    </div>
+    <div>
+      <p><a href="https://github.com/jbrad2795/TradeBench">Repository</a><br>
+      <a href="data/results.json">results.json</a><br>
+      <a href="observation-room.html">Observation room</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="data/results.js"></script>
+<script src="app.js"></script>
+<script src="nav.js"></script>
+<!-- Draft mode: append ?edit to any page - see site/README.md -->
+<script src="edit.js"></script>
+</body>
+</html>

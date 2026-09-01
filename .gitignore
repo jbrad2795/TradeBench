@@ -2,11 +2,19 @@
 .env.*
 .DS_Store
 node_modules/
-runs/
-evaluation/
+__pycache__/
+*.pyc
 tradebench repo summary.md
 to dos.txt
 
-# runs/ is scratch - every run lands there and most are throwaway.
-# Run sets worth keeping are copied into baselines/, which IS tracked.
+# runs/ is scratch - every run lands there and most are throwaway - EXCEPT the
+# evaluation batch, which is the data behind every figure on the site. A blanket
+# "runs/" would make the site's numbers uncheckable, so the scratch is ignored
+# per-entry and the evaluation set is re-included.
+runs/*
+!runs/evaluation runs/
+
+# evaluation/ holds the judge rubric, the scorers and their outputs. Tracked so
+# that co-national recognition and the blind disposition panel can be re-run and
+# re-checked by someone who is not us.
 !baselines/

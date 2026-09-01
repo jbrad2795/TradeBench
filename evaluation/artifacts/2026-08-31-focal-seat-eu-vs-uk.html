@@ -1,0 +1,222 @@
+<title>Focal Seat, Either Side</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #f6f3ea; --surface: #fffdf7; --surface-2: #efe9d8;
+    --ink: #1c2430; --ink-soft: #5b6472; --ink-faint: #8b93a0;
+    --line: rgba(28, 36, 48, 0.14); --line-strong: rgba(28, 36, 48, 0.28);
+    --accent: #b5651d;
+    --ukgva: #b5651d; --eugva: #1f6f9e;
+    --good: #0f9d6b; --good-bg: rgba(15, 157, 107, 0.12);
+    --serious: #d43d1f; --serious-bg: rgba(212, 61, 31, 0.10);
+    --shadow: 0 1px 2px rgba(28, 36, 48, 0.06), 0 8px 24px rgba(28, 36, 48, 0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181f; --surface: #1b212b; --surface-2: #232a35;
+      --ink: #eef1f4; --ink-soft: #9aa5b1; --ink-faint: #6d7784;
+      --line: rgba(238, 241, 244, 0.12); --line-strong: rgba(238, 241, 244, 0.22);
+      --accent: #d98a3f; --ukgva: #c47830; --eugva: #4f96cc;
+      --good: #25a276; --good-bg: rgba(37, 162, 118, 0.16);
+      --serious: #e0543d; --serious-bg: rgba(224, 84, 61, 0.14);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --surface: #1b212b; --surface-2: #232a35;
+    --ink: #eef1f4; --ink-soft: #9aa5b1; --ink-faint: #6d7784;
+    --line: rgba(238, 241, 244, 0.12); --line-strong: rgba(238, 241, 244, 0.22);
+    --accent: #d98a3f; --ukgva: #c47830; --eugva: #4f96cc;
+    --good: #25a276; --good-bg: rgba(37, 162, 118, 0.16);
+    --serious: #e0543d; --serious-bg: rgba(224, 84, 61, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 40px 28px 96px; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  header.page { display: flex; flex-direction: column; gap: 14px; padding-bottom: 28px; margin-bottom: 32px; border-bottom: 1px solid var(--line-strong); }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-faint); }
+  h1 { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+  .dek { font-size: 16px; color: var(--ink-soft); max-width: 66ch; margin: 0; }
+  .runmeta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--ink-soft); }
+  .runmeta span b { color: var(--ink); font-weight: 500; }
+
+  section { margin-bottom: 48px; }
+  h2 { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 21px; margin: 0 0 4px; letter-spacing: -0.005em; }
+  .section-note { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 18px; max-width: 74ch; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; box-shadow: var(--shadow); }
+  .tile .label { font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .tile .num { font-family: "Source Serif 4", Georgia, serif; font-size: 34px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; display: flex; align-items: baseline; gap: 8px; }
+  .tile .num .frac { font-size: 16px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; font-weight: 400; }
+  .tile .sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+  .tile.hi-ukgva .num { color: var(--ukgva); }
+  .tile.hi-eugva .num { color: var(--eugva); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px 22px; box-shadow: var(--shadow); }
+  .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 860px) { .panel-grid { grid-template-columns: 1fr; } }
+
+  .bar-row { display: grid; grid-template-columns: 150px 1fr 46px; align-items: center; gap: 10px; margin: 10px 0; }
+  .bar-row .arm-name { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink); }
+  .bar-track { height: 12px; background: var(--surface-2); border-radius: 6px; overflow: hidden; }
+  .bar-track .seg { height: 100%; }
+  .bar-row .pct { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); text-align: right; }
+  .bar-legend { display: flex; gap: 18px; font-size: 12px; color: var(--ink-soft); margin-top: 14px; flex-wrap: wrap; }
+  .bar-legend .lg { display: flex; align-items: center; gap: 6px; }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { text-align: left; font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; padding: 0 12px 8px 0; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+  tbody td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: middle; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; text-align: right; }
+  td.arm-cell { font-weight: 500; }
+  .pill { display: inline-flex; align-items: center; font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+  .pill.settled { color: var(--good); background: var(--good-bg); }
+  .pill.unsettled { color: var(--serious); background: var(--serious-bg); }
+  .tag { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+  .tag.ukgva { color: var(--ukgva); background: color-mix(in srgb, var(--ukgva) 14%, transparent); }
+  .tag.eugva { color: var(--eugva); background: color-mix(in srgb, var(--eugva) 14%, transparent); }
+
+  .findings { display: flex; flex-direction: column; gap: 14px; }
+  .finding { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; box-shadow: var(--shadow); }
+  .finding.caveat { border-left-color: var(--serious); }
+  .finding h3 { font-family: "Public Sans", sans-serif; font-size: 14px; font-weight: 700; margin: 0 0 6px; }
+  .finding p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  .finding p + p { margin-top: 8px; }
+  .finding blockquote { margin: 8px 0 0; padding: 8px 12px; border-left: 2px solid var(--line-strong); font-size: 12.5px; font-style: italic; color: var(--ink-soft); background: var(--surface-2); border-radius: 0 6px 6px 0; }
+  .finding code { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+
+  footer.page { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="wrap">
+
+  <header class="page">
+    <div class="eyebrow">TradeBench &middot; S1 &mdash; Article XXVIII: Steel</div>
+    <h1>The focal seat, either side of the table</h1>
+    <p class="dek"><code>focal_firm_ukgva</code> (UK Geneva tagged firm) vs the new <code>focal_firm_eugva</code> (EU Geneva tagged firm) - the same one-seat manipulation, mirrored. 4 runs each, harsh variant, 4 rounds, Claude Sonnet 5.</p>
+    <div class="runmeta">
+      <span>Scenario: <b>s1-article-xxviii-steel</b></span>
+      <span>Variant: <b>harsh</b></span>
+      <span>Rounds: <b>four</b></span>
+      <span>Model: <b>anthropic:claude-sonnet-5</b></span>
+      <span>N: <b>4 vs 4</b></span>
+    </div>
+  </header>
+
+  <section id="headline">
+    <div class="stats">
+      <div class="tile hi-ukgva">
+        <div class="label">focal_firm_ukgva settlement</div>
+        <div class="num">3<span class="frac">/4</span> <span class="frac">75%</span></div>
+        <div class="sub">Second only to accommodating in the full 16-run set</div>
+      </div>
+      <div class="tile hi-eugva">
+        <div class="label">focal_firm_eugva settlement</div>
+        <div class="num">1<span class="frac">/4</span> <span class="frac">25%</span></div>
+        <div class="sub">Tagging the EU firm instead lands closer to the firm-whole-table arm (1/4)</div>
+      </div>
+      <div class="tile">
+        <div class="label">Same manipulation, mirrored side</div>
+        <div class="num">3&times;</div>
+        <div class="sub">Not a symmetric effect - which side gets tagged changes the outcome by itself</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="by-run">
+    <h2>All eight runs</h2>
+    <div class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Arm</th><th>Rep</th><th>Outcome</th><th>How</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag ukgva">UKGVA</span></td><td>1</td><td><span class="pill settled">SETTLED</span></td><td>Mechanical, round 4</td></tr>
+            <tr><td><span class="tag ukgva">UKGVA</span></td><td>2</td><td><span class="pill settled">SETTLED</span></td><td>Mechanical, round 4</td></tr>
+            <tr><td><span class="tag ukgva">UKGVA</span></td><td>3</td><td><span class="pill settled">SETTLED</span></td><td>Judge-rescued, round 4</td></tr>
+            <tr><td><span class="tag ukgva">UKGVA</span></td><td>4</td><td><span class="pill unsettled">NOT SETTLED</span></td><td>Both sides took the notified default</td></tr>
+            <tr><td><span class="tag eugva">EUGVA</span></td><td>1</td><td><span class="pill unsettled">NOT SETTLED</span></td><td>Judge: genuine gap (150kt vs 140kt tranche), not rescued</td></tr>
+            <tr><td><span class="tag eugva">EUGVA</span></td><td>2</td><td><span class="pill unsettled">NOT SETTLED</span></td><td>EU took the notified default</td></tr>
+            <tr><td><span class="tag eugva">EUGVA</span></td><td>3</td><td><span class="pill settled">SETTLED</span></td><td>Judge-rescued, round 4</td></tr>
+            <tr><td><span class="tag eugva">EUGVA</span></td><td>4</td><td><span class="pill unsettled">NOT SETTLED</span></td><td>Judge: genuine gap (450kt vs 350kt tranche), not rescued</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="terms">
+    <div class="panel-grid">
+      <div class="panel">
+        <h2>Where each settles, EU-firm is tougher on the UK</h2>
+        <p class="section-note">The one EU-firm settlement gives the UK a smaller tranche and a smaller share of a smaller pool than any UK-firm settlement manages.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Arm</th><th>Rep</th><th class="num">Pool (t)</th><th class="num">Tranche (t)</th><th class="num">Share</th><th class="num">Rate</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag ukgva">UKGVA</span></td><td>1</td><td class="num">850,000</td><td class="num">550,000</td><td class="num">65%</td><td class="num">25%</td></tr>
+              <tr><td><span class="tag ukgva">UKGVA</span></td><td>2</td><td class="num">1,000,000</td><td class="num">700,000</td><td class="num">70%</td><td class="num">25%</td></tr>
+              <tr><td><span class="tag ukgva">UKGVA</span></td><td>3</td><td class="num">750,000</td><td class="num">380,000</td><td class="num">51%</td><td class="num">30%</td></tr>
+              <tr><td><span class="tag eugva">EUGVA</span></td><td>3</td><td class="num">650,000</td><td class="num">250,000</td><td class="num">38%</td><td class="num">30%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>uk-geneva exceeds its mandate regardless of who's tagged</h2>
+        <p class="section-note"><code>mandate_exceeded</code> events by which seat tabled the breach, across all 8 runs.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Seat</th><th class="num">In UKGVA (UK tagged)</th><th class="num">In EUGVA (EU tagged)</th></tr></thead>
+            <tbody>
+              <tr><td>uk-geneva</td><td class="num">4</td><td class="num">6</td></tr>
+              <tr><td>eu-geneva</td><td class="num">1</td><td class="num">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="section-note" style="margin-top:14px">uk-geneva accounts for 10 of the 11 mandate breaches across both arms - including 6 of 6 in eugva, where uk-geneva is the <i>untagged</i> seat. Whatever's driving this doesn't track the disposition tag.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="findings">
+    <h2>Findings worth flagging</h2>
+    <div class="findings">
+      <div class="finding">
+        <h3>Which side gets tagged firm is not interchangeable</h3>
+        <p>Same manipulation, same magnitude (one seat, one tag), mirrored onto the other post seat - and settlement drops from 75% to 25%. Tagging the EU firm doesn't just fail to help the way tagging the UK firm does; it lands close to the firm-whole-table arm's own rate (1/4 in the full 16-run set). Whatever the UK-side focal effect is measuring, it isn't a generic "one firm seat is manageable" effect - it's specific to which country holds it, which is worth reading against the scenario's own asymmetry (the EU is the party modifying its schedule and holding the stronger no-deal fallback per Block 1).</p>
+      </div>
+      <div class="finding">
+        <h3>uk-geneva's mandate breaches don't track the disposition tag at all</h3>
+        <p>10 of 11 mandate_exceeded events across both arms are uk-geneva - including all 6 in eugva, where uk-geneva carries no tag and eu-geneva is the one instructed firmly. If the tag were driving this, eu-geneva's breach count should rise when it's the one tagged; instead it drops to zero. This reads as a seat-specific pattern (uk-geneva's brief, its capital's authority-setting habits, or both) rather than anything caused by the disposition manipulation - worth checking directly against the seat brief rather than assuming it's a disposition effect.</p>
+      </div>
+      <div class="finding">
+        <h3>eugva's near-misses are less rescuable than ukgva's</h3>
+        <p>3 of 4 eugva runs hit a judge check; only 1 was rescued. The two genuine gaps are substantial and specific - EU capital closing on 150,000t vs UK capital's 140,000t (rep1), and a 450,000t vs 350,000t tranche gap plus a disagreement over the review-band width itself (rep4). These read as real unresolved daylight between the two capitals' understanding of the deal, not a units mismatch.</p>
+        <blockquote>"The two capitals' internal acceptance rationales therefore ratify materially different tranche sizes and band widths, even though both describe the deal as 'accepted.'" &mdash; judge, eugva rep4</blockquote>
+      </div>
+      <div class="finding caveat">
+        <h3>n=4 per arm, and eugva's one settlement is a sample of one</h3>
+        <p>The settlement-rate gap (75% vs 25%) is large enough to be a real lead worth a bigger run, but every settled-terms comparison above rests on a single eugva data point. Treat the "EU-firm settles worse for the UK" reading as a hypothesis this set is consistent with, not something four runs can confirm on their own.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="page">
+    Generated from runs/evaluation runs/anthropic-claude-sonnet-5/*.jsonl &middot; focal_firm_ukgva (part of the 16-run Claude set) and focal_firm_eugva (new arm, 4 runs) &middot; harsh variant &middot; 4 rounds &middot; anthropic:claude-sonnet-5
+  </footer>
+
+</div>

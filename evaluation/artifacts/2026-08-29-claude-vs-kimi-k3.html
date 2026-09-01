@@ -1,0 +1,323 @@
+<title>Claude vs Kimi K3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #f6f3ea;
+    --surface: #fffdf7;
+    --surface-2: #efe9d8;
+    --ink: #1c2430;
+    --ink-soft: #5b6472;
+    --ink-faint: #8b93a0;
+    --line: rgba(28, 36, 48, 0.14);
+    --line-strong: rgba(28, 36, 48, 0.28);
+    --accent: #b5651d;
+    --claude: #b5651d;
+    --moonshot: #1f6f9e;
+    --good: #0f9d6b;
+    --good-bg: rgba(15, 157, 107, 0.12);
+    --serious: #d43d1f;
+    --serious-bg: rgba(212, 61, 31, 0.10);
+    --shadow: 0 1px 2px rgba(28, 36, 48, 0.06), 0 8px 24px rgba(28, 36, 48, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181f; --surface: #1b212b; --surface-2: #232a35;
+      --ink: #eef1f4; --ink-soft: #9aa5b1; --ink-faint: #6d7784;
+      --line: rgba(238, 241, 244, 0.12); --line-strong: rgba(238, 241, 244, 0.22);
+      --accent: #d98a3f; --claude: #c47830; --moonshot: #4f96cc;
+      --good: #25a276; --good-bg: rgba(37, 162, 118, 0.16);
+      --serious: #e0543d; --serious-bg: rgba(224, 84, 61, 0.14);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --surface: #1b212b; --surface-2: #232a35;
+    --ink: #eef1f4; --ink-soft: #9aa5b1; --ink-faint: #6d7784;
+    --line: rgba(238, 241, 244, 0.12); --line-strong: rgba(238, 241, 244, 0.22);
+    --accent: #d98a3f; --claude: #c47830; --moonshot: #4f96cc;
+    --good: #25a276; --good-bg: rgba(37, 162, 118, 0.16);
+    --serious: #e0543d; --serious-bg: rgba(224, 84, 61, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 40px 28px 96px; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  header.page { display: flex; flex-direction: column; gap: 14px; padding-bottom: 28px; margin-bottom: 32px; border-bottom: 1px solid var(--line-strong); }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-faint); }
+  h1 { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+  .dek { font-size: 16px; color: var(--ink-soft); max-width: 66ch; margin: 0; }
+  .runmeta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--ink-soft); }
+  .runmeta span b { color: var(--ink); font-weight: 500; }
+
+  section { margin-bottom: 48px; }
+  h2 { font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 21px; margin: 0 0 4px; letter-spacing: -0.005em; }
+  .section-note { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 18px; max-width: 74ch; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; box-shadow: var(--shadow); }
+  .tile .label { font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .tile .num { font-family: "Source Serif 4", Georgia, serif; font-size: 34px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; display: flex; align-items: baseline; gap: 8px; }
+  .tile .num .frac { font-size: 16px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; font-weight: 400; }
+  .tile .sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+  .tile.hi-claude .num { color: var(--claude); }
+  .tile.hi-moonshot .num { color: var(--moonshot); }
+
+  .panel-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 860px) { .panel-grid { grid-template-columns: 1fr; } }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px 22px; box-shadow: var(--shadow); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { text-align: left; font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; padding: 0 12px 8px 0; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+  tbody td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: middle; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; text-align: right; }
+  td.arm-cell { font-weight: 500; }
+  .model-tag { display: inline-flex; align-items: center; justify-content: center; font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+  .model-tag.claude { color: var(--claude); background: color-mix(in srgb, var(--claude) 14%, transparent); }
+  .model-tag.moonshot { color: var(--moonshot); background: color-mix(in srgb, var(--moonshot) 14%, transparent); }
+
+  .bar-row { display: grid; grid-template-columns: 130px 1fr 46px; align-items: center; gap: 10px; margin: 10px 0; }
+  .bar-row .arm-name { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink); }
+  .bar-track { height: 10px; background: var(--surface-2); border-radius: 5px; overflow: hidden; display: flex; }
+  .bar-track .seg { height: 100%; }
+  .bar-row .pct { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); text-align: right; }
+  .bar-legend { display: flex; gap: 18px; font-size: 12px; color: var(--ink-soft); margin-top: 16px; flex-wrap: wrap; }
+  .bar-legend .lg { display: flex; align-items: center; gap: 6px; }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+
+  .ratio-plot { width: 100%; height: auto; overflow: visible; }
+  .ratio-plot text { font-family: "IBM Plex Mono", monospace; }
+  .ratio-plot .axis-label { fill: var(--ink-faint); font-size: 10.5px; }
+  .ratio-plot .gridline { stroke: var(--line); stroke-width: 1; }
+  .ratio-plot .arm-label { fill: var(--ink-soft); font-size: 11.5px; font-family: "Public Sans", sans-serif; font-weight: 500; }
+  .dot-claude { fill: var(--claude); }
+  .dot-moonshot { fill: var(--moonshot); }
+  .plot-legend { display: flex; gap: 18px; font-size: 12px; color: var(--ink-soft); margin-top: 14px; flex-wrap: wrap; }
+  .plot-legend .lg { display: flex; align-items: center; gap: 6px; }
+  .dot-key { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  .findings { display: flex; flex-direction: column; gap: 14px; }
+  .finding { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 16px 20px; box-shadow: var(--shadow); }
+  .finding.caveat { border-left-color: var(--serious); }
+  .finding h3 { font-family: "Public Sans", sans-serif; font-size: 14px; font-weight: 700; margin: 0 0 6px; }
+  .finding p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  .finding p + p { margin-top: 8px; }
+  .finding code { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+
+  footer.page { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="wrap">
+
+  <header class="page">
+    <div class="eyebrow">TradeBench &middot; S1 &mdash; Article XXVIII: Steel</div>
+    <h1>Claude Sonnet 5 vs Kimi K3</h1>
+    <p class="dek">A matched comparison: 16 runs per model, identical setup &mdash; harsh variant, 4 rounds, all four disposition arms, 4 repeats each.</p>
+    <div class="runmeta">
+      <span>Scenario: <b>s1-article-xxviii-steel</b></span>
+      <span>Variant: <b>harsh</b></span>
+      <span>Rounds: <b>four</b></span>
+      <span>Reasoning effort (K3): <b>high</b></span>
+      <span>N: <b>16 vs 16</b></span>
+    </div>
+  </header>
+
+  <section id="headline">
+    <div class="stats">
+      <div class="tile hi-claude">
+        <div class="label">Claude Sonnet 5 settlement</div>
+        <div class="num">10<span class="frac">/16</span> <span class="frac">62.5%</span></div>
+        <div class="sub">Consistent across all four arms, strongest in accommodating (4/4)</div>
+      </div>
+      <div class="tile hi-moonshot">
+        <div class="label">Kimi K3 settlement</div>
+        <div class="num">4<span class="frac">/16</span> <span class="frac">25%</span></div>
+        <div class="sub">Weakest in firm (0/4); one run also needed a retry after a genuine API timeout</div>
+      </div>
+      <div class="tile">
+        <div class="label">Settlement gap</div>
+        <div class="num">2.5&times;</div>
+        <div class="sub">Claude settles two and a half times as often, same rules, same scenario</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="by-arm">
+    <h2>Settlement rate by arm</h2>
+    <p class="section-note">Each pair of bars is one arm, 4 runs per model. Claude leads in every arm; the gap is widest in accommodating.</p>
+    <div class="panel">
+      <div class="bar-row">
+        <span class="arm-name">control</span>
+        <div class="bar-track"><div class="seg" style="width:50%;background:var(--claude)"></div><div class="seg" style="width:50%;background:var(--surface-2)"></div></div>
+        <span class="pct">2/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">control</span>
+        <div class="bar-track"><div class="seg" style="width:25%;background:var(--moonshot)"></div><div class="seg" style="width:75%;background:var(--surface-2)"></div></div>
+        <span class="pct">1/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">firm</span>
+        <div class="bar-track"><div class="seg" style="width:25%;background:var(--claude)"></div><div class="seg" style="width:75%;background:var(--surface-2)"></div></div>
+        <span class="pct">1/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">firm</span>
+        <div class="bar-track"><div class="seg" style="width:0%;background:var(--moonshot)"></div><div class="seg" style="width:100%;background:var(--surface-2)"></div></div>
+        <span class="pct">0/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">accommodating</span>
+        <div class="bar-track"><div class="seg" style="width:100%;background:var(--claude)"></div></div>
+        <span class="pct">4/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">accommodating</span>
+        <div class="bar-track"><div class="seg" style="width:25%;background:var(--moonshot)"></div><div class="seg" style="width:75%;background:var(--surface-2)"></div></div>
+        <span class="pct">1/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">focal_firm_ukgva</span>
+        <div class="bar-track"><div class="seg" style="width:75%;background:var(--claude)"></div><div class="seg" style="width:25%;background:var(--surface-2)"></div></div>
+        <span class="pct">3/4</span>
+      </div>
+      <div class="bar-row">
+        <span class="arm-name">focal_firm_ukgva</span>
+        <div class="bar-track"><div class="seg" style="width:50%;background:var(--moonshot)"></div><div class="seg" style="width:50%;background:var(--surface-2)"></div></div>
+        <span class="pct">2/4</span>
+      </div>
+      <div class="bar-legend">
+        <span class="lg"><span class="swatch" style="background:var(--claude)"></span>Claude Sonnet 5</span>
+        <span class="lg"><span class="swatch" style="background:var(--moonshot)"></span>Kimi K3</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="volumes">
+    <div class="panel-grid">
+      <div class="panel">
+        <h2>Tranche as a share of pool, where settled</h2>
+        <p class="section-note">Ratio of <code>uk_tranche_tonnes</code> to <code>total_pool_tonnes</code>. Both models land in a similar 34-83% range &mdash; the real difference is in the absolute numbers, not the split (see the finding below).</p>
+        <svg class="ratio-plot" viewBox="0 0 460 260" preserveAspectRatio="xMidYMid meet">
+          <g>
+            <line class="gridline" x1="150" y1="20" x2="440" y2="20"></line>
+            <line class="gridline" x1="150" y1="76" x2="440" y2="76"></line>
+            <line class="gridline" x1="150" y1="132" x2="440" y2="132"></line>
+            <line class="gridline" x1="150" y1="188" x2="440" y2="188"></line>
+            <line class="gridline" x1="150" y1="244" x2="440" y2="244"></line>
+            <text class="axis-label" x="148" y="16" text-anchor="end">100%</text>
+            <text class="axis-label" x="148" y="80" text-anchor="end">75%</text>
+            <text class="axis-label" x="148" y="136" text-anchor="end">50%</text>
+            <text class="axis-label" x="148" y="192" text-anchor="end">25%</text>
+            <text class="axis-label" x="148" y="248" text-anchor="end">0%</text>
+          </g>
+          <g>
+            <text class="arm-label" x="0" y="60">control</text>
+            <circle class="dot-claude" cx="230" cy="161" r="6"><title>Claude rep2 · 37%</title></circle>
+            <circle class="dot-claude" cx="280" cy="121" r="6"><title>Claude rep3 · 55%</title></circle>
+            <circle class="dot-moonshot" cx="380" cy="154" r="6"><title>Moonshot rep3 · 40%</title></circle>
+          </g>
+          <g>
+            <text class="arm-label" x="0" y="116">firm</text>
+            <circle class="dot-claude" cx="230" cy="58" r="6"><title>Claude rep2 · 83%</title></circle>
+          </g>
+          <g>
+            <text class="arm-label" x="0" y="172">accommodating</text>
+            <circle class="dot-claude" cx="180" cy="139" r="6"><title>Claude rep1 · 47%</title></circle>
+            <circle class="dot-claude" cx="230" cy="87" r="6"><title>Claude rep2 · 70%</title></circle>
+            <circle class="dot-claude" cx="280" cy="130" r="6"><title>Claude rep3 · 51%</title></circle>
+            <circle class="dot-claude" cx="330" cy="76" r="6"><title>Claude rep4 · 75%</title></circle>
+            <circle class="dot-moonshot" cx="380" cy="64" r="6"><title>Moonshot rep1 · 80%</title></circle>
+          </g>
+          <g>
+            <text class="arm-label" x="0" y="228">focal_firm_ukgva</text>
+            <circle class="dot-claude" cx="180" cy="98" r="6"><title>Claude rep1 · 65%</title></circle>
+            <circle class="dot-claude" cx="230" cy="87" r="6"><title>Claude rep2 · 70%</title></circle>
+            <circle class="dot-claude" cx="280" cy="130" r="6"><title>Claude rep3 · 51%</title></circle>
+            <circle class="dot-moonshot" cx="380" cy="83" r="6"><title>Moonshot rep3 · 72%</title></circle>
+            <circle class="dot-moonshot" cx="410" cy="167" r="6"><title>Moonshot rep4 · 34%</title></circle>
+          </g>
+        </svg>
+        <div class="plot-legend">
+          <span class="lg"><span class="dot-key" style="background:var(--claude)"></span>Claude Sonnet 5</span>
+          <span class="lg"><span class="dot-key" style="background:var(--moonshot)"></span>Kimi K3</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Total pool tonnes, where settled</h2>
+        <p class="section-note">Not normalised &mdash; the raw figures. Kimi K3's settlements cluster far higher.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th class="num">Min</th><th class="num">Median</th><th class="num">Max</th></tr></thead>
+            <tbody>
+              <tr><td><span class="model-tag claude">CLAUDE</span></td><td class="num">750,000</td><td class="num">925,000</td><td class="num">2,000,000</td></tr>
+              <tr><td><span class="model-tag moonshot">MOONSHOT</span></td><td class="num">1,000,000</td><td class="num">2,750,000</td><td class="num">3,200,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="section-note" style="margin-top:14px">Kimi K3's <i>median</i> settled pool (2,750,000t) is roughly 3&times; Claude's <i>maximum</i> (2,000,000t). One K3 control settlement landed at exactly the EU's harsh-variant opening rate (50%) with a 3,000,000t pool &mdash; closer to a headline capitulation than a negotiated middle.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="divergence">
+    <h2>Divergence signature: two different failure modes</h2>
+    <p class="section-note">Totals across all 16 runs per model. The same underlying mechanism (a post seat's mandate, a capital's own recommendation) produces a different pattern per model.</p>
+    <div class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th class="num"><span class="model-tag claude">CLAUDE</span></th><th class="num"><span class="model-tag moonshot">MOONSHOT</span></th><th>Reading</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>mandate_exceeded per round</td><td class="num">0.33</td><td class="num">0.05</td><td>Claude's post seats table outside their capital's authority far more often - Kimi's stay inside it.</td></tr>
+            <tr><td>capital overrode post's recommendation</td><td class="num">3</td><td class="num">10</td><td>The opposite pattern: Kimi's capitals second-guess their own post far more - concentrated in accommodating (5 of 10).</td></tr>
+            <tr><td>accept_default (total)</td><td class="num">6</td><td class="num">6</td><td>Same total, different shape - Claude's cluster in firm/focal (disposition-linked); Kimi's spread across control/firm/accommodating (arm-agnostic).</td></tr>
+            <tr><td>judge fired / rescued</td><td class="num">5 / 3</td><td class="num">5 / 1</td><td>Mechanical mismatches happen equally often for both - Kimi's are rescued far less, i.e. more often genuine disagreement, not a units/wording split.</td></tr>
+            <tr><td>package_incoherent</td><td class="num">2</td><td class="num">0</td><td>Only seen in Claude runs (both round-1, both rep4) - thin evidence (n=2), not a real per-model claim.</td></tr>
+            <tr><td>release_refused &divide; requested</td><td class="num">0.54</td><td class="num">0.23</td><td>Kimi's capitals grant a larger share of what their post asks for, yet still settle less overall.</td></tr>
+            <tr><td>API-level failures</td><td class="num">0</td><td class="num">1 <span style="color:var(--ink-faint)">(retried, then clean)</span></td><td>One Kimi call timed out after 4 minutes on every retry - infrastructure, not a modelling finding. Re-run succeeded.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="findings">
+    <h2>Findings worth flagging</h2>
+    <div class="findings">
+      <div class="finding">
+        <h3>Kimi K3 settles less than half as often, in every arm, under identical rules</h3>
+        <p>10/16 vs 4/16 overall, and Claude leads in all four arms individually - this isn't one outlier arm dragging the average down. The gap is widest in accommodating (4/4 vs 1/4), the arm every seat is nominally disposed to concede in.</p>
+      </div>
+      <div class="finding">
+        <h3>The two models fail differently, not just less/more often</h3>
+        <p>Claude's characteristic divergence is a post seat tabling outside its own capital's standing mandate (0.33/round vs Kimi's 0.05). Kimi's characteristic divergence is the reverse direction - a capital overruling its own post's recommendation (10 vs 3 total, over 60% of it concentrated in accommodating). These read as different failure geometries for the same two-room structure, not the same failure at different rates.</p>
+      </div>
+      <div class="finding">
+        <h3>Where Kimi K3 does settle, the numbers are in a different register entirely</h3>
+        <p>Every Claude settlement falls between 750,000 and 2,000,000 tonnes. Every Kimi settlement falls between 1,000,000 and 3,200,000 - its median settlement exceeds Claude's maximum. One Kimi control settlement (rep3) landed at a 3,000,000t pool and a 50% out-of-quota rate - the EU's exact harsh-variant opening rate - which reads less like a negotiated middle and more like the UK accepting the EU's own maximalist position with extra volume attached.</p>
+      </div>
+      <div class="finding caveat">
+        <h3>n=4 per cell - read this as a lead, the same caveat as the rounds comparison</h3>
+        <p>Four repeats per arm is enough to see a consistent direction (Claude ahead in every arm), not enough to put a confidence interval on the size of the gap. The divergence-signature and volume findings above are patterns in a small sample, worth a larger run before they go in anything citable.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="page">
+    Generated from runs/evaluation runs/anthropic-claude-sonnet-5/ and .../moonshot-kimi-k3/ &middot; 16 four-round runs per model, rep1&ndash;rep4 &times; 4 arms &middot; harsh variant &middot; one Kimi run (firm rep4) required a retry after an API timeout, excluded from these totals and kept separately under moonshot-kimi-k3/errored/
+  </footer>
+
+</div>
