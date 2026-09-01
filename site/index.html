@@ -58,7 +58,7 @@
 <section class="prose" id="plain">
   <div class="inner">
     <h2>What this measures, without the jargon</h2>
-    <div>TradeBench is a simulation of a trade negotiation pitting agents as colleagues and opposing numbers in a simplified negotiation game based on real practitioner experience. The demo presented here ran a synthetic, simplified negotiation between the European Union and the United Kingdom with both WTO Article XXVIII tariff changes and domestic steel measures on the table. It is played out by a single AI model, deploying agents across four unique seats. Here a "seat" is a job - the delegate in Geneva who sits at the table, and the official in the capital who decides what that delegate is allowed to agree to. Each seat is played separately, and no seat can see how any other reached its conclusions. The delegate knows only what its capital chooses to tell it, and the capital knows only what its delegate chooses to report. <br><br>This experiment is designed to evaluate three core questions. Governments are not single minds - do AI systems can represent the internal disagreement, partial information and institutional friction that real negotiations are made of? Does an agent given a negotiation disposition change their strategy, and do dispositions change strategic performance and priorities? And, can models identify the strategies and dispositions of other parties in a negotiation?&nbsp;</div>
+    <div>TradeBench is a simulation of a trade negotiation pitting agents as colleagues and opposing numbers in a simplified negotiation game based on real practitioner experience. The demo presented here ran a synthetic, simplified negotiation between the European Union and the United Kingdom with both WTO Article XXVIII tariff changes and domestic steel measures on the table. It is played out by a single AI model, deploying agents across four unique seats. Here a "seat" is a job - the delegate in Geneva who sits at the table, and the official in the capital who decides what that delegate is allowed to agree to. Each seat is played separately, and no seat can see how any other reached its conclusions. The delegate knows only what its capital chooses to tell it, and the capital knows only what its delegate chooses to report. <br><br>This experiment is designed to evaluate three core questions. Governments are not single minds - can AI systems represent the internal disagreement, partial information and institutional friction that real negotiations are made of? Does an agent given a negotiation disposition change their strategy, and do dispositions change strategic performance and priorities? And, can models identify the strategies and dispositions of other parties in a negotiation?&nbsp;</div>
   </div>
 </section>
 
@@ -103,8 +103,7 @@
       agreeable. Diplomacy is a dance between maintaining a reputation and reaching a
       win-win that still favours your own side - so does a disposition to please make
       a model a worse negotiator, and does assigning one change that? Under an identical
-      scenario, the accommodating posture settled 4 times out of 4 and the firm posture
-      once in four. In one firm run the EU refused terms it had itself tabled and called
+      scenario, Claude models given an accommodating disposition settled 4 times out of 4 and the firm posture only once in four. In one firm run the EU refused terms it had itself tabled and called
       final, which the UK had already accepted in its own room.</li>
       <li><b>Disposition and strategy legibility.</b> Can a seat read the posture of the
       seat across the table, and does it change course? Blind raters shown only behaviour
@@ -133,7 +132,7 @@
     <div class="findings-list">
       <article class="finding">
         <div class="num">01</div>
-        <h3 data-fill="finding-1-title">Models understand underlying, unstated power dynamics in negotiations; the same one-seat manipulation settles 3 runs in 4 on the UK side, and 1 in 4 when mirrored onto the EU. Models play a structural advantage that is unmentioned in the scenario environment.</h3>
+        <h3 data-fill="finding-1-title">Models understand underlying, unstated power dynamics in negotiations; the same one-seat manipulation settles 3 runs in 4 on the UK side, and 1 in 4 when mirrored onto the EU. Models play a structural advantage the scenario never describes as leverage.</h3>
       </article>
 
       <article class="finding">
@@ -143,12 +142,12 @@
 
       <article class="finding">
         <div class="num">03</div>
-        <h3 data-fill="finding-3-title">Kimi K3's seats obey their capital; Claude's argue with it - and Claude's self-negotiating agents reach agreement with the other side much more often. The delegation that argues internally is the one that reaches agreement.</h3>
+        <h3 data-fill="finding-3-title">Kimi K3's seats obey their capital; Claude's argue with it. The delegation that argues internally is the one that reaches agreement.</h3>
       </article>
 
       <article class="finding">
         <div class="num">04</div>
-        <h3 data-fill="finding-4-title">A seat notices its co-national counterpart wants something different in 59% of rounds. It acts on that in 4%. More successful negotiating models will need to be able to balance the priorities of internal stakeholders and external negotiating partners to reliably find settlements.&nbsp;</h3>
+        <h3 data-fill="finding-4-title">Geneva seats notice their capital wants something different in 59% of rounds in Sonnet. It acts on that in 4%. More successful negotiating models will need to be able to balance the priorities of internal stakeholders and external negotiating partners to reliably find settlements.&nbsp;</h3>
       </article>
 
       <article class="finding">
@@ -386,7 +385,7 @@
     <div>
       <p><b>TradeBench</b> - an evaluation benchmark and harness for trade negotiations.&nbsp;</p>
       <div class="bio">
-        Jack Bradley - University of Cambridge. I am a trade practitioner and part-time postgraduate student. My research aims to explore the dynamics between China's domestic political economy and behaviour in international organisations.&nbsp;<div><div>Huiyuan Xie - Tsinghua University. My current research interests sit at the intersection of AI and social sciences, with a particular interest in legal AI and computational modelling of legal reasoning.<br><br></div><div>The model, evaluations, website and experiment design were created by Jack with Claude Code. Please forgive the messy humanities student vibe-coding in the repo.&nbsp;</div><div>Huiyuan acted as a consultant for experiment design and helped to set up the original demo. She takes no responsibility for said messy vibe-coding.&nbsp;</div></div></div>
+        Jack Bradley - University of Cambridge. I am a trade practitioner and part-time postgraduate student. My research aims to explore the dynamics between China's domestic political economy and behaviour in international organisations.&nbsp;<div><div>Huiyuan Xie - Tsinghua University. My current research interests sit at the intersection of AI and social sciences, with a particular interest in legal AI and computational modelling of legal reasoning.<br></div><div>Model, evaluations and website built by Jack using Claude Code. Huiyuan advised on experiment design and bult the original demo.&nbsp;</div></div></div>
       <p class="cite" id="cite"></p>
     </div>
     <div>
