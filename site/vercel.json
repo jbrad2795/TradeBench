@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "echo 'TradeBench site is static - nothing to build'",
+  "buildCommand": "echo 'static - nothing to build'",
   "installCommand": "echo 'no dependencies'",
-  "outputDirectory": "site",
+  "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
