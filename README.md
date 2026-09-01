@@ -198,15 +198,24 @@ One JSON object per line, gapless `seq`:
 
 ## Baselines
 
-`runs/` is scratch and is not tracked. Run sets worth keeping as reference
-points are copied into `baselines/`, each with a manifest recording the pack
-version, model, disposition arm, variant, round count and the code commit that
-produced them. Compare against a baseline rather than against memory when
-judging whether a prompt or harness change moved anything.
+Scratch runs in `runs/` are not tracked. The **evaluation batch** is, at
+`runs/evaluation runs/` - 36 canonical runs across two models. That is the
+data behind every figure on the site, and what `site/build-results.mjs` reads.
 
-**The `baselines/2026-08-20-*` set is v0.1 (single-table) and does not pool
-with v0.2 (two-room) runs** - the environment changed underneath it. Treat it
-as pilot data.
+`baselines/` holds frozen reference points, so a later change to prompts,
+rules or harness can be compared against something concrete rather than
+against memory. There are **two sets, from two different environments, and
+they do not pool** - see [`baselines/README.md`](baselines/README.md):
+
+| Set | Environment | Model | Runs |
+| --- | --- | --- | --- |
+| `2026-08-20-s1-v0.1-control-gpt-5.6-luna` | v0.1, single-table | gpt-5.6-luna | 5 |
+| `2026-08-27-s1-v0.2-harsh-4rd-and-6rd-all-arms-claude-sonnet-5` | v0.2, two-room | claude-sonnet-5 | 20 |
+
+**The v0.1 set is pilot data** - the environment changed underneath it, so it
+is excluded from every figure on the site. **The v0.2 set is a frozen copy**,
+byte-identical to files already in `runs/evaluation runs/`; it is a reference
+point, not a separate result.
 
 ## Tests
 
