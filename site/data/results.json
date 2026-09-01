@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-01T19:45:26.814Z",
+    "generated": "2026-09-01T20:06:31.306Z",
     "generator": "site/build-results.mjs",
     "source": "runs/evaluation runs/**/*.jsonl",
     "scenario": "s1-article-xxviii-steel",
@@ -1941,12 +1941,12 @@
       {
         "kind": "md",
         "file": "sample-run.md",
-        "bytes": 141110
+        "bytes": 141805
       },
       {
         "kind": "jsonl",
         "file": "sample-run.jsonl",
-        "bytes": 193295
+        "bytes": 193351
       },
       {
         "kind": "csv",

@@ -15,9 +15,9 @@ Scoring 128 units x 3 passes = 384 calls
   [128/128] done
 
 Wrote:
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_recognition.json
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_disagreements.json
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_report.md
+  <repo>\evaluation\conational-recognition\out\conational_recognition.json
+  <repo>\evaluation\conational-recognition\out\conational_disagreements.json
+  <repo>\evaluation\conational-recognition\out\conational_report.md
 
 # Co-national recognition - report
 

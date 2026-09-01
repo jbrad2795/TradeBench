@@ -4,9 +4,9 @@ Scoring 20 units x 3 passes = 60 calls
   [20/20] done
 
 Wrote:
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_recognition_pilot.json
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_disagreements_pilot.json
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_report_pilot.md
+  <repo>\evaluation\conational-recognition\out\conational_recognition_pilot.json
+  <repo>\evaluation\conational-recognition\out\conational_disagreements_pilot.json
+  <repo>\evaluation\conational-recognition\out\conational_report_pilot.md
 
 
 *** PILOT COMPLETE - check the stop conditions above before running --full. ***

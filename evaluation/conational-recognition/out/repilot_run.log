@@ -6,9 +6,9 @@ Condition A (unpaired): 20 units | Condition B (paired): 12 units | 3 passes eac
   [12/12] done
 
 Wrote:
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_recognition_repilot.json
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_disagreements_repilot.json
-  C:\Users\jackb\OneDrive\Documents\Cambridge\TradeBench\TradeBench-share\TradeBench-share\evaluation\conational-recognition\out\conational_report_repilot.md
+  <repo>\evaluation\conational-recognition\out\conational_recognition_repilot.json
+  <repo>\evaluation\conational-recognition\out\conational_disagreements_repilot.json
+  <repo>\evaluation\conational-recognition\out\conational_report_repilot.md
 
 
 *** PILOT COMPLETE - check the stop conditions above before running --full. ***

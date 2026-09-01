@@ -18,3 +18,8 @@ runs/*
 # that co-national recognition and the blind disposition panel can be re-run and
 # re-checked by someone who is not us.
 !baselines/
+
+# notes/ is the working area: handover docs written for a Claude Code session,
+# site-copy drafts, the build brief. All addressed to us, not to a reader of the
+# repo. Kept locally, out of the public tree.
+notes/
