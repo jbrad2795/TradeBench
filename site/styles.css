@@ -481,22 +481,6 @@ pre.cmd .c { color: #8fb3a6; }
 .dl b { display: block; font: 600 13px var(--sans); }
 .dl span { display: block; margin-top: .25rem; font: 12px var(--sans); color: var(--muted); }
 
-/* -------------------------------------------------------------- placeholder */
-
-.slot {
-  border: 1px dashed #c3ccc7; border-radius: 8px;
-  background: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(219,232,225,.35) 10px, rgba(219,232,225,.35) 20px);
-  padding: 1.5rem; margin: 1rem 0;
-  color: var(--muted); font: 13px/1.6 var(--sans);
-}
-.slot::before {
-  content: "✎ " attr(data-slot);
-  display: block; font: 700 9.5px var(--sans);
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--green-2); margin-bottom: .6rem;
-}
-.slot.tall { min-height: 7rem; }
-
 /* ------------------------------------------------------------------ replay */
 
 .replay { max-width: var(--wide); margin: 0 auto; }
@@ -591,6 +575,8 @@ footer .inner { max-width: var(--wide); margin: 0 auto; display: grid; grid-temp
 footer a { color: #fff; }
 footer p { color: #cfded7; font: 13px/1.7 var(--sans); margin: 0 0 .6rem; }
 footer .cite { font: 12px/1.6 var(--mono); color: #9fbcb0; max-width: 40rem; }
+footer .bio { font: 13px/1.7 var(--sans); color: #b6cbc2; max-width: 44rem; margin: 0 0 1rem; }
+footer .bio div { margin-top: .7rem; }
 
 @media (max-width: 860px) {
   .topbar { height: auto; padding: .8rem 1.2rem; flex-wrap: wrap; }

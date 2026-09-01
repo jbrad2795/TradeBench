@@ -10,7 +10,7 @@ a local folder.
 | --- | --- |
 | `index.html` | **Overview** — hero, parameters, in plain terms, why it matters, key findings, how it works. |
 | `evidence.html` | **Evidence** — results, figures, exhibit, methods, limitations, reproduce. |
-| `whats-next.html` | **What's next** — roadmap; one placeholder slot, JB to fill. |
+| `whats-next.html` | **What's next** — the four planned next steps. |
 | `observation-room.html` | **Observation room** — the replay viewer. |
 | `og.html` | Social-card source at exactly 1200×630. Screenshot it, save as `og.png`. |
 | `styles.css` | Tokens carried over from `public/styles.css` so the two surfaces match. |
@@ -128,7 +128,7 @@ Change the exhibit and change `SAMPLE` with it.
 
 Append **`?edit`** to any page URL (`index.html?edit`, `evidence.html?edit`, …).
 **Every piece of visible text becomes an editable block** — headings, paragraphs,
-list items, table cells, section eyebrows, phase labels, slots. Click and type.
+list items, table cells, section eyebrows, phase labels. Click and type.
 A bar at the bottom shows how many blocks you have changed.
 
 Not editable: the top nav and the section sub-nav (structural), and anything
@@ -199,8 +199,6 @@ Check it with Facebook's Sharing Debugger or by pasting the link into Slack.
 
 ## Still to do
 
-- **Prose slots** - the four finding bodies are still placeholders. Everything
-  marked `.slot` is visible on the page in draft mode.
 - Absolute `og:image` once the deploy URL exists (see Deploy above).
 - `og.png` still carries the old em-dash headline; recapture from `og.html` if
   that matters.

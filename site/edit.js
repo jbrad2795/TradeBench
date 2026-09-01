@@ -81,7 +81,7 @@
       if (NON_TEXT_TAG.has(n.tagName)) return;
       if (n.tagName === "A") return;            // links are navigation, not prose
       if (skipContainer(n)) return;
-      if (!ownsText(n) && !n.matches(".slot")) return;
+      if (!ownsText(n)) return;
       // querySelectorAll is document order, so any ancestor block is already in.
       if (blocks.some((b) => b.node.contains(n))) return;
       blocks.push({ node: n, path: pathOf(n) });
