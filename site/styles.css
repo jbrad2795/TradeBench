@@ -103,7 +103,12 @@ body {
 
 .page-head { background: var(--panel); }
 .page-head h1 { font: 400 clamp(1.9rem, 4vw, 2.6rem)/1.15 var(--serif); max-width: 22ch; }
-.page-head p { max-width: 44rem; font-size: 1.05rem; }
+.page-head h1:last-child { margin-bottom: 0; }
+.page-head p { max-width: 44rem; font-size: 1.05rem; margin-bottom: 0; }
+/* .tight: a page head carrying only a title. Without an intro paragraph the two
+   stacked section paddings leave the first item marooned ~145px below it. */
+.page-head.tight { padding-bottom: 2rem; }
+.page-head.tight + section { padding-top: 2.5rem; }
 
 /* ---------------------------------------------------------------- skeleton */
 
@@ -344,7 +349,7 @@ section.prose h3:first-of-type { margin-top: 1.5rem; }
 /* The four plans on What's next. Each is a distinct workstream, so the heading
    carries more weight than a normal h3 and sits on its own hairline rule. */
 
-.next-list { display: grid; gap: 0; margin-top: 2.4rem; }
+.next-list { display: grid; gap: 0; margin-top: 0; }
 .next-step { padding: 2.2rem 0; border-top: 1px solid var(--line); }
 .next-step:last-child { border-bottom: 1px solid var(--line); }
 .next-step h3 {
